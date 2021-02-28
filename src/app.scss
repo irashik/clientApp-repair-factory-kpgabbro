@@ -1,0 +1,22 @@
+$theme-colors: (
+"info": tomato,
+"danger": teal
+);
+
+$body-color: red;
+
+body {
+  color: $body-color;
+  margin: 30px;
+
+}
+
+h1 {
+  color: red;
+}
+
+
+
+
+
+@import "../bower_components/bootstrap/scss/bootstrap";

@@ -3,6 +3,6 @@ import ReactDOM from 'react-dom';
 import App from './app';
 
 // Importing the Bootstrap CSS
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '../bower_components/bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));

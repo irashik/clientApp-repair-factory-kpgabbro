@@ -6,7 +6,7 @@ import Toast from 'react-bootstrap/Toast';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
-import './App.css';
+import './app.scss';
 
 const ExampleToast = ({ children }) => {
   const [show, toggleShow] = useState(true);
@@ -26,6 +26,9 @@ const ExampleToast = ({ children }) => {
 
 const App = () => (
   <Container className="p-3">
+  <div>
+  <h1> Hello world</h1>
+  </div>
     <Jumbotron>
       <h1 className="header">Welcome To React-Bootstrap</h1>
       <ExampleToast>
