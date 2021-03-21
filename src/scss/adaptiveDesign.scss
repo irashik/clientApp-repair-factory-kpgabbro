@@ -1,0 +1,29 @@
+
+// для маленьких экранов
+@media all and (max-width: 600px) {
+
+    p {
+        font-size: 10px;
+    }
+
+    h1 {
+        font-size: 16px;
+        color: brown;
+    }
+
+    h3 {
+        font-size: 16px;
+        color:chocolate;
+        
+    }
+
+}
+
+
+
+
+
+// для ??? экранов
+@media all and (max-width: 1200px) {
+
+}

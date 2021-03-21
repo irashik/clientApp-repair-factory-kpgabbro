@@ -1,22 +1,145 @@
-$theme-colors: (
-"info": tomato,
-"danger": teal
-);
-
-$body-color: red;
 
 body {
-  color: $body-color;
   margin: 30px;
 
 }
 
-h1 {
-  color: red;
+
+div {
+  border: 1px solid black;
+
 }
+
+.container-fluid {
+  padding: 10px !important;
+  
+  //margin-left: 10px;
+ // margin-right: 10px;
+
+
+
+}
+
+.container {
+  padding: 10px !important;
+
+}
+
+header {
+  height: 180px;
+  background-color: beige;
+  width: 100%;
+  
+  padding: 0px;
+
+
+}
+
+footer {
+  height: 200px;
+  background-color: rgb(59, 58, 56);
+  width: 100%;
+
+}
+
+.navbar-expand-sm {
+  
+
+}
+
+.row {
+  padding: 0.5rem;
+
+
+}
+
+.header, footer  {
+  padding: 1rem;
+
+
+}
+
+.nav-link {
+  font-size: 12px;
+
+}
+
+
+#input-module {
+  border: 2px solid rgba(50, 136, 248, 0.761);
+}
+
+
+
+#read-module {
+  border: 2px solid rebeccapurple;
+
+}
+
+.input-group-text {
+ // background-color: white ;
+  
+
+
+}
+
+
+#AddEquipment {
+
+  margin-bottom: 30px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
 @import "../bower_components/bootstrap/scss/bootstrap";
+@import "./scss/adaptiveDesign";
+
+
+// fonts
+
+@media all and (min-width: 600px) {
+
+
+h1 {
+  font-size: 16px;
+  color: brown;
+
+}
+
+h2 {
+  //margin: 10px;
+
+}
+
+h3 {
+  color: brown;
+  font-size: 16px;
+
+}
+
+h5 {
+  font-size: 0.8em;
+
+}
+
+p {
+  font-size: 10px;
+
+}
+
+}
+
