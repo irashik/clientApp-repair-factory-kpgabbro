@@ -14,7 +14,7 @@ export class HeaderComponent extends React.Component {
         <Container fluid>
           <Row className="justify-content-md-center">
             <Col xs lg="4">
-              <h3>Журнал ремонтов</h3>
+              <h1>Журнал ремонтов</h1>
             </Col>
             <Col lg="4">
             </Col>

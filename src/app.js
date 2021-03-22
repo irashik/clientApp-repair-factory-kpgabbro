@@ -7,6 +7,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Nav from 'react-bootstrap/Nav';
@@ -35,37 +37,14 @@ import { FooterComponent } from './footer.js';
 import InputData from './inputData.js';
 
 import './app.scss';
+
 import HomeComponent from './home.js';
 import ReportEquipment from './reportEquipment.js';
+import RepairPlan from './repairPlan.js';
+import BidRequest from './bidRequest.js';
 
-
-
-class Welcome extends React.Component {
-  render() {
-    return (
-      <h1>Hello, {this.props.name}</h1>
-    )
-
-  }
-}
-
-function Example()  {
-  return (
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Oh snap! You got an error!</strong>
-      <p>
-        Change this and that and try again.
-      </p>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  )
-}
-
-
-
-
+import AuthComponent from './authpage.js';
+import RegisterComponent from './authRegister.js';
 
 
 
@@ -94,9 +73,25 @@ const App = () => (
             <LinkContainer to='/repairPlan'>
               <Nav.Link href="/repairPlan">План ремонтов</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='bidRequest'>
+            <LinkContainer to='/bidRequest'>
               <Nav.Link >Заявки и предложения</Nav.Link>
             </LinkContainer>
+
+            <ButtonGroup className='col-5' aria-label='Basic example'>
+            <LinkContainer to='/register'>
+              <Button href='/register' variant="outline-secondary align-items-end btn-sm mr-2" id="AddEquipment">Register</Button>
+            </LinkContainer>
+
+            <LinkContainer to='/auth'>
+                <Button href='/auth' variant="outline-secondary btn-sm mr-2" id="AddEquipment">Sign in</Button>
+            </LinkContainer>
+
+            </ButtonGroup>
+            
+            
+            
+
+
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -117,6 +112,7 @@ const App = () => (
           <Route path="/repairPlan">
             <Row>
               <RepairPlan />
+
             </Row>
           </Route>
           <Route path="/bidRequest">
@@ -126,12 +122,32 @@ const App = () => (
             
           </Route>
 
+
+          <Route path="/register">
+            <Row>
+              <RegisterComponent />
+            </Row>
+          </Route>
+
+
+          <Route path="/auth">
+            <Row>
+              <AuthComponent />
+            </Row>
+          </Route>
+
+
+
           <Route path="/">
             <Row>
               <HomeComponent />
             </Row>
-            
           </Route>
+
+
+
+
+
         </Switch>
 
    
@@ -144,18 +160,5 @@ const App = () => (
 );
 
 
-
-
-function RepairPlan() {
-  return <h2>RepairPlan</h2>;
-}
-
-
-
-
-function BidRequest() {
-  return <h2>BidRequest</h2>;
-
-}
 
 export default App;
