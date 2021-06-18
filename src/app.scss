@@ -27,7 +27,7 @@ div {
 
 header {
   height: 180px;
-  background-color: beige;
+  //background-color: beige;
   width: 100%;
   
   padding: 0px;
@@ -102,10 +102,14 @@ footer {
 
 
 
+.react-datepicker {
+  z-index: 20;
+}
 
 
-
-
+#btnAddDescription {
+  z-index: 0;
+}
 
 
 

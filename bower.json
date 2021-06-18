@@ -1,0 +1,17 @@
+{
+  "name": "repair-factory-kpgabbro",
+  "description": "Журнал ремонтов оборудования - карьер КП-Габбро",
+  "main": "index.js",
+  "authors": [
+    "Dmitrii Irashin <irashin.dim@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
