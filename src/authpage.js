@@ -32,7 +32,7 @@ function AuthComponent() {
 
       const handleSubmit = (e) => {
         e.preventDefault();
-        alert('loginform: email: ' + email + '  password: ' + password);
+        
       }
 
       return (
