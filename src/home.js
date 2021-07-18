@@ -12,15 +12,18 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 
 
-
 class HomeComponent extends React.Component {
+
+  
 
     render() {
       return (
         <Container fluid >
           <Row>
             <h2>Это вэб приложения для ведения журнала ремонта оборудования.</h2>
-            
+          <p>Что-нибудь еще....</p>
+
+
           </Row>
         </Container>
       );
