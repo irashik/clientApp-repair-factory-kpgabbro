@@ -1,5 +1,6 @@
 
-@import "./scss/color.scss";
+@import "color";
+
 
 
 body {
@@ -24,7 +25,7 @@ div {
 }
 
 .row .container-fluid {
-  background-color: rgb(170, 158, 172);
+  background-color: $container;
 }
 
 .container {
@@ -48,6 +49,7 @@ footer {
   width: 100%;
 
 }
+
 
 .navbar-expand-sm {
   
@@ -120,10 +122,16 @@ footer {
 
 
 
+.checkboxBidRequest {
+  font-size: 0.8em;
+
+}
 
 
-@import "../bower_components/bootstrap/scss/bootstrap";
-@import "./scss/adaptiveDesign";
+
+
+@import "../../bower_components/bootstrap/scss/bootstrap";
+@import "./adaptiveDesign";
 
 
 // fonts
@@ -157,6 +165,7 @@ p {
   font-size: 10px;
 
 }
+
 
 }
 

@@ -36,7 +36,7 @@ import { FooterComponent } from './footer.js';
 
 import InputData from './inputData.js';
 
-import './app.scss';
+import './scss/app.scss';
 
 import HomeComponent from './home.js';
 import ReportEquipment from './reportEquipment.js';

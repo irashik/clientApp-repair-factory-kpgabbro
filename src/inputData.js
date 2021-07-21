@@ -33,55 +33,49 @@ class InputData extends React.Component {
      constructor(props) {
          super(props);
          this.state = {
-             error: null,
-             isLoaded: false,
-             list: null
+            
          };
      }
 
-     componentDidMount() {
+    componentDidMount() {
 
-
-        const options = {
-            method: 'GET',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentialls: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*',
-            },
-            redirect: 'follow',
-          };
+        // const options = {
+        //     method: 'GET',
+        //     mode: 'cors',
+        //     cache: 'no-cache',
+        //     credentialls: 'same-origin',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //       'Access-Control-Allow-Origin': '*',
+        //     },
+        //     redirect: 'follow',
+        //   };
     
-          const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment"
+        //   const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment"
           
-          fetch(url, options)
-            .then(res => res.json())
-            .then(result => {
-                const resultKeyListEquipment = makeKeyListEquipment(result);
-                window.localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
+        //   fetch(url, options)
+        //     .then(res => res.json())
+        //     .then(result => {
+        //         const resultKeyListEquipment = makeKeyListEquipment(result);
+        //         window.localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
     
-                console.log(resultKeyListEquipment);
+        //         console.log(resultKeyListEquipment);
 
-               this.setState({
-                   list: resultKeyListEquipment,
-                   isLoaded: true,
-               });
+        //        this.setState({
+        //            list: resultKeyListEquipment,
+        //            isLoaded: true,
+        //        });
                
   
     
-          },
-          error => {
-                return null;
+        //   },
+        //   error => {
+        //         return null;
                 
-          });        
+        //   });        
 
 
-     }
-
-
-
+    }
 
 render() {
 
@@ -97,7 +91,7 @@ render() {
           </Row>
           <Row>
 
-            <InputModule value={this.state.list} />
+            <InputModule />
 
             
           </Row>
@@ -139,7 +133,7 @@ function DatePickerDiv() {
     );
 };
 
-function InputModule(props) {
+function InputModule() {
 
     // const [listEquipment, setListEquipment] = useState(() => {
 
@@ -165,19 +159,11 @@ function InputModule(props) {
     
     //             console.log(resultKeyListEquipment);
     //            return(resultKeyListEquipment);
-               
-  
-    
-    //       },
+        //       },
     //       error => {
     //             return null;
-                
     //       });        
-
-
-
-       
-    // });
+       // });
 
   //  const [listEquipment, setListEquipment] = useState(null);
 
@@ -198,14 +184,9 @@ function InputModule(props) {
             <Row>
                 <Col sm={4}>
                     <Form.Control id='inputEquipment' size="sm" type="text" placeholder="Выберите оборудование"  />
+                    <InputEquipment />     
                 </Col>
-
-                <Col>
-                    <InputEquipment value={this.state.list} isLoaded={this.state.isLoaded} />     
-                    
-
-                </Col>
-                
+               
                 <Col>
                     <Form.Control id='inputRepairDescription' as='textarea' size="sm" rows={3} placeholder="Что сделано?"  />
                 </Col>
@@ -410,24 +391,72 @@ function KeyListObject(props) {
 
 }
 
-function InputEquipment(props) {
-
-
-    if (!props.isLoaded) {
-        return <div>not loaded</div>;
-    } else {
-
-        //  {/* <KeyListObject value={listEquipment} /> */}
-                      
-        {  props.value.map(function(val) {
-            return (
-                <div className="" key={val._id}>
-                    <p>{val.mergedData} </p>
-                </div>
-            )}
-        )
+class InputEquipment extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+           list: null,
+           isLoaded: false
         }
     }
+
+    componentDidMount() {
+
+        const options = {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentialls: 'same-origin',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Access-Control-Allow-Origin': '*',
+                },
+                redirect: 'follow',
+              };
+        
+              const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment"
+              
+              fetch(url, options)
+                .then(res => res.json())
+                .then(result => {
+                    const resultKeyListEquipment = makeKeyListEquipment(result);
+                    window.localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
+            
+                   this.setState({
+                       list: resultKeyListEquipment,
+                       isLoaded: true,
+                   });
+              },
+              error => {
+                    this.setState({
+                        list: null,
+                        isLoaded: false
+                    })
+                    
+              });        
+    
+    
+         }
+    
+         render() {
+
+           if(!this.state.isLoaded) {
+               return (<div>no data </div>)
+            } else {
+                return (
+                    this.state.list.map(function(val) {
+                        return(
+                            <div className="listUnitEquipment" key={val._id}>
+                            <p>{val.mergedData} </p>
+                            </div>
+                        );
+                    })
+                )
+            
+            }
+
+        }
+
 
 }
 
