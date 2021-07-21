@@ -16,5 +16,4 @@ ReactDOM.render(
     document.getElementById('root'));
 
 
-console.log(process.env.TEST); // РАБОТАЕТ
 

@@ -1,4 +1,7 @@
 
+@import "./scss/color.scss";
+
+
 body {
   margin: 30px;
 
@@ -15,9 +18,13 @@ div {
   
   //margin-left: 10px;
  // margin-right: 10px;
+  
 
 
+}
 
+.row .container-fluid {
+  background-color: rgb(170, 158, 172);
 }
 
 .container {
@@ -27,7 +34,7 @@ div {
 
 header {
   height: 180px;
-  //background-color: beige;
+  background-color: rgb(197, 212, 245);
   width: 100%;
   
   padding: 0px;
@@ -37,7 +44,7 @@ header {
 
 footer {
   height: 200px;
-  background-color: rgb(59, 58, 56);
+  background-color: rgb(126, 172, 162);
   width: 100%;
 
 }

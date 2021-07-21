@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -10,42 +10,99 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import { TiPen } from 'react-icons/ti';
 
-import DatePicker from 'react-datepicker';
-import { registerLocale, setDefaultLocale } from 'react-datepicker';
+
+import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
+import {setHours, setMinutes } from 'date-fns';
+
 
 import ru from 'date-fns/locale/ru';
-
 registerLocale('ru', ru);
-
 
 import "react-datepicker/dist/react-datepicker.css";
 
 
+
+
 class InputData extends React.Component {
+    
+    // если нет в лок хранилище или срок использованиея..
+    // проверка что вернуля не null? обработка ошибок?
+    // await getUnitEquipmentList();
+    //console.log('localstorage.setitem' + this.state.resultKeyListEquipment);
+    //localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
+     constructor(props) {
+         super(props);
+         this.state = {
+             error: null,
+             isLoaded: false,
+             list: null
+         };
+     }
+
+     componentDidMount() {
 
 
-    render() {
-      return (
-        <Container fluid>
-          <Row className="justify-content-md-center">
-              
-            <Col>
-                
-               <DatePickerDiv />
-               <h2>Что сделано?</h2>
-
-            </Col>
+        const options = {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentialls: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+            redirect: 'follow',
+          };
+    
+          const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment"
           
-           
-          </Row>
+          fetch(url, options)
+            .then(res => res.json())
+            .then(result => {
+                const resultKeyListEquipment = makeKeyListEquipment(result);
+                window.localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
+    
+                console.log(resultKeyListEquipment);
 
+               this.setState({
+                   list: resultKeyListEquipment,
+                   isLoaded: true,
+               });
+               
+  
+    
+          },
+          error => {
+                return null;
+                
+          });        
+
+
+     }
+
+
+
+
+render() {
+
+   
+
+    return (
+        <Container fluid>
+            <Row className="justify-content-md-center">
+                <Col>
+                    <DatePickerDiv />
+                    <h2>Что сделано?</h2>
+                </Col>
+          </Row>
           <Row>
-              <InputModule />
+
+            <InputModule value={this.state.list} />
+
+            
           </Row>
           <Button variant="outline-secondary" 
-                id="AddRepairEquipment"
-
-                >
+                id="AddRepairEquipment" >
                 Добавить оборудование
             </Button>
            
@@ -55,37 +112,108 @@ class InputData extends React.Component {
       )
   
     }
+}
+
     
 
 
-}
 
 
-const DatePickerDiv = () => {
+function DatePickerDiv() {
+
+    // todo довать возможность выбора времени (интервалы полчаса)
+    // доваить выбор начал и окончания ремонта
+
     const [startDate, setStartDate] = useState(new Date());
+    
     return (
-        <DatePicker locale="ru" 
-            selected={startDate}
-            onChange={date => setStartDate(date)}
-            id='DateValue' />
+        <>
+            <DatePicker 
+                locale="ru" 
+                selected={startDate}
+                onChange={date => setStartDate(date)}
+                dateFormat="dd MMMM yyyy"
+                startDate={startDate}
+                id='StartDateValue' />
+        </>
     );
-
 };
 
-function InputModule() {
+function InputModule(props) {
+
+    // const [listEquipment, setListEquipment] = useState(() => {
+
+    //     const options = {
+    //         method: 'GET',
+    //         mode: 'cors',
+    //         cache: 'no-cache',
+    //         credentialls: 'same-origin',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //           'Access-Control-Allow-Origin': '*',
+    //         },
+    //         redirect: 'follow',
+    //       };
+    
+    //       const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment"
+          
+    //       fetch(url, options)
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             const resultKeyListEquipment = makeKeyListEquipment(result);
+    //             window.localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
+    
+    //             console.log(resultKeyListEquipment);
+    //            return(resultKeyListEquipment);
+               
+  
+    
+    //       },
+    //       error => {
+    //             return null;
+                
+    //       });        
+
+
+
+       
+    // });
+
+  //  const [listEquipment, setListEquipment] = useState(null);
+
+
+    // const [listEquipmentLocal, setListEquipmentLocal] = useState(() => {
+    //     const initialState = window.localStorage.getItem('resultKeyListEquipment');
+    //     return initialState;
+    // })
+ 
+
+    // useEffect(() => {
+        
+
+    // }, []);
+
     return   (    
-    <Container fluid id='input-module'>
-        <Row>
-            <Col sm={4}>
-                <Form.Control id='inputEquipment' size="sm" type="text" placeholder="Выберите оборудование"  />
-            </Col>
-            <Col>
-                <Form.Control id='inputRepairDescription' as='textarea' size="sm" rows={3} placeholder="Что сделано?"  />
-            </Col>
-            <Col sm={2}>
-                <InputGroupButtonSmall name="Equipment" />
-            </Col>
-        </Row>
+        <Container fluid id='input-module'>
+            <Row>
+                <Col sm={4}>
+                    <Form.Control id='inputEquipment' size="sm" type="text" placeholder="Выберите оборудование"  />
+                </Col>
+
+                <Col>
+                    <InputEquipment value={this.state.list} isLoaded={this.state.isLoaded} />     
+                    
+
+                </Col>
+                
+                <Col>
+                    <Form.Control id='inputRepairDescription' as='textarea' size="sm" rows={3} placeholder="Что сделано?"  />
+                </Col>
+                    <Col sm={2}>
+                        <InputGroupButtonSmall name="Equipment" />
+                </Col>
+            </Row>
+
         {/* <Row>
             
             <Col>
@@ -100,9 +228,9 @@ function InputModule() {
         </Row> */}
     </Container>
     
-    );
+    )
+    
 };
-
 
 function ReadModule() {
     return      (
@@ -148,7 +276,6 @@ function ReadModule() {
     );
 };
 
-
 function InputGroupButtonSmall(props) {
     return (
 
@@ -172,7 +299,137 @@ function InputGroupButtonSmall(props) {
     );
 };
 
+function getUnitEquipmentList() {
+    
+    const options = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentialls: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        redirect: 'follow',
+      };
 
+      const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment"
+      
+      fetch(url, options)
+        .then(res => res.json())
+        .then(result => {
+
+            // получить объект и сохранить себе.
+            //console.log(JSON.stringify(result));
+
+           
+            // [
+            //     {
+            //         "_id": "605f4123c55a8c58e21fc0bc",
+            //         "name": "Hello world",
+            //         "description": "Hello World Description2"
+            //     },
+            //     {
+            //         "_id": "60646d46408d404c10624b86",
+            //         "name": "111",
+            //         "description": "tesing"
+            //     },
+
+            // обрабатываем массив - объединяем поля
+            const resultKeyListEquipment = makeKeyListEquipment(result);
+
+            //window.localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
+
+           // this.setState({ resultKeyListEquipment: result})
+
+           //console.log(result);
+
+          // console.log(resultKeyListEquipment);
+
+            return resultKeyListEquipment;
+
+
+      },
+      error => {
+            throw new Error();
+            console.log(error);
+            return null;
+      });
+}
+
+function makeKeyListEquipment(sourceArray) {
+    let newArray = sourceArray.map(currentValue => {
+        const id = currentValue._id;
+        const mergeData = currentValue.name.concat(", ", currentValue.position, ", ", currentValue.group);
+        const resultObject = { "_id": id, "mergedData": mergeData }
+        return resultObject
+    });
+    return newArray
+}
+
+function KeyListObject(props) {
+ 
+
+    console.log(props.value);
+
+    let a = props.value;
+
+    if(!a) {
+        return ( <div> no Data</div>)
+    } else {
+
+   
+        a.map(function(val) {
+           
+            return (
+              <div className="" key={val._id}>
+                  <p>{val.mergedData} </p>
+              </div>
+              
+
+          )
+       })
+    
+    }
+           
+      
+
+
+
+    // console.log(object);
+
+    // object.map((val) => {
+    //     return (
+    //         <div className="" key={val._id}>
+    //             <p>{val.mergedData} </p>
+    //         </div>
+    //     )
+    //     })
+    
+
+
+}
+
+function InputEquipment(props) {
+
+
+    if (!props.isLoaded) {
+        return <div>not loaded</div>;
+    } else {
+
+        //  {/* <KeyListObject value={listEquipment} /> */}
+                      
+        {  props.value.map(function(val) {
+            return (
+                <div className="" key={val._id}>
+                    <p>{val.mergedData} </p>
+                </div>
+            )}
+        )
+        }
+    }
+
+}
 
 
 export default InputData;
