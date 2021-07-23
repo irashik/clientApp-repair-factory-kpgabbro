@@ -18,7 +18,10 @@ import {setHours, setMinutes } from 'date-fns';
 import ru from 'date-fns/locale/ru';
 registerLocale('ru', ru);
 
-import "react-datepicker/dist/react-datepicker.css";
+//import "react-datepicker/dist/react-datepicker.css";
+import SearchList from "./searchList";
+import { useDebouncedCallback } from 'use-debounce';
+
 
 
 
@@ -135,6 +138,23 @@ function DatePickerDiv() {
 
 function InputModule() {
 
+    const [searchString, setSearchString] = useState('');
+    const [filter, setFilter] = useState('');
+
+    const delay = 400;
+    const [debouncedSetFilter] = useDebouncedCallback(
+        filter => setFilter(filter),
+        delay
+    );
+
+    const onChangeSearch = (e) => {
+        const { value } = e.target
+        setSearchString(value);
+        debouncedSetFilter(value);
+    };
+
+
+
     // const [listEquipment, setListEquipment] = useState(() => {
 
     //     const options = {
@@ -183,8 +203,18 @@ function InputModule() {
         <Container fluid id='input-module'>
             <Row>
                 <Col sm={4}>
-                    <Form.Control id='inputEquipment' size="sm" type="text" placeholder="Выберите оборудование"  />
+                    <Form.Control id='inputEquipment' size="sm" 
+                            type="text" 
+                            placeholder="Выберите оборудование"
+                            value={searchString}
+                            onChange={onChangeSearch}
+                            />
+                    
+                    <SearchList filter={filter} />
+
                     <InputEquipment />     
+
+
                 </Col>
                
                 <Col>
@@ -462,5 +492,4 @@ class InputEquipment extends React.Component {
 
 
 export default InputData;
-
 

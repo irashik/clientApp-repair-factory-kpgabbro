@@ -1,6 +1,6 @@
- "inwork": false,
-      //     "performed": false,
-      //     "_id": "605ca13d2464576aa8a530d3",
-      //     "name": "Dmitrii",
-      //     "date": "2021-03-25T14:38:48.872Z",
-      //     "author": "Tanya",
+  alert(result);
+
+
+
+    //alert("заявка записана!");
+    setBidRequest("");

@@ -15,14 +15,20 @@
     "bootstrap": "^4.6.0",
     "date-fns": "^2.22.1",
     "dotenv": "^10.0.0",
+    "fuse": "^0.4.0",
     "history": "^4.10.1",
+    "jquery": "^3.6.0",
+    "jquery-ui": "^1.12.1",
+    "jqueryui": "^1.11.1",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.0",
+    "react-bootstrap-floating-label": "^1.6.0",
     "react-datepicker": "^3.6.0",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
     "react-router-bootstrap": "^0.25.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "use-debounce": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
