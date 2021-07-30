@@ -1,6 +1,8 @@
 
 @import "color";
 
+//@import "../../node_modules/react-datepicker/dist/react-datepicker.css";
+
 
 
 body {
@@ -25,7 +27,8 @@ div {
 }
 
 .row .container-fluid {
-  background-color: $container;
+  //background-color: $container;
+
 }
 
 .container {
@@ -35,7 +38,7 @@ div {
 
 header {
   height: 180px;
-  background-color: rgb(197, 212, 245);
+  //background-color: rgb(197, 212, 245);
   width: 100%;
   
   padding: 0px;
@@ -45,9 +48,13 @@ header {
 
 footer {
   height: 200px;
-  background-color: rgb(126, 172, 162);
+  //background-color: rgb(126, 172, 162);
   width: 100%;
 
+}
+
+footer h5 {
+  font-size: 0.8em;
 }
 
 
@@ -75,13 +82,13 @@ footer {
 
 
 #input-module {
-  border: 2px solid rgba(50, 136, 248, 0.761);
+  border: 1px solid black;
 }
 
 
 
 #read-module, #plan-read-module {
-  border: 2px solid rebeccapurple;
+  border: 1px solid black
 
 }
 
@@ -130,12 +137,19 @@ footer {
 p {
   
 
+
 }
 
 #plan-read-module {
   background-color: $tickedBidRequest
 }
 
+h5 {
+  font-size: 0.8rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+
+}
 h6 {
   font-size: 0.9em;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -146,9 +160,36 @@ h6 {
 }
 
 
+#filteredListUnitEquipment {
+  font-size: 0.8em;
+  padding: 3px;
+  
+
+}
+
+
+.navbar {
+  background-color: red !important;
+
+}
+
+
+
+
 
 @import "../../bower_components/bootstrap/scss/bootstrap";
 @import "./adaptiveDesign";
+
+
+
+
+
+
+
+
+
+
+
 
 
 // fonts
@@ -157,8 +198,8 @@ h6 {
 
 
 h1 {
-  font-size: 16px;
-  color: brown;
+  //font-size: 16px;
+  //color: brown;
 
 }
 
@@ -168,13 +209,13 @@ h2 {
 }
 
 h3 {
-  color: brown;
-  font-size: 16px;
+  //color: brown;
+  //font-size: 16px;
 
 }
 
 h5 {
-  font-size: 0.8em;
+  font-size: 0.8rem;
 
 }
 

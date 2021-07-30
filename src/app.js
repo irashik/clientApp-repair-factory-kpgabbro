@@ -34,7 +34,7 @@ import { LinkContainer } from  'react-router-bootstrap';
 import { HeaderComponent } from './header.js';
 import { FooterComponent } from './footer.js';
 
-import InputData from './inputData.js';
+import InputDataSection from 'inputDataSection/inputDataSection.js';
 
 import './scss/app.scss';
 
@@ -100,7 +100,7 @@ const App = () => (
       <Switch>
           <Route path="/inputData">
             <Row>
-              <InputData />
+              <InputDataSection />
             </Row>
           </Route>
           <Route path="/reportEquipment">

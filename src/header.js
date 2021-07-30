@@ -11,6 +11,11 @@ export class HeaderComponent extends React.Component {
     render() {
       return (
         <header>
+          <Container fluid>
+            <h1>Журнал ремонтов</h1>
+            <h3>АО "КП-Габбро", Карьер Новый Поселок</h3>
+          </Container>
+{/* 
         <Container fluid>
           <Row className="justify-content-md-center">
             <Col xs lg="4">
@@ -23,7 +28,7 @@ export class HeaderComponent extends React.Component {
               <h3>Карьер Новый Поселок</h3>
             </Col>
           </Row>
-        </Container>
+        </Container> */}
         </header>
       )
   

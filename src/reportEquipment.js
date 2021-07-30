@@ -1,4 +1,6 @@
-// Отчет по оборудованию
+// страница "Отчет по оборудованию" 
+// вводится в поле оборудование наименование оборудование по ввводу происходит запрос к апи 
+// и загружаются записи по ремонтам конкретного оборудования.
 
 
 import React, { useState } from "react";
@@ -12,16 +14,51 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 
 
+import SearchList from "./searchListUnitEquipment";
+
+import { useDebouncedCallback } from 'use-debounce';
 
 
 
 
 
+function ReportEquipment() {
 
-class ReportEquipment extends React.Component {
+    const [searchString, setSearchString] = useState('');
+    const [filter, setFilter] = useState('');
+    const [idEquipment, setIdEquipment] = useState('');
+
+    
 
 
-    render() {
+    const delay = 400;
+
+    const debouncedSetFilter = useDebouncedCallback(
+        filter => setFilter(filter),
+        delay
+    );
+
+    const onChangeSearch = (e) => {
+        const { value } = e.target
+        setSearchString(value);
+        debouncedSetFilter(value);
+        setIdEquipment(null)
+
+    };
+
+
+    const handlerSelectEquipment = (id, joinNameUnit, e) => {
+
+        setSearchString(joinNameUnit);
+        setIdEquipment(id);
+
+        console.log("id=" +  id, "data= " + joinNameUnit);
+    };
+
+    
+
+
+   
       return (
         <Container fluid>
           <Row className="justify-content-md-center">
@@ -29,11 +66,24 @@ class ReportEquipment extends React.Component {
           </Row>
 
             <Row className="justify-content-start">
-                <Form.Control id='reportInputEquipment' size="sm" type="text" placeholder="Выберите оборудование"  />
+
+                <Form.Control   id='reportInputEquipment' size="sm" type="text" 
+                                placeholder="Выберите оборудование"
+                                value={searchString}
+                                onChange={onChangeSearch}
+                                idunit={idEquipment}
+                                
+                                
+                                />
+
+
+            <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
+
+
             </Row>
 
             <Row>
-                <ReportEquipmentModule />
+                <ReportEquipmentModule selectedEquipment={idEquipment} />
 
             </Row>
            
@@ -41,7 +91,7 @@ class ReportEquipment extends React.Component {
       
       )
   
-    }
+    
     
 
 
@@ -52,7 +102,10 @@ class ReportEquipment extends React.Component {
 
 
 function ReportEquipmentModule(props) {
-    return      (
+
+
+
+    return (
         <Container fluid id='read-module' item=''>
         <Row>
             <Col sm={4}>
