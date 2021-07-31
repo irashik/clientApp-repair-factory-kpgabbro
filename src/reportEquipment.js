@@ -17,6 +17,7 @@ import Form from 'react-bootstrap/Form';
 import SearchList from "./searchListUnitEquipment";
 
 import { useDebouncedCallback } from 'use-debounce';
+import ReadModuleList from "./readModuleList";
 
 
 
@@ -31,7 +32,7 @@ function ReportEquipment() {
     
 
 
-    const delay = 400;
+    const delay = 1000;
 
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
@@ -83,74 +84,81 @@ function ReportEquipment() {
             </Row>
 
             <Row>
-                <ReportEquipmentModule selectedEquipment={idEquipment} />
+                <ShowReadModuleList idEquipment={idEquipment} />
+
 
             </Row>
-           
         </Container>
-      
       )
-  
-    
-    
+};
 
+
+
+function ShowReadModuleList(props)  {
+
+    if (props.idEquipment) {
+        return null;
+    } else {
+        return <ReadModuleList unitEquipment={props.idEquipment} />;
+    }
 
 }
 
 
 
 
-
-function ReportEquipmentModule(props) {
-
+// function ReportEquipmentModule(props) {
 
 
-    return (
-        <Container fluid id='read-module' item=''>
-        <Row>
-            <Col sm={4}>
-                <h5 id='reportDateRepair' item=''>Дата ХX.XX.XXXX</h5>
-                 <p id='reportRepairAuthor' item=''>Автор</p>
-            </Col>
-            <Col>
-                <p>Выполненные работы</p>
-                <div id='reportRepairDescription' 
-                        item="">
 
-                        </div>
-            </Col>
-            <Col sm={2}>
-               <InputGroup.Checkbox aria-label="Checkbox for following text input" 
-                                    data-toggle="tooltip" 
-                                    data-placement="top" 
-                                    title="Планирование"
-                                    id='ReportRepairCheckPlan'
-                                    item=''
-                                     disabled/>
+//     return (
+//         <Container fluid id='read-module' item=''>
+//         <Row>
+//             <Col sm={4}>
+//                 <h5 id='reportDateRepair' item=''>Дата ХX.XX.XXXX</h5>
+//                  <p id='reportRepairAuthor' item=''>Автор</p>
+//             </Col>
+//             <Col>
+//                 <p>Выполненные работы</p>
+//                 <div id='reportRepairDescription' 
+//                         item="">
 
-            </Col>
-        </Row>
-        {/* <Row>
-            <Col>
-                <p>Наименование материала</p>
-            </Col>
-            <Col sm={4}>
-                <p>Количество материала</p>
-            </Col>
-            <Col sm={2}>
-                <InputGroup.Checkbox aria-label="Checkbox for following text input" data-toggle="tooltip" data-placement="top" title="Планирование" disabled/>
-            </Col>
-        </Row> */}
+//                         </div>
+//             </Col>
+//             <Col sm={2}>
+//                <InputGroup.Checkbox aria-label="Checkbox for following text input" 
+//                                     data-toggle="tooltip" 
+//                                     data-placement="top" 
+//                                     title="Планирование"
+//                                     id='ReportRepairCheckPlan'
+//                                     item=''
+//                                      disabled/>
 
-    </Container>
+//             </Col>
+//         </Row>
+//         {/* <Row>
+//             <Col>
+//                 <p>Наименование материала</p>
+//             </Col>
+//             <Col sm={4}>
+//                 <p>Количество материала</p>
+//             </Col>
+//             <Col sm={2}>
+//                 <InputGroup.Checkbox aria-label="Checkbox for following text input" data-toggle="tooltip" data-placement="top" title="Планирование" disabled/>
+//             </Col>
+//         </Row> */}
 
-    );
-};
+//     </Container>
 
-
+//     );
+// };
 
 
 
 export default ReportEquipment;
+
+
+
+
 
 

@@ -32,8 +32,8 @@ log.setLevel('debug');
 
 import jQuery from 'jquery';
 
-import InsertDataModal from "./modalWindow";
-import ReadModuleList from './readModuleList';
+import InputRepairForm from "./inputRepairForm";
+import ReadModuleList from '../readModuleList';
 
 
 function InputDataSection(props) {
@@ -56,18 +56,23 @@ function InputDataSection(props) {
         setOptedData(selectedDate);
     }
 
-    const handleAddedRepair = () => {
-        setAddedRepair(true);
+    const handleAddedRepair = (e) => {
+        setAddedRepair(e);
     };
 
 
     useEffect(() => {
         setAddedRepair(false);
-    }, []);
+        //setOptedData(optedData);
+        
+    }, [optedData]);
+
+    log.info('optedData=' + optedData);
+
 
 
     return (
-        <Container fluid className="p-0">
+        <Container fluid >
             <Row className="justify-content-md-center">
                 <Col>
                     <h2 className="m-3">Что сделано?</h2>
@@ -77,7 +82,7 @@ function InputDataSection(props) {
                 </Col>
                 <Col>
                     <Button variant="primary" 
-                        size="sm"
+                        
                         id="AddRepairEquipment"
                         className="m-3" 
                         onClick={() => setModalShow(true)}
@@ -88,7 +93,12 @@ function InputDataSection(props) {
             </Row>
             
 
-            <InsertDataModal show={modalShow} onHide={() => setModalShow(false)} />
+            <InputRepairForm    show={modalShow} 
+                                onHide={() => setModalShow(false)}
+                                //handleAddedRepair={handleAddedRepair}
+
+                                
+                                />
                           
            
             
@@ -116,6 +126,8 @@ function DatePickerDiv(props) {
 
     const [valueDate, setValueDate] = useState(new Date(year, month, day));
   
+
+
     const handlerOptedData = (e) => {
         setValueDate(e);    
         props.onSelectOptedData(e);
@@ -127,7 +139,7 @@ function DatePickerDiv(props) {
 
 
     return (
-        <>
+        
             <DatePicker 
                 className="m-3"
                 locale="ru" 
@@ -136,7 +148,7 @@ function DatePickerDiv(props) {
                 dateFormat="dd MMMM yyyy"
                 startDate={valueDate}
                 id='StartDateValue' />
-        </>
+        
     );
 };
 
@@ -144,33 +156,6 @@ function DatePickerDiv(props) {
 
 
 
-
-
-
-function InputGroupButtonSmall(props) {
-    return (
-
-        <InputGroup className="">
-        <InputGroup.Checkbox 
-                    aria-label="Checkbox for following text input"
-                    data-toggle="tooltip" 
-                    data-placement="top" 
-                    title="Если планируется"
-                    id='CheckRepairPlan'
-                    className=""
-                    />
-        <Button variant="outline-dark" 
-                data-toggle="tooltip" 
-                className=""
-                data-placement="top" 
-                title="Добавить запись"
-                id='btnAddDescription'
-                >+</Button>
-        </InputGroup>
-
-
-    );
-};
 
 
         
