@@ -96,7 +96,7 @@ function ReportEquipment() {
 
 function ShowReadModuleList(props)  {
 
-    if (props.idEquipment) {
+    if (!props.idEquipment) {
         return null;
     } else {
         return <ReadModuleList unitEquipment={props.idEquipment} />;

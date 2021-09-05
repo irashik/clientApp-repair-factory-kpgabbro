@@ -141,19 +141,6 @@ function makeKeyListEquipment(sourceArray) {
 };
 
 function adaptationFilterList(sourceFilteredList) {
-
-    // преобразование вида массива
-    // {"item":{
-    //     "_id":"60646d46408d404c10624b86","mergedData":"111, undefined, undefined"},
-    //     "refIndex":1},
-    // {"item":{
-    //     "_id":"60646d77408d404c10624b87","mergedData":"222, undefined, undefined"},
-    //     "refIndex":2},
-    // {"item":{
-    //     "_id":"605f4123c55a8c58e21fc0bc","mergedData":"Hello world, undefined, undefined"},
-    //     "refIndex":0}
-
-    // к виду [{id, mergedData}, {}, ...]
     
     if(!sourceFilteredList.length) {
         return [];

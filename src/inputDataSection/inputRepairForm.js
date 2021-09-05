@@ -1,7 +1,6 @@
-
+// работа со страницей ввод данных
 
 import React, { useEffect, useState } from "react";
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,10 +8,6 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Modal from 'react-bootstrap/Modal';
-import ModalBody from 'react-bootstrap/ModalBody';
-import ModalFooter from 'react-bootstrap/ModalFooter';
-import ModalTitle from 'react-bootstrap/ModalTitle';
-import ModalHeader from 'react-bootstrap/ModalHeader';
 import CloseButton from 'react-bootstrap/CloseButton';
 
 

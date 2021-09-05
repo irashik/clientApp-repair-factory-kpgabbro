@@ -6,7 +6,6 @@
 */
 
 import React, { useEffect, useState } from "react";
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -16,110 +15,32 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import { format } from 'date-fns';
 import ru from 'date-fns/locale/ru';
-
 import { Tooltip} from 'react-bootstrap/Tooltip';
 import { OverlayTrigger } from "react-bootstrap/OverlayTrigger";
 import FloatingLabel from 'react-bootstrap-floating-label';
+import * as log from 'loglevel';
+log.setLevel('debug');
 
 
 
 
-function BidRequest() {
+function BidRequest(props) {
   
   const [bidRequest, setBidRequest] = useState("");
-  const author = null;
-  const date = null;
-
+  const author = props.user;
+  const [priority, setPriority] = useState("");
+  const [category, setCategory] = useState("");
+  const [newTask, setNewTask] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(bidRequest);
+
+    createBidRequest(bidRequest, priority, category, author);
+    setNewTask(newTask + 1);
 
 
-        //    const result = createBidRequest(bidRequest);
-
-        const user = 'testUser' // откуда его взять из контекста
-
-        const data = {
-          name: bidRequest,
-          author: user,
-          date: new Date(),
-          priority: 'test',
-          category: 'test'
-
-        }
-
-
-
-
-
-
-            const options = {
-              method: 'POST',
-              mode: 'cors',
-              cache: 'no-cache',
-              credentialls: 'same-origin',
-              headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-              },
-              redirect: 'follow',
-              body: JSON.stringify(data)
-            };
-
-            const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest"
-
-            fetch(url, options)
-              .then(res => res.json())
-              .then(result => {
-                  
-                // получаем массив объектов вида.
-              //   {
-              //     "inwork": false,
-              //     "performed": false,
-              //     "_id": "605ca13d2464576aa8a530d3",
-              //     "name": "Dmitrii",
-              //     "date": "2021-03-25T14:38:48.872Z",
-              //     "author": "Tanya",
-              //     "__v": 0
-              // },
-
-            //   {
-            //     "inwork": false,
-            //     "performed": false,
-            //     "_id": "60f938cea970697af5513d19",
-            //     "name": "testBid",
-            //     "author": "postman",
-            //     "date": "2021-07-22T09:22:22.072Z",
-            //     "priority": "test",
-            //     "__v": 0
-            // }
-
-
-                  //console.log(result);
-//                  return result;
-                  alert(JSON.stringify(result));
-
-
-
-                  //alert("заявка записана!");
-                  setBidRequest("");
-                // обнови состояние!!
-                
-
-
-            },
-            error => {
-                throw new Error(error);
-                //return null;
-      
-});        
-    
-  
 
   }
-
-
       return (
         <Container fluid className="m-0">
           <Row className="justify-content-md-center p-2 m-0">
@@ -132,123 +53,72 @@ function BidRequest() {
                   placeholder="Создайте заявку" 
                   value= {bidRequest}
                   onChange = { (e) => setBidRequest(e.target.value)}
-                  
                   />
-
                 </Form.Group>
-
-              
-                
              
-
-             
-              <Form.Control as="select" size="sm" aria-label="Выберите категорию">
+              <Form.Control as="select" 
+                  size="sm" 
+                  aria-label="Выберите категорию"
+                  value={category}
+                  onChange = { (e) => setCategory(e.target.value)}
+                  id='selectCategory'
+                  >
                   <option>Выберите категорию</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="Инструмент">Инструмент</option>
+                  <option value="Расходники">Расходники</option>
+                  <option value="Запчасти">Запчасти</option>
+                  <option value="Прочее">Прочее</option>
                 </Form.Control>
 
-
-              <Form.Control as="select" size="sm" aria-label="Выберите приоритет">
+              <Form.Control as="select" size="sm" 
+                    aria-label="Выберите приоритет"
+                    onChange={(e) => setPriority(e.target.value)}
+                    value={priority}
+                    id='selectPriority'
+                    >
                   <option>Выберите приоритет</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </Form.Control>
+                  <option value="Срочно">Срочно!</option>
+                  <option value="Планово">Планово</option>
+                  <option value="Желательно">Желательно</option>
 
+              </Form.Control>
                 <Button id='btnCreateBid' type="submit" variant="secondary">Создать</Button>
-
               </Form>
-
-              
-          
-                
           </Row>
           <Row>
-            <BidRequestModule />
+            <BidRequestModule newTask={newTask}/>
           </Row>
         </Container>
       );
     
 };
 
-
-
-
-
-function BidRequestModule() {
+//todo добавить связь при добавлении новой задачи
+function BidRequestModule(props) {
 
   const [listBidRequest, setListBidRequest] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-
-    const options = {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentialls: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      redirect: 'follow',
-    };
-
-    const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest"
-
-    fetch(url, options)
-      .then(res => res.json())
-      .then(result => {
-          
-        // получаем массив объектов вида.
-      //   {
-      //     "inwork": false,
-      //     "performed": false,
-      //     "_id": "605ca13d2464576aa8a530d3",
-      //     "name": "Dmitrii",
-      //     "date": "2021-03-25T14:38:48.872Z",
-      //     "author": "Tanya",
-      //     "__v": 0
-      // },
-      // {
-      //     "inwork": false,
-      //     "performed": false,
-      //     "_id": "605d7108dedd3568384240a2",
-      //     "name": "Tanya, im' love you",
-      //     "date": "2021-03-25T14:38:48.872Z",
-      //     "author": "Tanya",
-      //     "__v": 0
-      // },
-
-          //console.log(result);
-          setListBidRequest(result);
-          setIsLoaded(true);
-    },
-    error => {
-        throw new Error(error);
-         //return null;
-          
-    });        
-
-
-  }, []);
+  
+    getBitRequestList()
+      .then(queryFromDb => {
+        setListBidRequest(queryFromDb);
+        setIsLoaded(true);
+    });
+  }, [props.newTask]);
 
 
   if (!isLoaded) {
     return <div>Нет заявок</div> 
   } else {
 
-        //"inwork": false,
-      //     "performed": false,
-      //     "_id": "605ca13d2464576aa8a530d3",
-      //     "name": "Dmitrii",
-      //     "date": "2021-03-25T14:38:48.872Z",
-      //     "author": "Tanya",
+      
 
     return (
       listBidRequest.map((val) => {
+        //if(!val.author) { val.author = 'test' }
+
         return(
           <Container fluid id='plan-read-module' className="mt-1 p-0">
             <Row className="m-0 p-0">
@@ -258,11 +128,13 @@ function BidRequestModule() {
                   <br></br>
                   Автор: {val.author}
                   </p >
-                  <p>приоритет: {val.priority} </p>
+                  <p>приоритет: {val.priority} 
+                  <br></br>
+                  категория: {val.category}</p>
               </Col>
               <Col>
                 <div item={val._id}>
-                <h6>{val.name}</h6>
+                  <h6>{val.name}</h6>
                 </div>
               </Col>
               <Col sm={2}>
@@ -295,7 +167,7 @@ function BidRequestModule() {
                 </Form.Group>   
                 
                 
-                <p>категория: {val.category}</p>
+                
           
               
             {/* </OverlayTrigger> */}
@@ -310,29 +182,61 @@ function BidRequestModule() {
   }
 
 };
-
 export default BidRequest;
 
 
+function getBitRequestList() {
 
-function createBidRequest(text) {
+  
+
+  return new Promise((resolve, reject) => {
+
+    const accessToken = localStorage.getItem('accessToken');
 
 
-    const user = 'testUser' // откуда его взять из контекста
+    const options = {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentialls: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Authorization':  "Bearer " + accessToken
+      },
+      redirect: 'follow',
+    };
+  
+    const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest"
+  
+    fetch(url, options)
+      .then(res => res.json())
+      .then(result => {
 
+        resolve(result);
+        
+    },
+    error => {
+        throw new Error(error);
+    });        
+
+  })
+
+ 
+
+
+
+}
+
+function createBidRequest(text, priority, category, user) {
+  
     const data = {
       name: text,
       author: user,
       date: new Date(),
-      priority: 'test',
-      category: 'test'
-
+      priority: priority,
+      category: category
     }
-
-
-
-
-
 
     const options = {
       method: 'POST',
@@ -352,42 +256,19 @@ function createBidRequest(text) {
     fetch(url, options)
       .then(res => res.json())
       .then(result => {
-          
-        // получаем массив объектов вида.
-      //   {
-      //     "inwork": false,
-      //     "performed": false,
-      //     "_id": "605ca13d2464576aa8a530d3",
-      //     "name": "Dmitrii",
-      //     "date": "2021-03-25T14:38:48.872Z",
-      //     "author": "Tanya",
-      //     "__v": 0
-      // },
 
-    //   {
-    //     "inwork": false,
-    //     "performed": false,
-    //     "_id": "60f938cea970697af5513d19",
-    //     "name": "testBid",
-    //     "author": "postman",
-    //     "date": "2021-07-22T09:22:22.072Z",
-    //     "priority": "test",
-    //     "__v": 0
-    // }
-   
+        if(result.statusCode !== 400) {
+            alert("заявка записана!");
+            setBidRequest("");
+         } 
+        else {
+          alert(JSON.stringify(result));
+        }
 
-          //console.log(result);
-          return result;
-       
-        
-
-
+ 
+         
     },
     error => {
         throw new Error(error);
-         //return null;
-          
     });        
-
-
 }

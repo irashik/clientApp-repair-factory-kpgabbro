@@ -1,38 +1,22 @@
+/* модуль для загрузки списка записей ремонтов.
 
-
+*/
 import React, { useEffect, useState } from "react";
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import Modal from 'react-bootstrap/Modal';
-import ModalBody from 'react-bootstrap/ModalBody';
-import ModalFooter from 'react-bootstrap/ModalFooter';
-import ModalTitle from 'react-bootstrap/ModalTitle';
-import ModalHeader from 'react-bootstrap/ModalHeader'
-
-
-import Form from 'react-bootstrap/Form';
 import { TiPen } from 'react-icons/ti';
-import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { useDebouncedCallback } from 'use-debounce';
-
 import ru from 'date-fns/locale/ru';
-import {format, getMonth, parse, parseISO} from 'date-fns';
+import {format, getMonth, parse, parseISO, addDays, formatISO, endOfDay, startOfDay} from 'date-fns';
+
 
 registerLocale('ru', ru);
-
-//import SearchList from "./searchList";
 
 import * as log from 'loglevel';
 log.setLevel('debug');
 
-import jQuery from 'jquery';
-import * as _ from 'lodash';
 
 
 
@@ -40,10 +24,11 @@ import * as _ from 'lodash';
 function ReadModuleList(props) {
 
     const [queryFromDb, setQueryFromDb] = useState([]);
+
+
     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/equipment");
     
-    log.info('Readmoudle props= ' + JSON.stringify(props));
-    log.info('readmoduleList= optedData=' + props.optedData);
+    log.info('readmoduleList props == ' + JSON.stringify(props));
 
 
 
@@ -53,36 +38,33 @@ function ReadModuleList(props) {
     }
     if (props.optedData || props.onAddedRepair) {
 
-       // период задать
+       let date1 = startOfDay(props.optedData); // дата со временем 00:00 
+       let date2 = endOfDay(date1);    // прибавляю день
 
-        url.searchParams.set("dateRepair", props.optedData);
+       date1 = formatISO(date1, {});
+       date2 = formatISO(date2, {});
+
+       url.searchParams.set("dateRepairStart", "dateRepairStart");
+       url.searchParams.set("minDate", date1);
+       url.searchParams.set("maxDate", date2);
+
+
+       log.info(date1, date2);
+       
     }
-
-    
-
-
-
-    log.info('url in param' + url);
 
 
     useEffect(() => {
-        fetchListFromDb(url).then(queryFromDb => {
-                setQueryFromDb(queryFromDb);
-        });
 
+
+        
+            fetchListFromDb(url).then(queryFromDb => {
+                    setQueryFromDb(queryFromDb);
+            });
 
 
     }, [props.repair, props.optedData, props.unitEquipment]);
-
-
-    /*
-    для каждого элемента массива queryFromdb
-    нужно отобразить элемент container c определенными полями.
-
-    */
-
-    log.info('array queryfromdb=' + queryFromDb.length);
-
+    
 
     if(!queryFromDb.length) {
         return (
@@ -94,7 +76,7 @@ function ReadModuleList(props) {
         return (
             <React.Fragment>
                 {   queryFromDb.map((i) => {
-                    return <ReadModuleBlock i={i} /> 
+                        return <ReadModuleBlock i={i} /> 
                     })
                 }
             </React.Fragment>
@@ -102,11 +84,17 @@ function ReadModuleList(props) {
     }
 };
 
-
-
-
-
 function ReadModuleBlock(props) {
+
+
+    const onRepairEdit = (e) => {
+        // открыть модальное окно
+        // взять id 
+        // в модальное нужно загрузить данные по id
+
+
+
+    };
 
     const arrayRepair = props.i.repair.map(i => {
         return <li key={i}>{i}</li>
@@ -128,79 +116,7 @@ function ReadModuleBlock(props) {
     });
 
 
-    function ArrayRepairPlan(props) {
-
-        const resultArray = props.repairPlan.map((i, a) => {
-            return (
-                <Row>Плановые работы {a+1}:
-                    <Col sm={4} key={i._id}>
-                        Описание: {i.description}
-                    </Col>
-                        {showDateFinish}
-                </Row>
-            )
-
-
-            function showDateFinish() {
-                if(i.finish) {
-                    return (
-                        <Col>
-                            Дата выполнения: {i.dateFinish};
-                        </Col>
-                    );
-                } else {
-                    return null;
-                };
-            
-            }
-
-
-            
-        });
-
-        return resultArray
-        
-
-        
-    };
-
-
-  
-    function ArrayMaterialPlan(props) {
-
-        const resultArray = props.materialPlan.map((i, a) => {
-            return (
-                <Row>Планируемые материалы {a+1}:
-                    <Col sm={4} key={i._id}>            
-                        Материал:    {i.nameMaterial}
-                    </Col>
-                    <Col sm={4} >
-                        Количество: {i.valueMaterial}
-                    </Col>
-                    {showDateFinish}
-                </Row>
-            )
-
-            function showDateFinish() {
-                if(i.finish) {
-                    return (
-                        <Col>
-                            Дата выполнения: {i.dateFinish};
-                        </Col>
-                    );
-                } else {
-                    return null;
-                };
-            
-            }
-
-            
-        });
-
-        return resultArray;
-
-       
-    };
+   
 
 
 
@@ -234,18 +150,13 @@ function ReadModuleBlock(props) {
 
         </Row>
 
-        <ArrayRepairPlan repairPlan={props.i.repairPlan} />
 
         <Row>
             Использованые материалы, запчасти:
             {arrayMaterial}
-
         </Row>
           
        
-
-        <ArrayMaterialPlan materialPlan={props.i.materialPlan} />
-
 
                
         {/* <Row>
@@ -270,7 +181,8 @@ function ReadModuleBlock(props) {
                         data-placement="top" 
                         title="Редактировать"
                         id='EditRepair'
-                        item=''
+                        item='testidRepair'
+                        onClick={onRepairEdit()}
                         >
                             <TiPen />
                         </Button>
@@ -288,6 +200,7 @@ export default ReadModuleList;
 
 async function fetchListFromDb(url) {
 
+    const tokenstr = "Bearer " + localStorage.getItem('accessToken');
     const options = {
         method: 'GET',
         mode: 'cors',
@@ -296,6 +209,7 @@ async function fetchListFromDb(url) {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
+          'Authorization': tokenstr
         },
         redirect: 'follow',
       };

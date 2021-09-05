@@ -15,12 +15,17 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
+import { useCookies} from 'react-cookie';
+
 
 
 function AuthComponent() {
   
       const [email, setEmail] = useState("");
       const [password, setPassword] = useState("");
+
+      const [cookieAcces, setCookieAcces] = useCookies(['accessToken']);
+      const [cookieRef, setCookieRef] = useCookies(['refreshToken']);
 
       const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,7 +53,6 @@ function AuthComponent() {
         };
 
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/login"
-        console.log('url: ' + url);
 
 
         fetch(url, options)
@@ -70,6 +74,23 @@ function AuthComponent() {
 
             if (result.status === 200) {
 
+              // что делаем дальше?
+              /* записываем токены в локальное хранилище
+                  переадресовываем на главную страницу
+              */
+
+                localStorage.setItem('accessToken', result.accessToken);
+                localStorage.setItem('refreshToken', result.refreshToken);
+                localStorage.setItem('userName', result.userName);
+                localStorage.setItem('userId', result.userId)
+
+                // по рекомендациям лучше хранить в куках!
+                
+                //setCookieAcces('accessToken', result.accessToken, { path: '/'});
+
+                window.location = '/';
+
+                
 
 
 
