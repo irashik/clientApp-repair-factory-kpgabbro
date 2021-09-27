@@ -1,16 +1,20 @@
 /* модуль для загрузки списка записей ремонтов.
 
 */
+
 import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
-import "react-datepicker/dist/react-datepicker.css";
-import ru from 'date-fns/locale/ru';
-import {format, getMonth, parse, parseISO, addDays, formatISO, endOfDay, startOfDay} from 'date-fns';
 
+
+
+import ru from 'date-fns/locale/ru';
+import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
+
+import "react-datepicker/dist/react-datepicker.css";
 
 registerLocale('ru', ru);
 
