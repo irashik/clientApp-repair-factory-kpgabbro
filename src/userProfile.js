@@ -39,6 +39,7 @@ function ProfileUserComponent() {
   const [password2, setPassword2] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [position, setPostion] = useState("");
 
 
   const handleSubmit = (e) => {
@@ -94,28 +95,49 @@ function ProfileUserComponent() {
             <h2>Профиль пользователя</h2>
           </Row>
 
+          
+
           <Row>
             <Form onSubmit={handleSubmit}>
         
 
             <Form.Group controlId="formBasicName">
+                <Form.Label>Ваши Имя и Фамилия</Form.Label>
                 <Form.Control type="text" placeholder="Фамилия и имя" 
                 value={name}
                 onChange = {(e) => setName(e.target.value)} />
             </Form.Group>
 
+            <Form.Group controlId="UserPosition">
+                <Form.Label>Ваша должность</Form.Label>
+                <Form.Control type="text" placeholder="Должность" 
+                value={position}
+                onChange = {(e) => setPosition(e.target.value)} />
+            </Form.Group>
+
+           
+
+
+            <br>
+            </br>
+            <br>
+            </br>
+            <h4>Изменение пароля</h4>
+            
             <Form.Group controlId="formBasicPassword">
-                <Form.Control type="password" placeholder="Password" 
+                <Form.Label>Введите новый пароль</Form.Label>
+                <Form.Control type="password" placeholder="New Password" 
                 value = {password}
                 onChange = {(e) => setPassword(e.target.value)}  />
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword2">
-                <Form.Control type="password" placeholder="Retry password" 
+                <Form.Control type="password" placeholder="Retry new password" 
                 value = {password2}
                 onChange = {(e) => setPassword2(e.target.value)}  />
             </Form.Group>
-            
+            <br>
+            </br>
             <Button variant="primary" type="submit">
                 Сохранить
             </Button>

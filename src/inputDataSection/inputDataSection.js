@@ -39,7 +39,17 @@ import ReadModuleList from '../readModuleList';
 function InputDataSection(props) {
 
     const [repair, setRepair] = useState('');
-    const [optedData, setOptedData] = useState('');
+
+    const year =  new Date().getFullYear();
+    const month = new Date().getMonth()
+    const day = new Date().getDate();
+
+    const [optedData, setOptedData] = useState(new Date(year, month, day));
+
+    
+    
+    
+
     const [addedRepair, setAddedRepair] = useState(false);
 
     const [modalShow, setModalShow] = useState(false);
@@ -51,6 +61,10 @@ function InputDataSection(props) {
     //console.log('localstorage.setitem' + this.state.resultKeyListEquipment);
     //localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
    
+
+
+
+
 
     const onSelectOptedData = (selectedDate) => {
         setOptedData(selectedDate);

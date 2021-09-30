@@ -48,6 +48,7 @@ function BidRequest(props) {
           </Row>
           <Row className="p-0">
               <Form onSubmit={handleSubmit} className="m-0">
+                <Row>
                 <Form.Group>
                   <Form.Control id='createBid' as='textarea' className="m-0" rows={3} 
                   placeholder="Создайте заявку" 
@@ -55,7 +56,9 @@ function BidRequest(props) {
                   onChange = { (e) => setBidRequest(e.target.value)}
                   />
                 </Form.Group>
-             
+              </Row>
+              <Row>
+              <Col sm={4}>
               <Form.Control as="select" 
                   size="sm" 
                   aria-label="Выберите категорию"
@@ -69,7 +72,8 @@ function BidRequest(props) {
                   <option value="Запчасти">Запчасти</option>
                   <option value="Прочее">Прочее</option>
                 </Form.Control>
-
+              </Col>
+              <Col sm={4}>
               <Form.Control as="select" size="sm" 
                     aria-label="Выберите приоритет"
                     onChange={(e) => setPriority(e.target.value)}
@@ -80,9 +84,15 @@ function BidRequest(props) {
                   <option value="Срочно">Срочно!</option>
                   <option value="Планово">Планово</option>
                   <option value="Желательно">Желательно</option>
-
               </Form.Control>
-                <Button id='btnCreateBid' type="submit" variant="secondary">Создать</Button>
+              </Col>
+                <Col sm={4}>
+                  <Button id='btnCreateBid' type="submit" variant="secondary">Создать</Button>                
+                </Col>
+              </Row>
+
+
+
               </Form>
           </Row>
           <Row>
@@ -92,6 +102,8 @@ function BidRequest(props) {
       );
     
 };
+export default BidRequest;
+
 
 //todo добавить связь при добавлении новой задачи
 function BidRequestModule(props) {
@@ -116,11 +128,11 @@ function BidRequestModule(props) {
       
 
     return (
-      listBidRequest.map((val) => {
+      listBidRequest.map((val, i) => {
         //if(!val.author) { val.author = 'test' }
 
         return(
-          <Container fluid id='plan-read-module' className="mt-1 p-0">
+          <Container fluid id='plan-read-module' key={i} className="mt-1 p-0">
             <Row className="m-0 p-0">
               <Col className="" sm={2}>
                 <p className="mb-2" >
@@ -182,18 +194,12 @@ function BidRequestModule(props) {
   }
 
 };
-export default BidRequest;
 
 
+// todo переделай или отдельный модуль может?
 function getBitRequestList() {
-
-  
-
   return new Promise((resolve, reject) => {
-
-    const accessToken = localStorage.getItem('accessToken');
-
-
+    const tokenstr = "Bearer " + localStorage.getItem('accessToken');
     const options = {
       method: 'GET',
       mode: 'cors',
@@ -202,7 +208,7 @@ function getBitRequestList() {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Authorization':  "Bearer " + accessToken
+        'Authorization':  tokenstr
       },
       redirect: 'follow',
     };

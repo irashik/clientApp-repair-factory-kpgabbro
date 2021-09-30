@@ -1,6 +1,4 @@
-/* модуль для загрузки списка записей ремонтов.
-
-*/
+/* модуль для загрузки списка записей ремонтов. */
 
 import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
@@ -14,9 +12,9 @@ import { TiPen } from 'react-icons/ti';
 import ru from 'date-fns/locale/ru';
 import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
 
-import "react-datepicker/dist/react-datepicker.css";
-
-registerLocale('ru', ru);
+//import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
+//import "react-datepicker/dist/react-datepicker.css";
+//registerLocale('ru', ru);
 
 import * as log from 'loglevel';
 log.setLevel('debug');
@@ -59,13 +57,9 @@ function ReadModuleList(props) {
 
 
     useEffect(() => {
-
-
-        
             fetchListFromDb(url).then(queryFromDb => {
                     setQueryFromDb(queryFromDb);
             });
-
 
     }, [props.repair, props.optedData, props.unitEquipment]);
     

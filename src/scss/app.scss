@@ -136,8 +136,6 @@ footer h5 {
 
 p {
   
-
-
 }
 
 #plan-read-module {
@@ -180,6 +178,16 @@ h6 {
   font-style: italic;
   
 
+}
+
+table {
+  font-size: 0.8rem;
+
+
+  #colPlan {
+    min-width: 350px;
+
+  }
 }
 
 @import "../../bower_components/bootstrap/scss/bootstrap";
