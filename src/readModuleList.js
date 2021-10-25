@@ -7,8 +7,6 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
 
-
-
 import ru from 'date-fns/locale/ru';
 import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
 
@@ -18,6 +16,7 @@ import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
 
 import * as log from 'loglevel';
 log.setLevel('debug');
+import { loadFromDb } from './utils/loader';
 
 
 
@@ -27,19 +26,16 @@ function ReadModuleList(props) {
 
     const [queryFromDb, setQueryFromDb] = useState([]);
 
-
-    let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/equipment");
+    let url = new URL (process.env.HTTP_API_HOST + ":" + 
+                        process.env.HTTP_API_PORT + "/equipment");
     
-    log.info('readmoduleList props == ' + JSON.stringify(props));
-
-
 
     if ( _.isEmpty(props.unitEquipment) === false) {
-        
         url.searchParams.set("equipment", props.unitEquipment);
     }
-    if (props.optedData || props.onAddedRepair) {
 
+
+    if (props.optedData || props.onAddedRepair) {
        let date1 = startOfDay(props.optedData); // дата со временем 00:00 
        let date2 = endOfDay(date1);    // прибавляю день
 
@@ -49,19 +45,15 @@ function ReadModuleList(props) {
        url.searchParams.set("dateRepairStart", "dateRepairStart");
        url.searchParams.set("minDate", date1);
        url.searchParams.set("maxDate", date2);
-
-
-       log.info(date1, date2);
-       
     }
 
 
     useEffect(() => {
-            fetchListFromDb(url).then(queryFromDb => {
+            loadFromDb(url).then(queryFromDb => {
                     setQueryFromDb(queryFromDb);
             });
 
-    }, [props.repair, props.optedData, props.unitEquipment]);
+    }, [props.repair, props.optedData, props.unitEquipment, props.onAddedRepair]);
     
 
     if(!queryFromDb.length) {
@@ -74,7 +66,7 @@ function ReadModuleList(props) {
         return (
             <React.Fragment>
                 {   queryFromDb.map((i) => {
-                        return <ReadModuleBlock i={i} /> 
+                        return <ReadModuleBlock i={i} key={i._id}/> 
                     })
                 }
             </React.Fragment>
@@ -84,23 +76,17 @@ function ReadModuleList(props) {
 
 function ReadModuleBlock(props) {
 
-
     const onRepairEdit = (e) => {
         // открыть модальное окно
         // взять id 
         // в модальное нужно загрузить данные по id
-
-
 
     };
 
     const arrayRepair = props.i.repair.map(i => {
         return <li key={i}>{i}</li>
     });
-
-
     const arrayMaterial = props.i.material.map(i => {
-
         return (
             <Row>
                 <Col sm={4} key={i._id}>            
@@ -114,14 +100,10 @@ function ReadModuleBlock(props) {
     });
 
 
-   
-
-
-
-
     return (
-        <Container fluid id='read-module' className="m-2">
-        <Row>
+        <Container fluid id='read-module' className="m-2" key={props.i._id} _id={props.i._id}>
+        
+        <Row key={props.i._id}>
             <Col sm={4} id='Readmoduleblock-equipment'>
                 Оборудование: {props.i.equipment}<br></br>
                 Автор: {props.i.author}<br></br>
@@ -193,25 +175,3 @@ function ReadModuleBlock(props) {
 };
 export default ReadModuleList;
 
-
-
-
-async function fetchListFromDb(url) {
-
-    const tokenstr = "Bearer " + localStorage.getItem('accessToken');
-    const options = {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentialls: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': tokenstr
-        },
-        redirect: 'follow',
-      };
-
-    const res = await fetch(url, options);
-    return res.json();
-};

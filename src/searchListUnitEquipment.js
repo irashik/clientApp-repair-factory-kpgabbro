@@ -1,5 +1,15 @@
+/*
+модуль делающий запрос к базе по еденицам оборудования и осуществляющем поиск.
+
+todo нужно немного доработать поиск. 
+Задача: ввел данные - нашлись релевантные позиции , не исчезают.
+
+*/
+
+
 import React, { useState, useEffect }  from "react";
 import Fuse from 'fuse.js';
+import { loadFromDb } from "./utils/loader";
 
 
 function SearchList(props) {
@@ -10,19 +20,25 @@ function SearchList(props) {
     const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment";
 
     useEffect(() => {
-        fetchListFromDb(url).then(queryFromDb => {
-            const preparedList = makeKeyListEquipment(queryFromDb);
-            setList(preparedList);
+        loadFromDb(url)
+            .then(queryFromDb => {
+                const preparedList = makeKeyListEquipment(queryFromDb);
+                setList(preparedList);
+
+                const filter_result_list = setFuseFilterList(list, props.filter);
+                const adaptation_filter_list = adaptationFilterList(filter_result_list);
+                setFilteredList(adaptation_filter_list);
+
         })
+        .catch(e => {
+            throw new Error('error in server = ' + e);
+        })
+
     }, [props.filter]);
   
     //todo const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
 
-    useEffect(() => {
-        const filter_result_list = setFuseFilterList(list, props.filter);
-        const adaptation_filter_list = adaptationFilterList(filter_result_list);
-        setFilteredList(adaptation_filter_list);
-    }, [props.filter]);
+   
 
 
 
@@ -47,8 +63,8 @@ function SearchList(props) {
         )
     } else {
         const listItems = filteredList.map((item) => {
-            const id = item._id;
-            const joinNameUnit = item.mergedData;
+        const id = item._id;
+        const joinNameUnit = item.mergedData;
 
            return  <a   
                         className="list-group-item list-group-item-action"
@@ -84,15 +100,17 @@ export default SearchList;
 
 
 
-
 function setFuseFilterList(list, searchString) {
 
     const searchOptions = keys => ({
         souldSort: true,
-        threshold: 0.6,
-        distance: 100,
-        maxPatternLength: 32, 
-        minMatchCharLength: 2,
+        threshold: 0.4,
+        maxPatternLength: 20, 
+        minMatchCharLength: 1,
+        isCaseSensitive: false,
+        includeScore: true,
+        findAllMatches: true,
+
         keys: [...keys]
     });
 
@@ -107,33 +125,20 @@ function setFuseFilterList(list, searchString) {
 
 
 
-// хочу чтобы записывал данные в локальное хранилище, чтобы постоянно к базе не обращаться
+// todo хочу чтобы записывал данные в локальное хранилище, чтобы постоянно к базе не обращаться
 // периодичность обновления?
  //             window.localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
     //     const initialState = window.localStorage.getItem('resultKeyListEquipment');
 
-async function fetchListFromDb(url) {
 
-    const options = {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentialls: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        redirect: 'follow',
-      };
 
-    const res = await fetch(url, options);
-    return res.json();
-};
+
+
 
 function makeKeyListEquipment(sourceArray) {
     let newArray = sourceArray.map(currentValue => {
         const id = currentValue._id;
-        const mergedData = currentValue.name.concat(", ", currentValue.position, ", ", currentValue.group);
+        const mergedData = currentValue.position.concat(" ", currentValue.group, " (", currentValue.name, ")");
         const resultObject = { "_id": id, "mergedData": mergedData }
         return resultObject
     });
@@ -151,7 +156,6 @@ function adaptationFilterList(sourceFilteredList) {
             const result_i = { 
                     "_id": id, 
                     "mergedData": md }
-
                     return result_i;
             });
         return result_array;

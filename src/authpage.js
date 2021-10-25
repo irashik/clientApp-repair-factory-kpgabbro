@@ -115,16 +115,12 @@ function AuthComponent() {
 
           },
           error => {
-          // сообщение показать о том что вернул сервер
-          alert('Ошибка сервера:  ' + error);
-          // TypeError: NetworkError when attempting to fetch resource.
-        
+            // сообщение показать о том что вернул сервер
+            alert('Ошибка сервера:  ' + error);
+            // TypeError: NetworkError when attempting to fetch resource.
 
           });
-        
-
       }
-
 
       return (
         <Container fluid>
@@ -153,12 +149,8 @@ function AuthComponent() {
 
            </Row>
         </Container>
-
       );
-
-
 };
-
 export default AuthComponent;
 
 

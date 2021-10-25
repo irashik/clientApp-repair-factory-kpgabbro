@@ -96,6 +96,21 @@ function BidRequest(props) {
               </Form>
           </Row>
           <Row>
+            <Col sm={4}>
+                        <label>Фильтр по статусу заявки</label>
+                          <Form.Control as='select' size="sm" aria-label="Выберите статус задачи">
+                                  <option value="DRAFT">Черновик</option>
+                                  <option value="CANCELED">Отменено</option>
+                                  <option value="FINISHED">Завершено</option>
+                                  <option value="DEFERRED">Отложено</option>
+                                  <option value="INWORK">В работе</option>
+                              </Form.Control>
+                       
+                    </Col>
+            </Row>
+
+
+          <Row>
             <BidRequestModule newTask={newTask}/>
           </Row>
         </Container>

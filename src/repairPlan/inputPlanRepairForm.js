@@ -4,34 +4,19 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import Modal from 'react-bootstrap/Modal';
-import CloseButton from 'react-bootstrap/CloseButton';
-
-
-
 import Form from 'react-bootstrap/Form';
-
-import { TiPen } from 'react-icons/ti';
-import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useDebouncedCallback } from 'use-debounce';
+import * as log from 'loglevel';
 
-import ru from 'date-fns/locale/ru';
-import {format, getMonth} from 'date-fns';
 
-registerLocale('ru', ru);
+
 
 import SearchList from "../searchListUnitEquipment";
+import { unloadInDb } from "../utils/loader";
 
-import * as log from 'loglevel';
 log.setLevel('debug');
-
-import jQuery from 'jquery';
-
-
-
 
 
 function InputPlanRepairForm(props) {
@@ -42,16 +27,15 @@ function InputPlanRepairForm(props) {
 
 
     const [repairCount, setRepairCount] = useState([]);
-    const [materialCount, setMaterialCount] = useState([]);
-
-    // const [dataStart, setDataStart] = useState('');
-    // const [dataEnd, setDataEnd] = useState('');
-
     const [spendingJob, setSpendingJob] = useState(0);
+    const [statusState, setStatusState] = useState('DRAFT');
+    const [priority, setPriority] = useState('');
+    const [comment, setComment] = useState('');
+    const [repair, setRepair] = useState([]);
 
 
-    const delay = 400;
 
+    const delay = 1000;
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
         delay
@@ -61,26 +45,56 @@ function InputPlanRepairForm(props) {
         const { value } = e.target
         setSearchString(value);
         debouncedSetFilter(value);
-        setIdEquipment(null)
+        setIdEquipment(null);
 
     };
 
 
     const handlerSelectEquipment = (id, joinNameUnit, e) => {
-
         setSearchString(joinNameUnit);
         setIdEquipment(id);
-
-        console.log("id=" +  id, "data= " + joinNameUnit);
     };
 
-    const onClickAddedPlan = () => {
-               
-        props.handleAddedPlan(true);
+    function onClickAddedPlan() {
+        const dateCreated = new Date();
+        let data = {
+            dateCreated: dateCreated,
+            //dateFinished:
+            equipment: idEquipment,
+            author: localStorage.getItem('userId'),
+            description: repair,
+            status: statusState,
+            comment: comment,
+            spendingJob: spendingJob,
+            priority: priority
+        }
+       
+        log.debug('data= ' + JSON.stringify(data));
 
-        // собрать данные из полей
-        // записать в базу
-        // очистить поля
+        const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan";
+
+
+        unloadInDb(url, data)
+            .then(result => {
+                             
+                setSearchString('');
+                setIdEquipment('');
+                setSpendingJob('');
+                setStatusState('DRAFT');
+                setPriority('');
+                setComment('');
+                setRepair([]);
+
+                //todo toast message add ?
+                props.onHide();
+                props.handleAddedPlan();
+
+            })
+            .catch(err => {
+
+                alert('catch= ' + JSON.stringify(err));
+                
+            })
 
 
     };
@@ -88,24 +102,10 @@ function InputPlanRepairForm(props) {
 
     function onHandleRepairCount() {
         setRepairCount([...repairCount, 1]);
-        console.log(repairCount);
     }
 
-    function onHandleMaterialCount() {
-        setMaterialCount([...materialCount, 1]);
-        console.log(materialCount);
-    }
-
-
-
-
-
-    const onSelectOptedDataStart = (selectedDate) => {
-        setDataStart(selectedDate);
-    }
-
-    const onSelectOptedDataEnd = (selectedDate) => {
-        setDataEnd(selectedDate);
+    function onRecordRepair(record) {
+        setRepair(record);
     }
 
 
@@ -124,14 +124,9 @@ function InputPlanRepairForm(props) {
                 <Modal.Title id="contained-modal-title-vcenter">
                     Форма ввода данных о плановых работах
                 </Modal.Title>
-
-
             </Modal.Header>
-
-
             <Modal.Body className="show-grid">
                 <Container fluid id='input-module'>
-                   
                     <Row>
                         <Col>
                             <Form.Control 
@@ -146,75 +141,61 @@ function InputPlanRepairForm(props) {
                         </Col>
                     
                         <Col md={6}>
-                            <FormInputRepair count={repairCount} />
+                            <FormInputRepair count={repairCount} onHandleRecordRepair={onRecordRepair}/>
                         </Col>
                         <Col md={2}>
-                            <InputGroupButtonSmall name="repair" onHandleRepairCount={onHandleRepairCount} />
+                            <InputGroupButtonSmall onHandleRepairCount={onHandleRepairCount} />
                         </Col>
                     </Row>
 
-                    <Row>
-                        <Col>
-                            <FormInputMaterial count={materialCount} />
-                        </Col>
-                        <Col md={2}>
-                            <InputGroupButtonSmall name="material" onHandleMaterialCount={onHandleMaterialCount} />
-                        </Col>
-                    </Row>
-
-
+              
                     <Row>
                         <label>Статус задачи</label>
-                        <Form.Control as='select' size="sm" aria-label="Выберите статус задачи">
+                        <Form.Control as='select' size="sm" aria-label="Выберите статус задачи"
+                                    value={statusState}
+                                    onChange={(e) => setStatusState(e.target.value)}>
                                 <option value="DRAFT">Черновик</option>
-                                <option value="CANCELED">Отменено</option>
+                                <option value="CANCELLED">Отменено</option>
                                 <option value="FINISHED">Завершено</option>
                                 <option value="DEFERRED">Отложено</option>
                                 <option value="INWORK">В работе</option>
+                                <option value="ACTIVE">Активная</option>
                             </Form.Control>
-                       
                     </Row>
                     <Row>
                         <Form.Control 
                                     id='inputPriority' size="sm" type="text" 
-                                    placeholder="Приоритетность задачи"/>
-                        </Row>
-                    
-
-
-
-
+                                    placeholder="Приоритетность задачи"
+                                    value={priority}
+                                    onChange={(e) => setPriority(e.target.value)}
+                                    />
+                    </Row>
                     <Row>
                         <Form.Control id='inputComment' size="sm" as="textarea" rows={3} 
-                                        placeholder="Комментарии"/>
+                                        placeholder="Комментарии"
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        />
                     </Row>
-
                     <Row>
+                        <label>Трудозатраты</label>
                         <Form.Control 
                                 id='inputSpendingJob' size="sm" pattern="[0-9]*" 
-                                type="text" 
-                                placeholder="Ориентировочные трудозатраты"
-                                
+                                type="number" 
+                                placeholder="трудозатраты"
                                 onChange={(e)=> setSpendingJob(e.target.value)}
                                 value={spendingJob}
                                 />
                     </Row>
-
-                    
-           
                 </Container>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" 
                             id="AddRepairEquipment"
                             className="m-3 d-grid gap-2" 
-                            onClick={() => onClickAddedPlan}
-
-                            
-                            >
-                    Записать
+                            onClick={() => onClickAddedPlan()}
+                        >Записать
                 </Button>
-
             </Modal.Footer>
         </Modal>        
     )
@@ -225,20 +206,11 @@ export default InputPlanRepairForm;
 
 
 function InputGroupButtonSmall(props) {
-
-    let onAddedRecord = null;
-
-    if(props.name === "repair") {
-        onAddedRecord = () => {
-            props.onHandleRepairCount();
-        }
-    } 
-    
-    if (props.name === "material") {
-       onAddedRecord = () => {
-            props.onHandleMaterialCount();
-        }
+       
+    function  onAddedRecord() {
+        props.onHandleRepairCount();
     }
+       
 
     return (
         <Button variant="outline-dark" 
@@ -255,52 +227,34 @@ function InputGroupButtonSmall(props) {
 
 
 function FormInputRepair(props) {
+
     const [count, setCount] = useState([]);
+    const [repair, setRepair] = useState([]);
+
+    function handleRecordRepair(e, i) {
+        let cloneRepair = [...repair];
+        cloneRepair[i] = e;
+        setRepair(cloneRepair);
+        props.onHandleRecordRepair(repair);
+    }
 
     useEffect(() => {
         setCount([...count, 1])
         }, [props.count])
 
-
-        function result(i) {
-            return(
-                <Form.Control id='inputRepairDescription' 
-                 as='textarea' 
-                key = {i}
-                size="sm" rows={4} 
-                placeholder="Что требуется сделать?"  />
-    )
-        }
+    function result(i) {
+        return(
+            <Form.Control id='inputRepairDescription' 
+            as='textarea' 
+            key = {i}
+            size="sm" rows={4} 
+            placeholder="Что требуется сделать?"
+            value={repair[i]}
+            onChange={(e) => handleRecordRepair(e.target.value, i)}
+            />
+        )
+    }
 
     let arrayList = count.map((a, i) => result(i))
-        
-    
-
     return arrayList;
 };
-
-function FormInputMaterial(props) {
-    const [count, setCount] = useState(props.count);
-
-    useEffect(() => {
-        setCount([...count, 1]);
-    }, [props.count])
-    
-    let arrayList = count.map((a, i) => {
-        return (
-            <Row id='rowInputMaterial' key={i}>
-                <Col>
-                    <Form.Control id='inputMaterialName'  key={'name.'+i} size="sm" type="text" placeholder="Введите планируемый материал"  />
-                </Col>
-                <Col md={3}>
-                    <Form.Control id='inputMaterialValue' key={'value.'+i} size="sm" type="text"  placeholder="Введите его количество"  />
-                </Col>
-                <Col md={3}>
-                    <Form.Control id='inputMaterialDesc' key={'desc.'+i} size="sm" type="text"  placeholder="Примечание"  />
-                </Col>
-            </Row>
-        )
-    })
-    return arrayList;
-};
-

@@ -1,3 +1,4 @@
+// страница ввода данных о ремонте.
 
 import React, { useEffect, useState } from "react";
 
@@ -5,53 +6,24 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import Modal from 'react-bootstrap/Modal';
-import ModalBody from 'react-bootstrap/ModalBody';
-import ModalFooter from 'react-bootstrap/ModalFooter';
-import ModalTitle from 'react-bootstrap/ModalTitle';
-import ModalHeader from 'react-bootstrap/ModalHeader'
-
-
-import Form from 'react-bootstrap/Form';
-import { TiPen } from 'react-icons/ti';
 import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { useDebouncedCallback } from 'use-debounce';
-
 import ru from 'date-fns/locale/ru';
-import {format, getMonth} from 'date-fns';
-
 registerLocale('ru', ru);
-
-import SearchList from "../searchListUnitEquipment";
-
 import * as log from 'loglevel';
 log.setLevel('debug');
-
-import jQuery from 'jquery';
 
 import InputRepairForm from "./inputRepairForm";
 import ReadModuleList from '../readModuleList';
 
 
 function InputDataSection(props) {
-
-    const [repair, setRepair] = useState('');
-
     const year =  new Date().getFullYear();
     const month = new Date().getMonth()
     const day = new Date().getDate();
 
     const [optedData, setOptedData] = useState(new Date(year, month, day));
-
-    
-    
-    
-
-    const [addedRepair, setAddedRepair] = useState(false);
-
+    const [addedRepair, setAddedRepair] = useState([]);
     const [modalShow, setModalShow] = useState(false);
 
     
@@ -64,24 +36,15 @@ function InputDataSection(props) {
 
 
 
-
-
-    const onSelectOptedData = (selectedDate) => {
+    function onSelectOptedData(selectedDate) {
         setOptedData(selectedDate);
-    }
-
-    const handleAddedRepair = (e) => {
-        setAddedRepair(e);
     };
 
+    function onHandleAddedRepair() {
+        setAddedRepair([...addedRepair, 1]);
+ 
+    };
 
-    useEffect(() => {
-        setAddedRepair(false);
-        //setOptedData(optedData);
-        
-    }, [optedData]);
-
-    log.info('optedData=' + optedData);
 
 
 
@@ -96,35 +59,26 @@ function InputDataSection(props) {
                 </Col>
                 <Col>
                     <Button variant="primary" 
-                        
                         id="AddRepairEquipment"
                         className="m-3" 
                         onClick={() => setModalShow(true)}
                         
-                        >
-                        Добавить работы</Button>
+                        >Добавить работы
+                    </Button>
                 </Col>
             </Row>
-            
 
             <InputRepairForm    show={modalShow} 
                                 onHide={() => setModalShow(false)}
-                                //handleAddedRepair={handleAddedRepair}
-
+                                handleAddedRepair={onHandleAddedRepair}
                                 
                                 />
-                          
-           
             
             <ReadModuleList optedData={optedData} onAddedRepair={addedRepair}/>
-            
-            
-
         </Container>
     )
 };
 export default InputDataSection;
-
 
 
 function DatePickerDiv(props) {
@@ -141,19 +95,15 @@ function DatePickerDiv(props) {
     const [valueDate, setValueDate] = useState(new Date(year, month, day));
   
 
-
     const handlerOptedData = (e) => {
         setValueDate(e);    
-        props.onSelectOptedData(e);
+        props.onSelectOptedData(valueDate);
     };
 
-    useEffect(() => {
-        props.onSelectOptedData(valueDate);
-    }, []);
+    
 
 
     return (
-        
             <DatePicker 
                 className="m-3"
                 locale="ru" 
@@ -162,7 +112,6 @@ function DatePickerDiv(props) {
                 dateFormat="dd MMMM yyyy"
                 startDate={valueDate}
                 id='StartDateValue' />
-        
     );
 };
 

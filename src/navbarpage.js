@@ -32,7 +32,7 @@ function NavbarPage() {
               <Nav.Link href="/repairPlan">План ремонтов</Nav.Link>
             </LinkContainer>
             <LinkContainer to='/bidRequest'>
-              <Nav.Link >Заявки и предложения</Nav.Link>
+              <Nav.Link >Заявки снабжение</Nav.Link>
             </LinkContainer>
             
             <AuthButton />

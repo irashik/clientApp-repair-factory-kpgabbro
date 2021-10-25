@@ -31,7 +31,6 @@ import ProfileUserComponent from './userProfile';
 
 
 function App() {
-
   const [user, setUser] = useState('testuser');
 
 
