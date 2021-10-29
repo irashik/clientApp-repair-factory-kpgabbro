@@ -20,19 +20,28 @@ function SearchList(props) {
     const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment";
 
     useEffect(() => {
-        loadFromDb(url)
-            .then(queryFromDb => {
-                const preparedList = makeKeyListEquipment(queryFromDb);
-                setList(preparedList);
+        if(props.filter) {
+            loadFromDb(url)
+                .then(queryFromDb => {
+                    const preparedList = makeKeyListEquipment(queryFromDb);
+                    setList(preparedList);
 
-                const filter_result_list = setFuseFilterList(list, props.filter);
-                const adaptation_filter_list = adaptationFilterList(filter_result_list);
-                setFilteredList(adaptation_filter_list);
+                    const filter_result_list = setFuseFilterList(list, props.filter);
+                    const adaptation_filter_list = adaptationFilterList(filter_result_list);
+                    setFilteredList(adaptation_filter_list);
 
-        })
-        .catch(e => {
-            throw new Error('error in server = ' + e);
-        })
+            })
+            .catch(e => {
+                throw new Error('error in server = ' + e);
+            })
+        }
+
+        // return function cleanup() {
+        //     // setList([]);
+        //     // setFilteredList([]);
+        //     //setTimer(true);
+
+        // }
 
     }, [props.filter]);
   
@@ -69,7 +78,6 @@ function SearchList(props) {
            return  <a   
                         className="list-group-item list-group-item-action"
                         key={id}
-                        id_unit={id}
                         id="filteredListUnitEquipment"
                         onClick={props.onSelectEquipment.bind(null, id, joinNameUnit)}
                         >
@@ -78,6 +86,9 @@ function SearchList(props) {
         });
 
                       
+
+
+        
 
         function ResultList(props) {
             if(props.timer) {

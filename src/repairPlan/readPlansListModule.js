@@ -2,52 +2,57 @@
     модуль для загрузки списка записей о плановых работах! 
 */
 
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
 import Table from 'react-bootstrap/Table'
 import {format, parseISO } from 'date-fns';
 import * as log from 'loglevel';
 import { loadFromDb } from "../utils/loader";
+import InputPlanRepairForm from './inputPlanRepairForm';
 
 
 log.setLevel('debug');
 
 
-
-
-
 function ReadPlansListModule(props) {
     const [queryFromDb, setQueryFromDb] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
+    const [updatedPlan, setUpdatedPlan] = useState([]);
+    const [idRecord, setIdRecord] = useState('');
 
-    let error = null;
+
 
     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan");
 
-
     if (props.onSelectEquipment) {
         url.searchParams.set("equipment", props.onSelectEquipment);
-        log.debug(props.onSelectEquipment);
-
     }
 
     if (props.onSelectStatus) {
         url.searchParams.set("status", props.onSelectStatus);
-        log.debug(props.onSelectStatus);
     }
 
+    function onChangeRecord(e) {
+        setIdRecord(e);
+    }
+
+    function onHandleAddedPlan() {
+        setUpdatedPlan([...updatedPlan, 1]);
+    };
 
 
     useEffect(() => {
+        
             loadFromDb(url)
             .then(queryFromDb => {
                     setQueryFromDb(queryFromDb);
             })
             .catch(e => {
-                error = e;
+                return new Error(e);
             })
 
-    }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment]);
+    }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment, updatedPlan]);
     
 
     if(!queryFromDb.length) {
@@ -56,14 +61,22 @@ function ReadPlansListModule(props) {
                 <h2>Нет записей</h2>
             </div>
         )
-    } else if (error) {
-        return (
-            <div>
-                <h2>{error}</h2>
-            </div>
-        )
     } else {
         return (
+            
+            <React.Fragment>
+
+            
+
+            
+            <InputPlanRepairForm    show={modalShow}
+                                    onHide={() => setModalShow(false)}
+                                    onLoadRecord={idRecord}
+                                    resetIdRecord={() => setIdRecord('')}
+                                    handleAddedPlan={onHandleAddedPlan}
+
+            />
+
             <Table id='tablePlansRepair' responsive='mg' bordered hover>
                 <thead>
                     <tr>
@@ -82,11 +95,15 @@ function ReadPlansListModule(props) {
                 <tbody>
                     {queryFromDb.map((i) => {
                         return (
-                            <ReadModuleBlock key={i._id} i={i} /> 
+                            <ReadModuleBlock key={i._id} i={i}  
+                                onOpenRecord={() => onChangeRecord(i._id)}
+                                onModalShow={() => setModalShow(true)}
+                            /> 
                         )
                     })}
                 </tbody>
             </Table>
+            </React.Fragment>
         )
     }
 };
@@ -97,17 +114,19 @@ export default ReadPlansListModule;
 function ReadModuleBlock(props) {
     const idRecord = props.i._id;
     
-    const onRepairEdit = (e) => {
+    function onRepairEdit() {
         
         // взять id 
-        
 
-        console.log(idRecord);
         // открыть модальное окно
+        props.onModalShow();
 
-        
 
         // в модальное нужно загрузить данные по id
+        // передать через onLoadRecord id записи для загрузки инофрмации.
+
+        props.onOpenRecord();
+
 
 
     };
@@ -122,7 +141,7 @@ function ReadModuleBlock(props) {
     function DateFinishView(props) {
             if(props.dateFinished) {
                 return (
-                    <td>   { format(parseISO(props.dateFinished), 'dd-MM-yyyy') }</td>
+                    <td>   { format(parseISO(props.dateFinished), 'dd-MM-yyyy HH:mm') }</td>
                 )
             } else {
                 return ( <td></td>)
@@ -156,11 +175,11 @@ function ReadModuleBlock(props) {
             <td>{props.i.comment}    </td>
             <td>{props.i.priority}</td>         
             <td>{props.i.author}</td>
-            <td>{props.i.spendingJob}</td>
+           
            
 
             <DateFinishView dateFinished={props.i.dateFinished} />
-
+            <td>{props.i.spendingJob}</td>
            
 
 

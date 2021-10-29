@@ -7,6 +7,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row';
 import { NavLink } from 'react-router-dom';
 import * as log from 'loglevel';
+
+
 log.setLevel('debug');
 
 
@@ -32,7 +34,7 @@ function NavbarPage() {
               <Nav.Link href="/repairPlan">План ремонтов</Nav.Link>
             </LinkContainer>
             <LinkContainer to='/bidRequest'>
-              <Nav.Link >Заявки снабжение</Nav.Link>
+              <Nav.Link href='/bidRequest'>Заявки снабжение</Nav.Link>
             </LinkContainer>
             
             <AuthButton />

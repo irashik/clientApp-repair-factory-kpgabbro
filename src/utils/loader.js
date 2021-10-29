@@ -106,10 +106,13 @@ function loadFromDb(url) {
   return new Promise((resolve, reject) => {
     const accesstoken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
+
     if (!accesstoken) {
-        const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/login";
-      //window.location = url;
+      const url = process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT + "/auth";
+
+      window.location = url;
       reject(new Error('Not found accessToken'));
+      //todo нужно как-то пробросить ошибку и показать в сообщении.
     }
   
     const loaderLoad = new Loader(url, "GET", null, accesstoken, refreshToken);
@@ -129,9 +132,9 @@ function loadFromDb(url) {
         .then(result => {
             resolve(result);
         })
-        // .catch(err => {
-        //   reject(new Error(err));
-        // });
+        .catch(err => {
+          reject(new Error(err));
+        });
       });
 };
 export { loadFromDb };
@@ -148,7 +151,7 @@ function unloadInDb(url, data) {
 
     if (!accesstoken) {
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/login"
-      //window.location = url;
+      window.location = url;
       reject(new Error('Not found accessToken'));
     }
 
@@ -159,8 +162,11 @@ function unloadInDb(url, data) {
     responseDb
       .then(res => {
         if (res.status === 401) { //Unauthorized
-          
+
+          console.log(res.status);
+
           throw new Error('UNAUTHORIZED');
+
 
 
           // здесь нужно выполнить один цикл по обновлению токена.
@@ -171,6 +177,9 @@ function unloadInDb(url, data) {
         } else if (res.status === 201 || 200) {
           return res.json()
         } else {
+
+          console.log('error server = ' + JSON.stringify(res.message));
+
           reject (new Error(res));
         }
       })
@@ -178,6 +187,9 @@ function unloadInDb(url, data) {
         resolve(result);
       })
       .catch(err => {
+
+        console.log('error server = ' + JSON.stringify(err));
+
         reject(new Error(err));
       });
   });
@@ -195,3 +207,60 @@ export { unloadInDb };
     // делаем изначальный запрос еще раз.
 
 
+
+
+
+function unloadInDbPatсh(url, data) {
+  return new Promise((resolve, reject) => {
+
+    const accesstoken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!accesstoken) {
+        const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/login"
+      window.location = url;
+      reject(new Error('Not found accessToken'));
+    }
+
+    const loaderUnload = new Loader(url, "PATCH", data, accesstoken, refreshToken);
+    
+    const responseDb = fetch(loaderUnload.url, loaderUnload.options);
+
+    responseDb
+      .then(res => {
+        log.debug('res.status =', res.status);
+
+        if (res.status === 401 || 400 || 500) { //Unauthorized
+          
+          
+          console.log('error server = ' + JSON.stringify(res.message));
+
+          throw new Error('UNAUTHORIZED');
+          
+
+
+          // здесь нужно выполнить один цикл по обновлению токена.
+
+
+
+
+        } else if (res.status ===  200 || 204 || 201) {
+          return res.json()
+        } else {
+          reject (new Error(res));
+        }
+      })
+      .then(result => {
+        log.info('loadPath resolve true');
+        
+        resolve(result);
+
+      })
+      .catch(err => {
+        log.info('loadPatch reject catc + ',  err);
+        
+        reject(new Error(err));
+      });
+  });
+};
+export { unloadInDbPatсh };

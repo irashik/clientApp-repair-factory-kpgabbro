@@ -50,9 +50,10 @@ function RepairPlan(props) {
     
   };
 
-  function onHandleAddedPlan(e) {
+  function onHandleAddedPlan() {
     setAddedPlan([...addedPlan, 1]);
   };
+  
 
 
   useEffect(() => {
@@ -82,7 +83,7 @@ function RepairPlan(props) {
                         onChange={(e) => setStatusState(e.target.value)}
                         
           >
-                            <option selected value=''> -- select an option -- </option>
+                            <option value=''> -- select an option -- </option>
                             <option value="DRAFT">Черновик</option>
                             <option value="CANCELLED">Отменено</option>
                             <option value="FINISHED">Завершено</option>
@@ -98,7 +99,7 @@ function RepairPlan(props) {
                     placeholder="Выберите оборудование"
                     value={searchString}
                     onChange={onChangeSearch}
-                    idunit={idEquipment} >
+                    title={idEquipment} >
           </Form.Control>
           <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
           <br></br>

@@ -22,7 +22,7 @@ import HomeComponent from './home.js';
 import InputDataSection from './inputDataSection/inputDataSection.js';
 import ReportEquipment from './reportEquipment.js';
 import RepairPlan from './repairPlan/repairPlan.js';
-import BidRequest from './bidRequest.js';
+import BidRequest from './bidRequest/bidRequest.js';
 import AuthComponent from './authpage.js';
 import RegisterComponent from './authRegister.js';
 import ProfileUserComponent from './userProfile';
