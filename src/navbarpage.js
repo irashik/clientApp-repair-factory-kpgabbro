@@ -4,8 +4,6 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Row from 'react-bootstrap/Row';
-import { NavLink } from 'react-router-dom';
 import * as log from 'loglevel';
 
 
@@ -24,16 +22,16 @@ function NavbarPage() {
 
       <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <LinkContainer to='/inputData'>
+            <LinkContainer id='inputData' to='/inputData'>
               <Nav.Link href="/inputData">Ввод данных</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='reportEquipment'>
+            <LinkContainer id='reportEquipment' to='reportEquipment'>
               <Nav.Link href="/reportEquipment">Отчет по оборудованию</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='/repairPlan'>
+            <LinkContainer id='repairPlan' to='/repairPlan'>
               <Nav.Link href="/repairPlan">План ремонтов</Nav.Link>
             </LinkContainer>
-            <LinkContainer to='/bidRequest'>
+            <LinkContainer id='bidRequest' to='/bidRequest'>
               <Nav.Link href='/bidRequest'>Заявки снабжение</Nav.Link>
             </LinkContainer>
             
@@ -103,10 +101,10 @@ function AuthButton() {
     return (
       <ButtonGroup className='col-5' aria-label='Basic example'>
         <LinkContainer to='/register'>
-          <Button href='/register' variant="outline-secondary align-items-end btn-sm mr-2" id="AddEquipment">Register</Button>
+          <Button href='/register' variant="outline-secondary align-items-end btn-sm mr-2" id="registerButton">Register</Button>
         </LinkContainer>
         <LinkContainer to='/auth'>
-          <Button href='/auth' variant="outline-secondary btn-sm mr-2" id="AddEquipment">Sign in</Button>
+          <Button href='/auth' variant="outline-secondary btn-sm mr-2" id="loginButton">Sign in</Button>
         </LinkContainer>
       </ButtonGroup>
     )

@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
+<Modal
+  animation={false}
+  aria-labelledby="contained-modal-title-vcenter"
+  autoFocus={true}
+  backdrop="static"
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  dialogClassName="modal-fullscreen"
+  enforceFocus={true}
+  key=""
+  keyboard={true}
+  restoreFocus={true}
+  show={false}
+>
+  <ModalHeader
+    closeButton={true}
+    closeLabel="Close"
+  >
+    <ModalTitle
+      id="contained-modal-title-vcenter"
+    >
+      Форма ввода данных о плановых работах
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody
+    className="show-grid"
+  >
+    <Container
+      fluid={true}
+      id="input-module"
+    >
+      <Row
+        noGutters={false}
+      >
+        <Col>
+          <FormControl
+            id="inputEquipment"
+            onChange={[Function]}
+            placeholder="Выберите оборудование"
+            size="sm"
+            title=""
+            type="text"
+            value=""
+          />
+          <SearchList
+            filter=""
+            onSelectEquipment={[Function]}
+          />
+          <br />
+        </Col>
+        <Col
+          md={6}
+        >
+          <FormInputRepair
+            count={Array []}
+            onHandleRecordRepair={[Function]}
+            onLoadRepair={Array []}
+          />
+        </Col>
+        <Col
+          md={2}
+        >
+          <InputGroupButtonSmall
+            onHandleRepairCount={[Function]}
+          />
+        </Col>
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <label>
+          Статус задачи
+        </label>
+        <FormControl
+          aria-label="Выберите статус задачи"
+          as="select"
+          onChange={[Function]}
+          size="sm"
+          value="DRAFT"
+        >
+          <option
+            value="DRAFT"
+          >
+            Черновик
+          </option>
+          <option
+            value="CANCELLED"
+          >
+            Отменено
+          </option>
+          <option
+            value="FINISHED"
+          >
+            Завершено
+          </option>
+          <option
+            value="DEFERRED"
+          >
+            Отложено
+          </option>
+          <option
+            value="INWORK"
+          >
+            В работе
+          </option>
+          <option
+            value="ACTIVE"
+          >
+            Активная
+          </option>
+        </FormControl>
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <FormControl
+          id="inputPriority"
+          onChange={[Function]}
+          placeholder="Приоритетность задачи"
+          size="sm"
+          type="text"
+          value=""
+        />
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <FormControl
+          as="textarea"
+          id="inputComment"
+          onChange={[Function]}
+          placeholder="Комментарии"
+          rows={3}
+          size="sm"
+          value=""
+        />
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <label>
+          Трудозатраты
+        </label>
+        <FormControl
+          id="inputSpendingJob"
+          onChange={[Function]}
+          pattern="[0-9]*"
+          placeholder="трудозатраты"
+          size="sm"
+          type="number"
+          value={0}
+        />
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <DateCreatedView
+          dateCreated=""
+        />
+        <DateFinishedView
+          dateFinished=""
+        />
+        <AuthorView
+          author=""
+        />
+      </Row>
+    </Container>
+  </ModalBody>
+  <ModalFooter>
+    <BtnView
+      onLoadRecord=""
+    />
+  </ModalFooter>
+</Modal>
+`;

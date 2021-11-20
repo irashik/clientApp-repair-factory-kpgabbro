@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MatchSnapShot components CategorySelectField snapShot 1`] = `
+<FormControl
+  aria-label="Выберите категорию"
+  as="select"
+  defaultValue=""
+  id="selectCategory"
+  onChange={[Function]}
+  placeholder="Выберите категорию"
+  size="sm"
+>
+  <option
+    value=""
+  >
+    Выберите категорию
+  </option>
+  <option
+    value="Инструмент"
+  >
+    Инструмент
+  </option>
+  <option
+    value="Расходники"
+  >
+    Расходники
+  </option>
+  <option
+    value="Запчасти"
+  >
+    Запчасти
+  </option>
+  <option
+    value="Прочее"
+  >
+    Прочее
+  </option>
+</FormControl>
+`;
+
+exports[`MatchSnapShot components PrioritySelectField snapShot 1`] = `
+<FormControl
+  aria-label="Выберите приоритет"
+  as="select"
+  id="selectPriority"
+  onChange={[Function]}
+  size="sm"
+>
+  <option
+    value=""
+  >
+    Выберите приоритет
+  </option>
+  <option
+    value="Срочно"
+  >
+    Срочно!
+  </option>
+  <option
+    value="Планово"
+  >
+    Планово
+  </option>
+  <option
+    value="Желательно"
+  >
+    Желательно
+  </option>
+</FormControl>
+`;
+
+exports[`MatchSnapShot components StatusSelectField snapShot 1`] = `
+<FormControl
+  aria-label="Выберите статус заявки"
+  as="select"
+  onChange={[Function]}
+  size="sm"
+>
+  <option
+    value=""
+  >
+    Выберите статус
+  </option>
+  <option
+    value="DRAFT"
+  >
+    Черновик
+  </option>
+  <option
+    value="CANCELLED"
+  >
+    Отменено
+  </option>
+  <option
+    value="FINISHED"
+  >
+    Завершено
+  </option>
+  <option
+    value="DEFERRED"
+  >
+    Отложено
+  </option>
+  <option
+    value="INWORK"
+  >
+    В работе
+  </option>
+  <option
+    value="ACTIVE"
+  >
+    Активная
+  </option>
+</FormControl>
+`;

@@ -63,46 +63,42 @@ function ReadPlansListModule(props) {
         )
     } else {
         return (
-            
             <React.Fragment>
+        
+                <InputPlanRepairForm    show={modalShow}
+                                        onHide={() => setModalShow(false)}
+                                        onLoadRecord={idRecord}
+                                        resetIdRecord={() => setIdRecord('')}
+                                        handleAddedPlan={onHandleAddedPlan}
 
-            
+                />
 
-            
-            <InputPlanRepairForm    show={modalShow}
-                                    onHide={() => setModalShow(false)}
-                                    onLoadRecord={idRecord}
-                                    resetIdRecord={() => setIdRecord('')}
-                                    handleAddedPlan={onHandleAddedPlan}
-
-            />
-
-            <Table id='tablePlansRepair' responsive='mg' bordered hover>
-                <thead>
-                    <tr>
-                        <th scope='col'>#</th>
-                        <th id='colPlan'>Плановые работы</th>
-                        <th>Оборудование</th>
-                        <th>Статус</th>
-                        <th>Дата создания</th>
-                        <th>Примечание</th>
-                        <th>Приоритет</th>
-                        <th>Автор</th>
-                        <th>Дата изменения статуса</th>
-                        <th>Трудозатраты</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {queryFromDb.map((i) => {
-                        return (
-                            <ReadModuleBlock key={i._id} i={i}  
-                                onOpenRecord={() => onChangeRecord(i._id)}
-                                onModalShow={() => setModalShow(true)}
-                            /> 
-                        )
-                    })}
-                </tbody>
-            </Table>
+                <Table id='tablePlansRepair' responsive='mg' bordered hover>
+                    <thead>
+                        <tr>
+                            <th scope='col'>#</th>
+                            <th id='colPlan'>Плановые работы</th>
+                            <th>Оборудование</th>
+                            <th>Статус</th>
+                            <th>Дата создания</th>
+                            <th>Примечание</th>
+                            <th>Приоритет</th>
+                            <th>Автор</th>
+                            <th>Дата изменения статуса</th>
+                            <th>Трудозатраты</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {queryFromDb.map((i) => {
+                            return (
+                                <ReadModuleBlock key={i._id} i={i}  
+                                    onOpenRecord={() => onChangeRecord(i._id)}
+                                    onModalShow={() => setModalShow(true)}
+                                /> 
+                            )
+                        })}
+                    </tbody>
+                </Table>
             </React.Fragment>
         )
     }
@@ -115,20 +111,8 @@ function ReadModuleBlock(props) {
     const idRecord = props.i._id;
     
     function onRepairEdit() {
-        
-        // взять id 
-
-        // открыть модальное окно
         props.onModalShow();
-
-
-        // в модальное нужно загрузить данные по id
-        // передать через onLoadRecord id записи для загрузки инофрмации.
-
         props.onOpenRecord();
-
-
-
     };
 
     const arrayPlanRepair = props.i.description.map((a, i) => {
@@ -136,7 +120,6 @@ function ReadModuleBlock(props) {
             <li key={i}>{a} </li> 
         )
     });
-
 
     function DateFinishView(props) {
             if(props.dateFinished) {
@@ -147,19 +130,14 @@ function ReadModuleBlock(props) {
                 return ( <td></td>)
             }
     };
-
-    
-    
-   
+     
     return (
         <tr key={idRecord}>
             <td>
-                <Button variant="outline-dark" 
-                        data-toggle="tooltip" 
-                        data-placement="top" 
-                        title="Редактировать"
+                <Button variant="outline-dark" data-toggle="tooltip" 
+                        data-placement="top" title="Редактировать"
                         id='EditPlanRepair'
-                        onClick={() => onRepairEdit()}
+                        onClick={onRepairEdit}
                         >
                             <TiPen />
                         </Button>
@@ -175,19 +153,12 @@ function ReadModuleBlock(props) {
             <td>{props.i.comment}    </td>
             <td>{props.i.priority}</td>         
             <td>{props.i.author}</td>
-           
-           
 
             <DateFinishView dateFinished={props.i.dateFinished} />
             <td>{props.i.spendingJob}</td>
-           
-
 
         </tr>
     )
 };
-
-
-
 
 

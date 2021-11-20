@@ -47,12 +47,11 @@ function InputRepairForm(props) {
     let [material, setMaterial] = useState([]);
     let [value, setValue] = useState([]);
 
+    
 
-
-    const delay = 500;
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
-        delay
+        process.env.DEBOUNCEDDELAY
     );
 
     const onChangeSearch = (e) => {
@@ -62,14 +61,13 @@ function InputRepairForm(props) {
         setIdEquipment(null)
     };
     
-    const handlerSelectEquipment = (id, joinNameUnit, e) => {
+    function handlerSelectEquipment(id, joinNameUnit) {
         setSearchString(joinNameUnit);
         setIdEquipment(id);
     };
 
+
     function onClickAddedRepair() {
-
-
         // собрать данные из полей
 
         let materialJoin = material.map((i, a) => {
@@ -134,9 +132,13 @@ function InputRepairForm(props) {
         setValue(record);
     };
 
+    const { handleAddedRepair, ...modal} = props;
+
       
+
+
     return   (    
-        <Modal {...props} 
+        <Modal {...modal} 
             backdrop="static"
             dialogClassName='modal-fullscreen'
             aria-labelledby="contained-modal-title-vcenter"

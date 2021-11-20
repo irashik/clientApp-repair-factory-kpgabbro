@@ -14,8 +14,8 @@ import { BrowserRouter as Router,
 import './scss/app.scss';
 
 import NavbarPage from './navbarpage.js';
-import { HeaderComponent } from './header.js';
-import { FooterComponent } from './footer.js';
+import HeaderComponent from './header.js';
+import FooterComponent from './footer.js';
 
 
 import HomeComponent from './home.js';
@@ -41,7 +41,6 @@ function App() {
       <HeaderComponent />
       
       <NavbarPage />
-
 
       <Switch>
         <Route path="/inputData">

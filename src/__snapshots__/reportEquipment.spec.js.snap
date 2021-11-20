@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ReportEquipment/> should render correctly empty list 1`] = `
+<Container
+  fluid={true}
+>
+  <Row
+    className="justify-content-md-center"
+    noGutters={false}
+  >
+    <h2>
+      Отчет по оборудованию
+    </h2>
+  </Row>
+  <Row
+    className="justify-content-start"
+    noGutters={false}
+  >
+    <Col>
+      <FormControl
+        id="reportInputEquipment"
+        idunit=""
+        onChange={[Function]}
+        placeholder="Выберите оборудование"
+        size="sm"
+        type="text"
+        value=""
+      />
+      <SearchList
+        filter=""
+        onSelectEquipment={[Function]}
+      />
+    </Col>
+  </Row>
+  <Row
+    noGutters={false}
+  >
+    <ShowReadModuleList
+      idEquipment=""
+    />
+  </Row>
+</Container>
+`;

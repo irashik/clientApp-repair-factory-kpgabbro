@@ -1,11 +1,13 @@
 /* модуль для загрузки списка записей ремонтов. */
 
 import React, { useEffect, useState } from "react";
-import Container from 'react-bootstrap/Container';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
+import Table from 'react-bootstrap/Table'
+
 
 import ru from 'date-fns/locale/ru';
 import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
@@ -17,6 +19,8 @@ import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
 import * as log from 'loglevel';
 log.setLevel('debug');
 import { loadFromDb } from './utils/loader';
+import * as _ from 'lodash';
+import InputRepairForm from "./inputDataSection/inputRepairForm";
 
 
 
@@ -25,6 +29,11 @@ import { loadFromDb } from './utils/loader';
 function ReadModuleList(props) {
 
     const [queryFromDb, setQueryFromDb] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
+    const [idRecord, setIdRecord] = useState('');
+    const [addedRepair, setAddedRepair] = useState([]);
+
+
 
     let url = new URL (process.env.HTTP_API_HOST + ":" + 
                         process.env.HTTP_API_PORT + "/equipment");
@@ -53,8 +62,19 @@ function ReadModuleList(props) {
                     setQueryFromDb(queryFromDb);
             });
 
-    }, [props.repair, props.optedData, props.unitEquipment, props.onAddedRepair]);
+    }, [props.repair, props.optedData, props.unitEquipment, props.onAddedRepair, addedRepair]);
     
+
+    function onChangeRecord(e) {
+        setIdRecord(e);
+    }
+
+    function onHandleAddedRepair() {
+        setAddedRepair([...addedRepair, 1]);
+    };
+
+
+
 
     if(!queryFromDb.length) {
         return (
@@ -65,113 +85,99 @@ function ReadModuleList(props) {
     } else {
         return (
             <React.Fragment>
-                {   queryFromDb.map((i) => {
-                        return <ReadModuleBlock i={i} key={i._id}/> 
-                    })
-                }
+
+                <InputRepairForm    show={modalShow}
+                                    onHide={()  => setModalShow(false)}
+                                    onLoadRecord={idRecord}
+                                    resetIdRecord={() => setIdRecord('')}
+                                    handleAddedRepair={onHandleAddedRepair}
+                                    />
+
+                <Table id='tableRepair' responsive='mg' bordered hover>
+                    <thead>
+                        <tr>
+                            <th scope='col'>#</th>
+                            <th>Дата начала</th>
+                            <th>Дата окончания</th>
+                            <th>Оборудование</th>
+                            <th>Выполненные работы</th>
+                            <th>Материалы, запчасти</th>
+                            <th>Автор</th>
+                            <th>Трудозатраты</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {queryFromDb.map((i) => {
+                            return (
+                                <ReadModuleBlock i={i} key={i._id}
+                                    onOpenRecord={() => onChangeRecord(i._id)}
+                                    onModalShow={() => setModalShow(true)}
+                                /> 
+                        )
+                        })}
+                    </tbody>
+                </Table>
             </React.Fragment>
         )
     }
 };
+export default ReadModuleList;
+
 
 function ReadModuleBlock(props) {
 
-    const onRepairEdit = (e) => {
-        // открыть модальное окно
-        // взять id 
-        // в модальное нужно загрузить данные по id
+    const idRecord = props.i._id;
 
+    function onRepairEdit() {
+        props.onModalShow();
+        props.onOpenRecord();
     };
 
     const arrayRepair = props.i.repair.map(i => {
         return <li key={i}>{i}</li>
     });
+
     const arrayMaterial = props.i.material.map(i => {
         return (
-            <Row>
-                <Col sm={4} key={i._id}>            
-                    {i.nameMaterial}
-                </Col>
-                <Col sm={4} >
-                    {i.valueMaterial}
-                </Col>
-            </Row>
+            <li>
+                {i.name}; Кол-во: {i.value};
+                
+            </li>
         );
     });
 
 
     return (
-        <Container fluid id='read-module' className="m-2" key={props.i._id} _id={props.i._id}>
-        
-        <Row key={props.i._id}>
-            <Col sm={4} id='Readmoduleblock-equipment'>
-                Оборудование: {props.i.equipment}<br></br>
-                Автор: {props.i.author}<br></br>
-                
-                        
-
-            </Col>
-            <Col id='readmoduleblock-repair'>
-                Выполненные работы:
+        <tr key={idRecord}>
+            <td>
+                <Button variant="outline-dark" data-toggle="tooltip" 
+                                data-placement="top" title="Редактировать"
+                                id='editRepair'
+                                onClick={onRepairEdit}>
+                                    <TiPen />
+                </Button>
+            </td>
+            <td>{ format(parseISO(props.i.dateRepairStart), 'dd-MM-yyyy, hh-mm') }</td>
+            <td>{ format(parseISO(props.i.dateRepairEnd), 'dd-MM-yyyy, hh-mm') }</td>
+            <td>{props.i.equipment}</td>
+            <td>
                 <ul>
                     {arrayRepair}
                 </ul>
-             
-            </Col>
-            
-            <Col>
-                    Дата начала: { format(parseISO(props.i.dateRepairStart), 'dd-MM-yyyy, hh-mm') }
-                    Дата окончания: { format(parseISO(props.i.dateRepairEnd), 'dd-MM-yyyy, hh-mm') }
-            </Col>
-            
-            {/* <Col sm={2}>
-               <InputGroup.Checkbox aria-label="Если планирование" disabled/>
-            </Col> */}
-
-        </Row>
-
-
-        <Row>
-            Использованые материалы, запчасти:
-            {arrayMaterial}
-        </Row>
-          
-       
-
-               
-        {/* <Row>
-     
-         
-
-
-
-            <Col sm={2}>
-                <InputGroup.Checkbox aria-label="" disabled/>
-            </Col>
-        </Row> */}
+            </td>
+            <td>
+                <ul>
+                    {arrayMaterial}
+                </ul>
+            </td>
+            <td>{props.i.author}</td>
+            <td>{props.i.spendingJob}</td>
+        </tr>
 
 
 
 
-
-        <Row>
-            <Col>
-                <Button variant="outline-dark" 
-                        data-toggle="tooltip" 
-                        data-placement="top" 
-                        title="Редактировать"
-                        id='EditRepair'
-                        item='testidRepair'
-                        onClick={onRepairEdit()}
-                        >
-                            <TiPen />
-                        </Button>
-            </Col>
-        </Row>
-        
-
-        </Container>
     )
 };
-export default ReadModuleList;
+
 

@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InputDataSection /> snapShot correctly 1`] = `
+<Container
+  fluid={true}
+>
+  <Row
+    className="justify-content-md-center"
+    noGutters={false}
+  >
+    <Col>
+      <h2
+        className="m-3"
+      >
+        Что сделано?
+      </h2>
+    </Col>
+    <Col>
+      <DatePickerDiv
+        onSelectOptedData={[Function]}
+      />
+    </Col>
+    <Col>
+      <Button
+        active={false}
+        className="m-3"
+        disabled={false}
+        id="AddRepairEquipment"
+        onClick={[Function]}
+        variant="primary"
+      >
+        Добавить работы
+      </Button>
+    </Col>
+  </Row>
+  <InputRepairForm
+    handleAddedRepair={[Function]}
+    onHide={[Function]}
+    show={false}
+  />
+  <ReadModuleList
+    onAddedRepair={Array []}
+    optedData={2021-11-18T21:00:00.000Z}
+  />
+</Container>
+`;

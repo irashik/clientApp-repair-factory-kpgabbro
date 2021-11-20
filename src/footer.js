@@ -1,10 +1,10 @@
 import React from "react";
 
 
-export class FooterComponent extends React.Component {
+function FooterComponent() {
 
 
-    render() {
+    
       return (
         <footer>
             <h5>Разработчик: Ирашин Дмитрий</h5>
@@ -14,11 +14,10 @@ export class FooterComponent extends React.Component {
         </footer>
       )
   
-    }
+    
     
 
 
-}
+};
+export default FooterComponent;
 
-
-//export default HeaderComponent;

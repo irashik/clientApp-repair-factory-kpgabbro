@@ -28,23 +28,29 @@ function ReportEquipment() {
     const [idEquipment, setIdEquipment] = useState('');
 
 
-    const delay = 1000;
+    
+
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
-        delay
+        process.env.DEBOUNCEDDELAY
     );
-    const onChangeSearch = (e) => {
-        const { value } = e.target
+
+
+
+    function onChangeSearch(e) {
+        const { value } = e.target;
         setSearchString(value);
         debouncedSetFilter(value);
-        setIdEquipment(null)
+        setIdEquipment(null);
     };
 
 
-    const handlerSelectEquipment = (id, joinNameUnit, e) => {
+    function handlerSelectEquipment(id, joinNameUnit) {
         setSearchString(joinNameUnit);
         setIdEquipment(id);
+
     };
+
 
     
 

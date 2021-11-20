@@ -3,6 +3,8 @@
 import { Loader, testFunc, unloadInDb, customFetch } from "./loader";
 import React from 'react';
 import { shallow, render } from 'enzyme';
+
+
 import renderer from 'react-test-renderer';
 import * as log from 'loglevel';
 log.setLevel('debug');
@@ -13,7 +15,7 @@ window.localStorage = localStorage;
 
 
 
-describe("testing loader.js", () => {
+describe.skip("testing loader.js", () => {
 
     beforeEach(() => {
         localStorage.clear();

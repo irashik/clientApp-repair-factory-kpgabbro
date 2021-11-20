@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
+<Container
+  fluid={true}
+>
+  <Row
+    className="justify-content-md-center"
+    noGutters={false}
+  >
+    <h2>
+      Профиль пользователя
+    </h2>
+  </Row>
+  <Row
+    noGutters={false}
+  >
+    <Form
+      inline={false}
+      onSubmit={[Function]}
+    >
+      <FormGroup
+        controlId="formBasicName"
+      >
+        <FormLabel
+          column={false}
+          srOnly={false}
+        >
+          Ваши Имя и Фамилия
+        </FormLabel>
+        <FormControl
+          onChange={[Function]}
+          placeholder="Фамилия и имя"
+          type="text"
+          value=""
+        />
+      </FormGroup>
+      <FormGroup
+        controlId="UserPosition"
+      >
+        <FormLabel
+          column={false}
+          srOnly={false}
+        >
+          Ваша должность
+        </FormLabel>
+        <FormControl
+          onChange={[Function]}
+          placeholder="Должность"
+          type="text"
+          value=""
+        />
+      </FormGroup>
+      <br />
+      <br />
+      <h4>
+        Изменение пароля
+      </h4>
+      <FormGroup
+        controlId="formBasicPassword"
+      >
+        <FormLabel
+          column={false}
+          srOnly={false}
+        >
+          Введите новый пароль
+        </FormLabel>
+        <FormControl
+          onChange={[Function]}
+          placeholder="New Password"
+          type="password"
+          value=""
+        />
+      </FormGroup>
+      <FormGroup
+        controlId="formBasicPassword2"
+      >
+        <FormControl
+          onChange={[Function]}
+          placeholder="Retry new password"
+          type="password"
+          value=""
+        />
+      </FormGroup>
+      <br />
+      <Button
+        active={false}
+        disabled={false}
+        type="submit"
+        variant="primary"
+      >
+        Сохранить
+      </Button>
+    </Form>
+  </Row>
+</Container>
+`;

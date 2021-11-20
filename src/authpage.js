@@ -14,7 +14,9 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
+
+//import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
+
 import { useCookies} from 'react-cookie';
 
 
@@ -142,7 +144,7 @@ function AuthComponent() {
                     onChange = {(e) =>setPassword(e.target.value)} />
               </Form.Group>
           
-              <Button variant="primary" type="submit" >
+              <Button variant="primary" type="submit" id='signIn' >
                   Вход
               </Button>
             </Form>

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InputRepairFrom /> snapShot correctly 1`] = `
+<Modal
+  animation={false}
+  aria-labelledby="contained-modal-title-vcenter"
+  autoFocus={true}
+  backdrop="static"
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  dialogClassName="modal-fullscreen"
+  enforceFocus={true}
+  keyboard={true}
+  restoreFocus={true}
+  show={false}
+>
+  <ModalHeader
+    closeButton={false}
+    closeLabel="Close"
+  >
+    <ModalTitle
+      id="contained-modal-title-vcenter"
+    >
+      Форма ввода данных о работах
+    </ModalTitle>
+    <button
+      aria-label="Close"
+      className="btn-close"
+      type="button"
+    />
+  </ModalHeader>
+  <ModalBody
+    className="show-grid"
+  >
+    <Container
+      fluid={true}
+      id="input-module"
+    >
+      <Row
+        noGutters={false}
+      >
+        <Col>
+          <label>
+            Время начало ремонта
+            <DatePickerDiv
+              onSelectOptedData={[Function]}
+            />
+          </label>
+        </Col>
+        <Col>
+          <label>
+            Время окончания ремонта
+            <DatePickerDiv
+              onSelectOptedData={[Function]}
+            />
+          </label>
+        </Col>
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <Col>
+          <FormControl
+            id="inputEquipment"
+            idunit=""
+            onChange={[Function]}
+            placeholder="Выберите оборудование"
+            size="sm"
+            type="text"
+            value=""
+          />
+          <SearchList
+            filter=""
+            onSelectEquipment={[Function]}
+          />
+        </Col>
+        <Col
+          md={6}
+        >
+          <FormInputRepair
+            count={Array []}
+            onHandleRepair={[Function]}
+          />
+        </Col>
+        <Col
+          md={2}
+        >
+          <InputGroupButtonSmall
+            name="equipment"
+            onHandleRepairCount={[Function]}
+          />
+        </Col>
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <Col>
+          <FormInputMaterial
+            count={Array []}
+            onHandleMaterial={[Function]}
+            onHandleMaterialVal={[Function]}
+          />
+        </Col>
+        <Col
+          md={2}
+        >
+          <InputGroupButtonSmall
+            name="material"
+            onHandleMaterialCount={[Function]}
+          />
+        </Col>
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <FormControl
+          id="inputSpendingJob"
+          onChange={[Function]}
+          placeholder="Трудозатраты"
+          size="sm"
+          type="text"
+          value=""
+        />
+      </Row>
+    </Container>
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      className="m-3 d-grid gap-2"
+      disabled={false}
+      id="AddRepairEquipment"
+      onClick={[Function]}
+      variant="primary"
+    >
+      Записать
+    </Button>
+  </ModalFooter>
+</Modal>
+`;

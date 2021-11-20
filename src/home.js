@@ -1,14 +1,13 @@
-
 import React from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 
-class HomeComponent extends React.Component {
+function HomeComponent() {
 
   
 
-    render() {
+    
       return (
         <Container fluid >
           <Row>
@@ -19,9 +18,8 @@ class HomeComponent extends React.Component {
           </Row>
         </Container>
       );
-    };
+    
 };
-
-
-
 export default HomeComponent;
+
+

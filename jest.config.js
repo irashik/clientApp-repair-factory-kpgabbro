@@ -5,7 +5,8 @@ module.exports = {
         "testPathIgnorePatterns": [
           "./bower_components/",
           "./node_modules/",
-          "./build/"
+          "./build/",
+          "./cypress"
 
         ],
         "verbose": true,
@@ -14,7 +15,6 @@ module.exports = {
        
         
         "setupFilesAfterEnv": [
-  
           "./node_modules/jest-enzyme/lib/index.js",
           "./test/setup.js"
         ],

@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BidRequest /> snapShot correctly 1`] = `
+<Container
+  className="m-0"
+  fluid={true}
+>
+  <InputBidRequestForm
+    handleAddedRecord={[Function]}
+    onHide={[Function]}
+    show={false}
+  />
+  <Row
+    noGutters={false}
+  >
+    <Col
+      sm={4}
+    >
+      <label>
+        Фильтр по статусу заявки
+      </label>
+      <StatusSelectField
+        handleStatus={[Function]}
+        statusBid=""
+      />
+    </Col>
+    <Col>
+      <label>
+        Фильтр по категории
+      </label>
+      <CategorySelectField
+        category=""
+        handleCategory={[Function]}
+      />
+    </Col>
+    <Col
+      sm={4}
+    >
+      <label>
+        Фильтр по приоритету
+      </label>
+      <PrioritySelectField
+        handlePriority={[Function]}
+        priority=""
+      />
+    </Col>
+    <Col>
+      <Button
+        active={false}
+        disabled={false}
+        id="AddedBidRequest"
+        onClick={[Function]}
+        variant="primary"
+      >
+        Добавить заявку
+      </Button>
+    </Col>
+  </Row>
+  <Row
+    noGutters={false}
+  >
+    <ReadListBidRequest
+      addedRecord={Array []}
+      category=""
+      priority=""
+      statusBid=""
+    />
+  </Row>
+</Container>
+`;
+
+exports[`<ReadListBidRequest /> snapShot correctly 1`] = `
+<div>
+  Нет заявок
+</div>
+`;

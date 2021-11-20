@@ -17,7 +17,9 @@ import InputRepairForm from "./inputRepairForm";
 import ReadModuleList from '../readModuleList';
 
 
+
 function InputDataSection(props) {
+
     const year =  new Date().getFullYear();
     const month = new Date().getMonth()
     const day = new Date().getDate();
@@ -38,6 +40,7 @@ function InputDataSection(props) {
 
     function onSelectOptedData(selectedDate) {
         setOptedData(selectedDate);
+        log.info(selectedDate);
     };
 
     function onHandleAddedRepair() {
@@ -52,7 +55,7 @@ function InputDataSection(props) {
         <Container fluid >
             <Row className="justify-content-md-center">
                 <Col>
-                    <h2 className="m-3">Что сделано?</h2>
+                    <h2 className="m-3">Что сегодня сделано?</h2>
                 </Col>
                 <Col>
                     <DatePickerDiv onSelectOptedData={onSelectOptedData} />
@@ -95,12 +98,10 @@ function DatePickerDiv(props) {
     const [valueDate, setValueDate] = useState(new Date(year, month, day));
   
 
-    const handlerOptedData = (e) => {
+    function handlerOptedData(e) {
         setValueDate(e);    
-        props.onSelectOptedData(valueDate);
+        props.onSelectOptedData(e);
     };
-
-    
 
 
     return (

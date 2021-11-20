@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReadPlanListModule snapShot correctly 1`] = `
+<Container
+  fluid={true}
+>
+  <Row
+    className="justify-content-md-center"
+    noGutters={false}
+  >
+    <Col>
+      <h2>
+        План ремонтов
+      </h2>
+    </Col>
+    <Col />
+    <Col
+      xs={2}
+    >
+      <Button
+        active={false}
+        className=""
+        disabled={false}
+        id="AddPlanRepair"
+        onClick={[Function]}
+        variant="primary"
+      >
+        Добавить задачу
+      </Button>
+    </Col>
+  </Row>
+  <Row
+    noGutters={false}
+  >
+    <Col
+      id="bidRequestFilter"
+      sm={4}
+    >
+      <label>
+        Фильтр по статусу задачи
+      </label>
+      <FormControl
+        aria-label="Выберите статус задачи"
+        as="select"
+        onChange={[Function]}
+        size="sm"
+        value=""
+      >
+        <option
+          value=""
+        >
+           -- select an option -- 
+        </option>
+        <option
+          value="DRAFT"
+        >
+          Черновик
+        </option>
+        <option
+          value="CANCELLED"
+        >
+          Отменено
+        </option>
+        <option
+          value="FINISHED"
+        >
+          Завершено
+        </option>
+        <option
+          value="DEFERRED"
+        >
+          Отложено
+        </option>
+        <option
+          value="INWORK"
+        >
+          В работе
+        </option>
+        <option
+          value="ACTIVE"
+        >
+          Активная
+        </option>
+      </FormControl>
+    </Col>
+    <Col
+      sm={4}
+    >
+      <label>
+        Фильтр по оборудованию
+      </label>
+      <FormControl
+        id="inputEquipment"
+        onChange={[Function]}
+        placeholder="Выберите оборудование"
+        size="sm"
+        title=""
+        type="text"
+        value=""
+      />
+      <SearchList
+        filter=""
+        onSelectEquipment={[Function]}
+      />
+      <br />
+    </Col>
+  </Row>
+  <InputPlanRepairForm
+    handleAddedPlan={[Function]}
+    onHide={[Function]}
+    show={false}
+  />
+  <ReadPlansListModule
+    onAddedPlan={Array []}
+    onSelectEquipment=""
+    onSelectStatus=""
+  />
+</Container>
+`;

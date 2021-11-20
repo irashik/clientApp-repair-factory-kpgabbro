@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FooterComponent /> should render correctly 1`] = `
+<footer>
+  <h5>
+    Разработчик: Ирашин Дмитрий
+  </h5>
+  <h5>
+    Licensed 
+  </h5>
+  <h5>
+    Инструкция
+  </h5>
+  <h5>
+    О предприятии
+  </h5>
+</footer>
+`;

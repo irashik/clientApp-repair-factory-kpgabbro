@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InputBidRequestForm /> snapShot correctly 1`] = `
+<Modal
+  animation={false}
+  aria-labelledby="contained-modal-title-vcenter"
+  autoFocus={true}
+  backdrop="static"
+  dialogAs={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    }
+  }
+  dialogClassName="modal-fullscreen"
+  enforceFocus={true}
+  key=""
+  keyboard={true}
+  restoreFocus={true}
+  show={false}
+>
+  <ModalHeader
+    closeButton={false}
+    closeLabel="Close"
+  >
+    <ModalTitle
+      id="contained-modal-title-vcenter"
+    >
+      Форма ввода заявки
+    </ModalTitle>
+    <button
+      aria-label="Close"
+      className="btn-close"
+      type="button"
+    />
+  </ModalHeader>
+  <ModalBody
+    className="show-grid"
+  >
+    <Container
+      fluid={true}
+      id="input-module"
+    >
+      <Row
+        noGutters={false}
+      >
+        <FormControl
+          as="textarea"
+          className="m-0"
+          id="createBid"
+          onChange={[Function]}
+          placeholder="Опишите заявку (Что нужно, сколько)"
+          rows={3}
+          value=""
+        />
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <label>
+          Текущий статус заявки
+        </label>
+        <StatusSelectField
+          handleStatus={[Function]}
+          statusBid="DRAFT"
+        />
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <Col
+          sm={4}
+        >
+          <CategorySelectField
+            category=""
+            handleCategory={[Function]}
+          />
+        </Col>
+        <Col
+          sm={4}
+        >
+          <PrioritySelectField
+            handlePriority={[Function]}
+            priority=""
+          />
+        </Col>
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <FormControl
+          as="textarea"
+          id="inputComment"
+          onChange={[Function]}
+          placeholder="Примечание"
+          rows={3}
+          size="sm"
+          value=""
+        />
+      </Row>
+      <Row
+        noGutters={false}
+      >
+        <DateCreatedView
+          dateCreated=""
+        />
+        <DateStatusBidView
+          dateStatusBid=""
+        />
+        <AuthorView
+          author=""
+        />
+        <LastAuthorView
+          lastAuthor=""
+        />
+      </Row>
+    </Container>
+  </ModalBody>
+  <ModalFooter>
+    <BtnView
+      onLoadRecord=""
+    />
+  </ModalFooter>
+</Modal>
+`;

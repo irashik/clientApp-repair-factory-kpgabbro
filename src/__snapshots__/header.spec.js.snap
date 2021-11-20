@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HeaderComponent /> should render correctly 1`] = `
+<header>
+  <Container
+    fluid={true}
+  >
+    <h1>
+      Журнал ремонтов
+    </h1>
+    <h3>
+      АО "КП-Габбро", Карьер Новый Поселок
+    </h3>
+  </Container>
+</header>
+`;

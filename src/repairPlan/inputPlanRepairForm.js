@@ -11,17 +11,15 @@ import { useDebouncedCallback } from 'use-debounce';
 import * as log from 'loglevel';
 import {format, parseISO } from 'date-fns';
 
-
-
-
-
 import SearchList from "../searchListUnitEquipment";
 import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
 
 log.setLevel('debug');
 
 
+
 function InputPlanRepairForm(props) {
+
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
@@ -38,11 +36,10 @@ function InputPlanRepairForm(props) {
     const [author, setAuthor] = useState('');
     const [sourceRepair, setSourceRepair] = useState([]);
 
-
-    const delay = 1000;
+    
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
-        delay
+        process.env.DEBOUNCEDDELAY
     );
 
     const onChangeSearch = (e) => {
@@ -53,13 +50,12 @@ function InputPlanRepairForm(props) {
 
     };
 
-    const handlerSelectEquipment = (id, joinNameUnit, e) => {
+    function handlerSelectEquipment(id, joinNameUnit) {
         setSearchString(joinNameUnit);
         setIdEquipment(id);
     };
 
     function onClickAddedPlan() {
-        
         const dateCreated = new Date();
         let data = {
             dateCreated: dateCreated,

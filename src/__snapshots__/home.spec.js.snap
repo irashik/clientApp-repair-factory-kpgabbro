@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HomeComponent /> should render correctly 1`] = `
+<Container
+  fluid={true}
+>
+  <Row
+    noGutters={false}
+  >
+    <h2>
+      Это вэб приложения для ведения журнала ремонта оборудования.
+    </h2>
+    <p>
+      Что-нибудь еще....
+    </p>
+  </Row>
+</Container>
+`;

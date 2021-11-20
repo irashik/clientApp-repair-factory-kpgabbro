@@ -5,16 +5,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
-export class HeaderComponent extends React.Component {
+function HeaderComponent() {
 
 
-    render() {
+    
       return (
         <header>
           <Container fluid>
             <h1>Журнал ремонтов</h1>
             <h3>АО "КП-Габбро", Карьер Новый Поселок</h3>
           </Container>
+
+          
 {/* 
         <Container fluid>
           <Row className="justify-content-md-center">
@@ -29,14 +31,14 @@ export class HeaderComponent extends React.Component {
             </Col>
           </Row>
         </Container> */}
+
+
         </header>
       )
   
-    }
+    
     
 
 
-}
-
-
-//export default HeaderComponent;
+};
+export default HeaderComponent;
