@@ -40,13 +40,11 @@ function InputDataSection(props) {
 
     function onSelectOptedData(selectedDate) {
         setOptedData(selectedDate);
-        log.info(selectedDate);
     };
 
     function onHandleAddedRepair() {
         setAddedRepair([...addedRepair, 1]);
- 
-    };
+     };
 
 
 
@@ -86,11 +84,6 @@ export default InputDataSection;
 
 function DatePickerDiv(props) {
 
-    // todo довать возможность выбора времени (интервалы полчаса)
-    // доваить выбор начал и окончания ремонта
-
-    //Locale with time
-
     const year =  new Date().getFullYear();
     const month = new Date().getMonth()
     const day = new Date().getDate();
@@ -103,7 +96,6 @@ function DatePickerDiv(props) {
         props.onSelectOptedData(e);
     };
 
-
     return (
             <DatePicker 
                 className="m-3"
@@ -111,7 +103,7 @@ function DatePickerDiv(props) {
                 selected={valueDate}
                 onChange={(date) => handlerOptedData(date)}
                 dateFormat="dd MMMM yyyy"
-                startDate={valueDate}
+                //startDate={valueDate}
                 id='StartDateValue' />
     );
 };

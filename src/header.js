@@ -12,7 +12,6 @@ function HeaderComponent() {
       return (
         <header>
           <Container fluid>
-            <h1>Журнал ремонтов</h1>
             <h3>АО "КП-Габбро", Карьер Новый Поселок</h3>
           </Container>
 

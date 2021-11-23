@@ -1,18 +1,15 @@
-// страница "Отчет по оборудованию" 
-// вводится в поле оборудование наименование оборудование по ввводу происходит запрос к апи 
-// и загружаются записи по ремонтам конкретного оборудования.
-
+/* страница "Отчет по оборудованию" 
+* вводится в поле оборудование наименование оборудование по ввводу происходит запрос к апи 
+* и загружаются записи по ремонтам конкретного оборудования.
+*/
 
 import React, { useState, useEffect } from "react";
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-
 import SearchList from "./searchListUnitEquipment";
-
 import { useDebouncedCallback } from 'use-debounce';
 import ReadModuleList from "./readModuleList";
 

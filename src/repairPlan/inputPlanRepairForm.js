@@ -23,7 +23,6 @@ function InputPlanRepairForm(props) {
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
-
     const [repairCount, setRepairCount] = useState([]);
     const [spendingJob, setSpendingJob] = useState(0);
     const [statusState, setStatusState] = useState('DRAFT');
@@ -41,20 +40,16 @@ function InputPlanRepairForm(props) {
         filter => setFilter(filter),
         process.env.DEBOUNCEDDELAY
     );
-
-    const onChangeSearch = (e) => {
-        const { value } = e.target
-        setSearchString(value);
-        debouncedSetFilter(value);
+    function onChangeSearch(e) {
+        const a = e.target.value.toString();
+        setSearchString(a);
+        debouncedSetFilter(a);
         setIdEquipment(null);
-
     };
-
     function handlerSelectEquipment(id, joinNameUnit) {
         setSearchString(joinNameUnit);
         setIdEquipment(id);
     };
-
     function onClickAddedPlan() {
         const dateCreated = new Date();
         let data = {
@@ -89,7 +84,6 @@ function InputPlanRepairForm(props) {
                 alert('catch= ' + JSON.stringify(err));
             })
     };
-
     function onClickUpdatePlan() {
 
         const dateFinished = new Date();
@@ -135,11 +129,9 @@ function InputPlanRepairForm(props) {
                 throw new Error('какая-то ошибка', err);
             })
     };
-
     function onHandleRepairCount() {
         setRepairCount([...repairCount, 1]);
     }
-
     function onRecordRepair(record) {
         setRepair(record);
     }
@@ -166,8 +158,6 @@ function InputPlanRepairForm(props) {
                     setDateFinished(result.dateFinished);
                     setPriority(result.priority);
                     setAuthor(result.author);
-                    
-    
     
                     // idEquipment есть нужна строка.
                     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
@@ -186,8 +176,7 @@ function InputPlanRepairForm(props) {
                     log.debug('error =' + e);
                 })
         }
-    
-        return function cleanup() {
+            return function cleanup() {
             props.resetIdRecord(); // сбросить id после выполнения.
 
             setIdRecord('');
@@ -208,7 +197,6 @@ function InputPlanRepairForm(props) {
             setSourceRepair([]);
 
         }
-
     }, [props.onLoadRecord]);
     
     
@@ -270,10 +258,12 @@ function InputPlanRepairForm(props) {
             animation={false}
             key={idRecord}
         >
-            <Modal.Header closeButton >
+            <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
                     Форма ввода данных о плановых работах
                 </Modal.Title>
+                <button type="button" className="btn-close" aria-label="Close"
+                        onClick={props.onHide}></button>
                 
             </Modal.Header>
             <Modal.Body className="show-grid">
@@ -291,7 +281,8 @@ function InputPlanRepairForm(props) {
                             <br></br>
                         </Col>
                         <Col md={6}>
-                            <FormInputRepair count={repairCount} onHandleRecordRepair={onRecordRepair} onLoadRepair={sourceRepair}/>
+                            <FormInputRepair    count={repairCount} onHandleRecordRepair={onRecordRepair} 
+                                                onLoadRepair={sourceRepair}/>
                         </Col>
                         <Col md={2}>
                             <InputGroupButtonSmall onHandleRepairCount={onHandleRepairCount} />
@@ -344,9 +335,7 @@ function InputPlanRepairForm(props) {
                 </Container>
             </Modal.Body>
             <Modal.Footer>
-                <BtnView onLoadRecord={author} />
-
-
+                <BtnView onLoadRecord={idRecord} />
             </Modal.Footer>
         </Modal>        
     )
@@ -416,7 +405,7 @@ function FormInputRepair(props) {
 
     function Result(i) {
         return(
-            <Form.Control id='inputRepairDescription' 
+            <Form.Control id='inputPlanDescription' 
             as='textarea' 
             key = {i}
             size="sm" rows={4} 

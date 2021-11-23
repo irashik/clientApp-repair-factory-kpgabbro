@@ -131,27 +131,16 @@ export default ReadListBidRequest;
 function ReadModuleBlock(props) {
 
 
-
     function onBidRequestEdit() {
-
-        log.debug('button click', props.i._id);
-        
         props.onModalShow();
         props.onOpenRecord();
-
-
-
     }
 
-    let {onOpenRecord, onModalShow, ...customProps} = props;
+    let { onOpenRecord, onModalShow, ...customProps } = props;
+    
     customProps = customProps.i;
 
-
     
-
-
-
-
     function DateStatusBidView(customProps) {
         if(customProps.dateStatusBid) {
             return (
@@ -161,7 +150,6 @@ function ReadModuleBlock(props) {
             return (<td></td>)
         }
     };
-
     function DateCreatedView(customProps) {
         if(customProps.dateCreated) {
             return (
@@ -189,19 +177,13 @@ function ReadModuleBlock(props) {
             <td>{customProps.statusBid}</td>
             <DateStatusBidView dateStatusBid={customProps.dateStatusBid} />
             <td>{customProps.lastAuthor}</td>
-
             <td>{customProps.category}</td>
             <td>{customProps.priority}</td>    
-
-          
+         
             <DateCreatedView dateCreated={customProps.dateCreated} />
-           
+
             <td>{customProps.author}</td>
             <td>{customProps.comment}</td>
-           
         </tr>
-
     )
-
-
 };

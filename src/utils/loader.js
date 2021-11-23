@@ -66,7 +66,7 @@ class Loader {
 
   }
 };
-export { Loader };
+
 
   
 
@@ -210,7 +210,7 @@ export { unloadInDb };
 
 
 
-function unloadInDbPatсh(url, data) {
+function unloadInDbPatch(url, data) {
   return new Promise((resolve, reject) => {
 
     const accesstoken = localStorage.getItem('accessToken');
@@ -230,19 +230,13 @@ function unloadInDbPatсh(url, data) {
       .then(res => {
         log.debug('res.status =', res.status);
 
-        if (res.status === 401 || 400 || 500) { //Unauthorized
-          
-          
-          console.log('error server = ' + JSON.stringify(res.message));
+        if (res.status == 401 || 400 || 500) { //Unauthorized
 
+          log.debug('message error server = ' + JSON.stringify(res.message));
+          log.debug('res.status==' + res.status);
+          
           throw new Error('UNAUTHORIZED');
-          
-
-
           // здесь нужно выполнить один цикл по обновлению токена.
-
-
-
 
         } else if (res.status ===  200 || 204 || 201) {
           return res.json()
@@ -252,15 +246,16 @@ function unloadInDbPatсh(url, data) {
       })
       .then(result => {
         log.info('loadPath resolve true');
-        
         resolve(result);
 
       })
+      
       .catch(err => {
-        log.info('loadPatch reject catc + ',  err);
+        log.info('loadPatch reject catch + ',  err);
         
         reject(new Error(err));
       });
   });
 };
-export { unloadInDbPatсh };
+export { unloadInDbPatch };
+          

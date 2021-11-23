@@ -85,7 +85,6 @@ function ReadModuleList(props) {
     } else {
         return (
             <React.Fragment>
-
                 <InputRepairForm    show={modalShow}
                                     onHide={()  => setModalShow(false)}
                                     onLoadRecord={idRecord}
@@ -132,23 +131,23 @@ function ReadModuleBlock(props) {
         props.onModalShow();
         props.onOpenRecord();
     };
+    
 
-    const arrayRepair = props.i.repair.map(i => {
-        return <li key={i}>{i}</li>
+    const arrayRepair = props.i.repair.map((i, a) => {
+        return <li key={a}>{i}</li>
     });
 
-    const arrayMaterial = props.i.material.map(i => {
+    const arrayMaterial = props.i.material.map((i,a) => {
         return (
-            <li>
+            <li key={a}>
                 {i.name}; Кол-во: {i.value};
-                
             </li>
         );
     });
 
 
     return (
-        <tr key={idRecord}>
+        <tr className="itemRecord">
             <td>
                 <Button variant="outline-dark" data-toggle="tooltip" 
                                 data-placement="top" title="Редактировать"
@@ -157,8 +156,8 @@ function ReadModuleBlock(props) {
                                     <TiPen />
                 </Button>
             </td>
-            <td>{ format(parseISO(props.i.dateRepairStart), 'dd-MM-yyyy, hh-mm') }</td>
-            <td>{ format(parseISO(props.i.dateRepairEnd), 'dd-MM-yyyy, hh-mm') }</td>
+            <td>{ format(parseISO(props.i.dateRepairStart), 'dd-MM-yyyy, HH:mm') }</td>
+            <td>{ format(parseISO(props.i.dateRepairEnd), 'dd-MM-yyyy, HH:mm') }</td>
             <td>{props.i.equipment}</td>
             <td>
                 <ul>
@@ -173,10 +172,6 @@ function ReadModuleBlock(props) {
             <td>{props.i.author}</td>
             <td>{props.i.spendingJob}</td>
         </tr>
-
-
-
-
     )
 };
 

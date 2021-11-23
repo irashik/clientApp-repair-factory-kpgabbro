@@ -13,7 +13,7 @@ import {eachQuarterOfInterval, format, parseISO } from 'date-fns';
 
 
 import {StatusSelectField, CategorySelectField, PrioritySelectField } from "./selectField";
-import { loadFromDb, unloadInDb, unloadInDbPatсh } from "../utils/loader";
+import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
 
 log.setLevel('debug');
 
@@ -85,7 +85,8 @@ function InputBidRequestForm(props) {
         }
        
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest/" + idRecord;
-        unloadInDbPatсh(url, data)
+
+        unloadInDbPatch(url, data)
             .then(result => {
                 try{
                     setIdRecord('');
@@ -110,6 +111,7 @@ function InputBidRequestForm(props) {
             })
             .catch(err => {
                 throw new Error('какая-то ошибка', err);
+
             })
     };
 
@@ -197,14 +199,13 @@ function InputBidRequestForm(props) {
     };
 
     function BtnView(props) {
-        // todo тут просто через пропы передается id author т.к. он появляется при редактировании.
         
         if(props.onLoadRecord) {
             return (
                 <Button variant="primary"    
                             id="UpdatePlanbtn"
                             className="m-3 d-grid gap-2" 
-                            onClick={() => onClickUpdateRecord()}
+                            onClick={onClickUpdateRecord}
                         >Обновить
                 </Button>
             ) ;
@@ -213,7 +214,7 @@ function InputBidRequestForm(props) {
                 <Button variant="primary"    
                             id="CreatePlanbtn"
                             className="m-3 d-grid gap-2" 
-                            onClick={() => onClickAddedRecord()}
+                            onClick={onClickAddedRecord}
                         >Создать
                 </Button>
             );
@@ -262,8 +263,6 @@ function InputBidRequestForm(props) {
                             <PrioritySelectField priority={priority} handlePriority={(e) => setPriority(e)}/>
                         </Col>
                     </Row>
-                  
-                      
                   
                     <Row>
                         <Form.Control id='inputComment' size="sm" as="textarea" rows={3} 
