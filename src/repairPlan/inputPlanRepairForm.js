@@ -23,17 +23,21 @@ function InputPlanRepairForm(props) {
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
-    const [repairCount, setRepairCount] = useState([]);
+
+    const [repairCount, setRepairCount] = useState([1]);
+    const [repair, setRepair] = useState([]);
+    const [sourceRepair, setSourceRepair] = useState([]);
+
     const [spendingJob, setSpendingJob] = useState(0);
     const [statusState, setStatusState] = useState('DRAFT');
     const [priority, setPriority] = useState('');
     const [comment, setComment] = useState('');
-    const [repair, setRepair] = useState([]);
+    
     const [idRecord, setIdRecord] = useState([]);
     const [dateCreated, setDateCreated] = useState('');
     const [dateFinished, setDateFinished] = useState('');
     const [author, setAuthor] = useState('');
-    const [sourceRepair, setSourceRepair] = useState([]);
+    
 
     
     const debouncedSetFilter = useDebouncedCallback(
@@ -64,8 +68,8 @@ function InputPlanRepairForm(props) {
             priority: priority
         }
        
-        log.debug('data= ' + JSON.stringify(data));
-        const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan";
+        const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan");
+
         unloadInDb(url, data)
             .then(result => {
                 setSearchString('');
@@ -96,9 +100,7 @@ function InputPlanRepairForm(props) {
             spendingJob: spendingJob,
             priority: priority
         }
-       
-        log.debug('data= ' + JSON.stringify(data));
-        log.info('idRecord=', idRecord);
+              
 
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan/" + idRecord;
 
@@ -113,6 +115,7 @@ function InputPlanRepairForm(props) {
                     setComment('');
                     setRepair([]);
                     setSourceRepair([]);
+                    setRepairCount([1]);
     
                     //todo toast message add ?
                     props.handleAddedPlan();
@@ -136,7 +139,7 @@ function InputPlanRepairForm(props) {
         setRepair(record);
     }
 
-    const { handleAddedPlan, onLoadRecord, resetIdRecord, ...modal} = props; // исключаю пропсы функции
+    const { handleAddedPlan, onLoadRecord, resetIdRecord, ...modal} = props; // исключаю пропсы-функции
 
     
     
@@ -151,7 +154,11 @@ function InputPlanRepairForm(props) {
                     setIdRecord(result._id);
                     setIdEquipment(result.equipment);
                     setSpendingJob(result.spendingJob);
+                    
                     setSourceRepair(result.description);
+                    const newRepairCount = new Array(result.description.length);
+                    setRepairCount(newRepairCount);
+
                     setStatusState(result.status);
                     setComment(result.comment);
                     setDateCreated(result.dateCreated);
@@ -177,25 +184,23 @@ function InputPlanRepairForm(props) {
                 })
         }
             return function cleanup() {
-            props.resetIdRecord(); // сбросить id после выполнения.
-
-            setIdRecord('');
-            setIdEquipment('');
-            setSpendingJob(0);
-            setRepair('');
-            setStatusState('DRAFT');
-            setComment('');
-            setDateCreated('');
-            setPriority('');
-            setAuthor('')
-            setDateFinished('');
-
-            setSearchString('')
-            setRepairCount('');
-            setFilter('');
-
-            setSourceRepair([]);
-
+                if(props.onLoadRecord) {
+                    props.resetIdRecord(); // сбросить id после выполнения.
+                }
+                setIdRecord('');
+                setIdEquipment('');
+                setSpendingJob(0);
+                setRepair('');
+                setStatusState('DRAFT');
+                setComment('');
+                setDateCreated('');
+                setPriority('');
+                setAuthor('')
+                setDateFinished('');
+                setSearchString('')
+                setRepairCount([1]);
+                setFilter('');
+                setSourceRepair([]);
         }
     }, [props.onLoadRecord]);
     
@@ -208,7 +213,6 @@ function InputPlanRepairForm(props) {
         } else { 
             return (null) }
     };
-
     function DateFinishedView(modal) {
         if(modal.dateFinished) {
             return (
@@ -216,7 +220,6 @@ function InputPlanRepairForm(props) {
             )
         } else { return(null) }
     };
-
     function AuthorView(modal) {
         if(modal.author) {
             return (
@@ -224,11 +227,10 @@ function InputPlanRepairForm(props) {
             )
         } else { return(null) }
     };
-
-    function BtnView(props) {
+    function BtnView(modal) {
         // todo тут просто через пропы передается id author т.к. он появляется при редактировании.
         
-        if(props.onLoadRecord) {
+        if(modal.onLoadRecord.length) {
             return (
                 <Button variant="primary"    
                             id="UpdatePlanbtn"
@@ -248,7 +250,31 @@ function InputPlanRepairForm(props) {
             );
         }
     }
+    function modalClose() {
+            
+        if(props.onLoadRecord) {
+            props.resetIdRecord(); // сбросить id после выполнения.    
+        }
+        
+            props.onHide();
 
+            setIdRecord('');
+            setIdEquipment('');
+            setSpendingJob(0);
+            setRepair('');
+            setStatusState('DRAFT');
+            setComment('');
+            setDateCreated('');
+            setPriority('');
+            setAuthor('')
+            setDateFinished('');
+
+            setSearchString('')
+            setRepairCount([1]);
+            setFilter('');
+
+            setSourceRepair([]);
+    }
 
     return(    
         <Modal {...modal} 
@@ -263,7 +289,7 @@ function InputPlanRepairForm(props) {
                     Форма ввода данных о плановых работах
                 </Modal.Title>
                 <button type="button" className="btn-close" aria-label="Close"
-                        onClick={props.onHide}></button>
+                        onClick={modalClose}></button>
                 
             </Modal.Header>
             <Modal.Body className="show-grid">
@@ -347,9 +373,7 @@ export default InputPlanRepairForm;
 
 function InputGroupButtonSmall(props) {
        
-    function  onAddedRecord() {
-        props.onHandleRepairCount();
-    }
+    
     return (
         <Button variant="outline-dark" 
                 data-toggle="tooltip" 
@@ -357,20 +381,18 @@ function InputGroupButtonSmall(props) {
                 data-placement="top" 
                 title="Добавить запись"
                 id='btnAddDescription'
-                onClick={() => onAddedRecord()}
+                onClick={() => props.onHandleRepairCount()}
                 >+</Button>
     );
 };
-
 function FormInputRepair(props) {
-    const [count, setCount] = useState([1]);
+    const [count, setCount] = useState([]);
     const [repair, setRepair] = useState([]);
 
     function handleRecordRepair(e, i) {
         let cloneRepair = [...repair];
         cloneRepair[i] = e;
         setRepair(cloneRepair);
-
         props.onHandleRecordRepair(cloneRepair);
     }
 
@@ -385,12 +407,13 @@ function FormInputRepair(props) {
 
     useEffect(() => {
         if(props.onLoadRepair.length) {
-            let item = props.onLoadRepair.length;
-            let itemAr = new Array(item);
-            let newCount = count.concat(itemAr);
-            
             setRepair(props.onLoadRepair);
+            const newCount = new Array(props.onLoadRepair.length);
             setCount(newCount);
+            props.onHandleRecordRepair(props.onLoadRepair);
+
+            log.debug('newCount = ' + newCount.length);
+
         }
 
         return function cleanup() {
@@ -400,21 +423,30 @@ function FormInputRepair(props) {
 
     }, [props.onLoadRepair])
     
-    let arrayList = count.map((a, i) => Result(i));
-    return arrayList;
 
-    function Result(i) {
+    log.debug('count=' + count.length)
+
+    const arrayList = count.map((a, i) => {
+        return result(i);
+    });
+
+    function result(i) {
         return(
-            <Form.Control id='inputPlanDescription' 
-            as='textarea' 
-            key = {i}
-            size="sm" rows={4} 
+            <Form.Control id={'inputPlanDescription_' + i} 
+            as='textarea' size="sm" rows={4} 
             placeholder="Что требуется сделать?"
+            key = {i}
             value={repair[i]}
             onChange={(e) => handleRecordRepair(e.target.value, i)}
             />
         )
     };
+
+    return (
+        <React.Fragment>
+            { arrayList }
+        </React.Fragment>
+    )
     
 };
 

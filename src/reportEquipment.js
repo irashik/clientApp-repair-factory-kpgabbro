@@ -24,30 +24,21 @@ function ReportEquipment() {
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
 
-
-    
-
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
         process.env.DEBOUNCEDDELAY
     );
-
-
-
     function onChangeSearch(e) {
         const { value } = e.target;
         setSearchString(value);
         debouncedSetFilter(value);
         setIdEquipment(null);
     };
-
-
     function handlerSelectEquipment(id, joinNameUnit) {
         setSearchString(joinNameUnit);
         setIdEquipment(id);
 
     };
-
 
     
 

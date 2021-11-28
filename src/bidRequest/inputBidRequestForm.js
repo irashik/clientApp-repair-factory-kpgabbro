@@ -6,11 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-
-
 import * as log from 'loglevel';
-import {eachQuarterOfInterval, format, parseISO } from 'date-fns';
-
+import { format, parseISO } from 'date-fns';
 
 import {StatusSelectField, CategorySelectField, PrioritySelectField } from "./selectField";
 import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
@@ -33,6 +30,7 @@ function InputBidRequestForm(props) {
 
     
     function onClickAddedRecord() {
+
         const dateCreated = new Date();
         let data = {
             dateCreated: dateCreated,
@@ -45,7 +43,8 @@ function InputBidRequestForm(props) {
             category: category,
             comment: comment,
         }
-        const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest";
+        const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest");
+        
         unloadInDb(url, data)
             .then(result => {
                 setIdRecord('');
@@ -63,15 +62,14 @@ function InputBidRequestForm(props) {
 
             })
             .catch(err => {
-                alert('error from server = ' + err);
+                alert('error from server = ' + JSON.stringify(err));
                 
-                throw new Error('ошибка от сервера==', err);
+                throw new Error('ошибка от сервера==', JSON.stringify(err));
                 
 
                 // todo нужно пробрасывать ошибку от сервера.
             });
     };
-
     function onClickUpdateRecord() {
         const dateStatusBid = new Date();
         let data = {
@@ -116,12 +114,9 @@ function InputBidRequestForm(props) {
     };
 
     const { handleAddedRecord, onLoadRecord, resetIdRecord, ...modal} = props; // исключаю пропсы функции
-
-    
-    
+       
 
     useEffect(() => {
-
         if(props.onLoadRecord) {
             let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT +
                      "/bidrequest/" + props.onLoadRecord);
@@ -147,6 +142,9 @@ function InputBidRequestForm(props) {
         }
     
         return function cleanup() {
+            if (props.onLoadRecord) {
+                props.resetIdRecord();
+            }
             setDescription('');
             setStatusBid('DRAFT');
             setComment('');
@@ -173,7 +171,6 @@ function InputBidRequestForm(props) {
         } else { 
             return (null) }
     };
-
     function DateStatusBidView(modal) {
         if(modal.dateStatusBid) {
             return (
@@ -181,7 +178,6 @@ function InputBidRequestForm(props) {
             )
         } else { return(null) }
     };
-
     function AuthorView(modal) {
         if(modal.author) {
             return (
@@ -189,7 +185,6 @@ function InputBidRequestForm(props) {
             )
         } else { return(null) }
     };
-
     function LastAuthorView(modal) {
         if(modal.lastAuthor) {
             return (
@@ -197,9 +192,7 @@ function InputBidRequestForm(props) {
             )
         } else { return(null) }
     };
-
     function BtnView(props) {
-        
         if(props.onLoadRecord) {
             return (
                 <Button variant="primary"    
@@ -263,7 +256,6 @@ function InputBidRequestForm(props) {
                             <PrioritySelectField priority={priority} handlePriority={(e) => setPriority(e)}/>
                         </Col>
                     </Row>
-                  
                     <Row>
                         <Form.Control id='inputComment' size="sm" as="textarea" rows={3} 
                                         placeholder="Примечание"
@@ -271,23 +263,16 @@ function InputBidRequestForm(props) {
                                         onChange={(e) => setComment(e.target.value)}
                                         />
                     </Row>
-                  
-
                     <Row>
                         <DateCreatedView dateCreated={dateCreated}/>
                         <DateStatusBidView dateStatusBid={dateStatusBid} />
                         <AuthorView author={author} />
                         <LastAuthorView lastAuthor={lastAuthor} />
-
                     </Row>
-
                 </Container>
-
             </Modal.Body>
             <Modal.Footer>
                 <BtnView onLoadRecord={idRecord} />
-
-
             </Modal.Footer>
         </Modal>        
     )

@@ -1,3 +1,7 @@
+/*
+компонент навбара с сылками
+*/
+
 import React, { useState, Fragment } from 'react';
 import { LinkContainer } from  'react-router-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -5,6 +9,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import * as log from 'loglevel';
+import { loadFromDb } from './utils/loader';
 
 
 log.setLevel('debug');
@@ -48,37 +53,28 @@ function AuthButton() {
 
   const user = localStorage.getItem('userName');
 
-  const onClickLogout = () => {
+  function onClickLogout() {
       const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/logout");
 
       url.searchParams.set('userId', localStorage.getItem('userId'));
       url.searchParams.set('userName', localStorage.getItem('userName'));
 
+    const load = loadFromDb(url);
 
 
-      const accessToken = window.localStorage.getItem('accessToken');
-      const tokenStr = "Bearer " + accessToken;
 
-      const options = {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        credentialls: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Authorization': tokenStr
-        },
-        redirect: 'follow',
-      };
+    load
+      .then(result => {
+        alert('Logout is successfully!');
+        localStorage.clear();
+        const homeUrl = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/");
+        document.location.href = homeUrl;
 
-      fetch(url, options)
-        
-        .then(() => {
-          
-          localStorage.clear();
-          alert('Logout is successfully!');
-           document.location.href = "/";
+
+      })
+      .catch(err => {
+        alert('Logout is not successfully. Err= ' + err);
+        throw new Error('Logout not successfully');
 
       });
   }

@@ -1,22 +1,22 @@
 /* форма (модальное окно) для ввода данных о ремонте.
 */
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
+import DatePicker, { registerLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useDebouncedCallback } from 'use-debounce';
 import ru from 'date-fns/locale/ru';
-import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
-import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
-import SearchList from "../searchListUnitEquipment";
+import {parseISO } from 'date-fns';
 import * as log from 'loglevel';
-import { result } from "lodash";
+
+import SearchList from "../searchListUnitEquipment";
+import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
 
 log.setLevel('debug');
 registerLocale('ru', ru);
@@ -28,23 +28,18 @@ function InputRepairForm(props) {
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
-    
     const [dateStart, setDateStart] = useState('');
     const [dateEnd, setDateEnd] = useState('');
     const [spendingJob, setSpendingJob] = useState('');
-    
     const [repair, setRepair] = useState([]);
     const [repairCount, setRepairCount] = useState([1]);
-
-    const [materialCount, setMaterialCount] = useState([]);
+    const [materialCount, setMaterialCount] = useState([1]);
     const [material, setMaterial] = useState([]);
     const [value, setValue] = useState([]);
-
     const [idRecord, setIdRecord] = useState('');
     const [sourceRepair, setSourceRepair] = useState([]);
     const [sourceMaterial, setSourceMaterial] = useState([]);
     const [author, setAuthor] = useState('');
-
     const [sourceDateStart, setSourceDateStart] = useState('');
     const [sourceDateEnd, setSourceDateEnd] = useState('');
 
@@ -95,7 +90,7 @@ function InputRepairForm(props) {
                 setSpendingJob('');
                 setRepairCount([]);
                 setFilter('');
-
+                setAuthor('');
 
                 // закрыть модальное окно.
                 props.onHide();
@@ -141,15 +136,18 @@ function InputRepairForm(props) {
                 setIdEquipment('');
                 setSpendingJob('');
 
-                setRepairCount([]);
+                setRepairCount([1]);
+                setMaterialCount([1]);
 
-                setMaterialCount([]);
                 setDateStart('');
                 setDateEnd('');
+
                 setRepair([]);
                 setMaterial([]);
                 setValue([]);
+
                 setIdRecord('');
+
                 setSourceMaterial([]);
                 setSourceRepair([]);
                 setAuthor('');
@@ -158,8 +156,6 @@ function InputRepairForm(props) {
                 
                 props.onHide(); // закрыть модальное окно.
                 props.handleAddedRepair(); // для обновление списка ремонтов. 
-                
-                alert('unload OK. ' + result);
 
                 })
                 .catch(err => {
@@ -188,7 +184,7 @@ function InputRepairForm(props) {
     }
     function OnRecordMaterial(record) {
         setMaterial(record);
-    }
+    };
     function OnRecordValue(record) {
         setValue(record);
     };
@@ -213,20 +209,39 @@ function InputRepairForm(props) {
                 </Button>
             );
         }
-    }
-    
-
-
+    };
+    function modalClose() { // может очистку делать этой функцией?
+        props.onHide();
+        if(props.onLoadRecord) {
+            props.resetIdRecord();
+        }
+       setIdRecord('');
+       setIdEquipment('');
+       setSpendingJob('');
+       setDateStart('');
+       setDateEnd('');
+       setAuthor('');
+       setSourceRepair([1]);
+       setSourceMaterial([1]);
+       setSourceDateEnd('');
+       setSourceDateStart('');
+       setRepairCount([1]);
+       setMaterialCount([1]);
+       setMaterial([]);
+       setRepair([]);
+       setValue([]);
+    };
+    function AuthorView(modal) {
+        if(modal.author) {
+            return (
+        <p id='textAuthor'>Автор записи: {modal.author}</p>
+            )
+        } else { return(null) }
+    };
 
 
     useEffect(() => {
-
-        log.debug('useEffect is run');
         if(props.onLoadRecord) {
-
-            log.debug('useEffect is run if props.onLoadRecord');
-
-
             let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT +
                      "/equipment/" + props.onLoadRecord);
 
@@ -246,12 +261,17 @@ function InputRepairForm(props) {
 
 
                     setSourceRepair(result.repair);
+                    const newRepairCount = new Array(result.repair.length);
+                    setRepairCount(newRepairCount);
 
-                    let a = new Array(result.repair.length);
-                    setRepairCount(a);
+
+                    setSourceMaterial(result.material);
+                    const newMatCount = new Array(result.material.length);
+                    setMaterialCount(newMatCount);
+
 
                     setAuthor(result.author);
-                    setSourceMaterial(result.material);
+                    
     
                     // idEquipment есть нужна строка.
                     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
@@ -272,7 +292,6 @@ function InputRepairForm(props) {
                 });
         }
 
-        
             return function cleanup() {
 
                 props.resetIdRecord();
@@ -284,19 +303,16 @@ function InputRepairForm(props) {
                 setSourceRepair([]);
                 setAuthor('');
                 setSourceMaterial([]);
-
+                setSourceRepair([]);
+                setRepair([]);
+                setMaterial([]);
                 setSourceDateEnd('');
                 setSourceDateStart('');
                 setSearchString('');
-
                 setFilter('');
-
                 setRepairCount([1]);
-                log.info('cleanup modal window');
-
-
+                setMaterialCount([1]);
             }
-        
 
     }, [props.onLoadRecord])
 
@@ -304,31 +320,7 @@ function InputRepairForm(props) {
     const { handleAddedRepair, resetIdRecord, onLoadRecord, ...modal} = props;
    
    
-   function modalClose() {
-
-        log.debug('modalClose');
-
-        props.onHide();
-        if(props.onLoadRecord) {
-            props.resetIdRecord();
-        }
-       
-       setIdRecord('');
-       setIdEquipment('');
-       setSpendingJob('');
-       setDateStart('');
-       setDateEnd('');
-       setSourceRepair([]);
-       setAuthor('');
-       setSourceMaterial([]);
-
-       setSourceDateEnd('');
-       setSourceDateStart('');
-       
-       setRepairCount([1]);
-
-
-   }
+   
 
     return   (    
         <Modal {...modal} 
@@ -336,27 +328,30 @@ function InputRepairForm(props) {
             dialogClassName='modal-fullscreen'
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
+            id="modalRepairForm"
         >
             <Modal.Header >
-                <Modal.Title id="contained-modal-title-vcenter">
+                <Modal.Title >
                     Форма ввода данных о работах
                 </Modal.Title>
-                <button type="button" className="btn-close" aria-label="Close"
+                <button type="button" className="btn-close" id='btnCloseModal' aria-label="Close"
                         onClick={modalClose}
 
                 ></button>
             </Modal.Header>
-            <Modal.Body className="show-grid">
+            <Modal.Body className="show-grid" id='modalRepairForm-body'>
                 <Container fluid id='input-module'>
                     <Row>
                         <Col>
                             <label>Время начало ремонта
-                                <DatePickerDiv type='dateStart' onSelectOptedData={onSelectOptedDateStart} setDate={sourceDateStart}/>
+                                <DatePickerDiv type='dateStart' 
+                                                onSelectOptedData={onSelectOptedDateStart} setDate={sourceDateStart}/>
                             </label>
                         </Col>
                         <Col>
                             <label>Время окончания ремонта
-                                <DatePickerDiv type='dateEnd' onSelectOptedData={onSelectOptedDateEnd} setDate={sourceDateEnd}/>
+                                <DatePickerDiv type='dateEnd' 
+                                                onSelectOptedData={onSelectOptedDateEnd} setDate={sourceDateEnd}/>
                             </label>
                         </Col>
                     </Row>
@@ -376,7 +371,7 @@ function InputRepairForm(props) {
                                                 onLoadRepair={sourceRepair} />
                         </Col>
                         <Col md={2}>
-                            <InputGroupButtonSmall name="equipment" onHandleRepairCount={onHandleRepairCount} />
+                            <InputGroupButtonSmall name="repair" onHandleRepairCount={onHandleRepairCount} />
                         </Col>
                     </Row>
                     <Row>
@@ -397,6 +392,10 @@ function InputRepairForm(props) {
                                         onChange={(e) => setSpendingJob(e.target.value)}
                                         />
                     </Row>
+                    <Row>
+                        <AuthorView author={author} />
+
+                    </Row>
                 </Container>
             </Modal.Body>
             <Modal.Footer>
@@ -411,8 +410,9 @@ export default InputRepairForm;
 function InputGroupButtonSmall(props) {
 
     let onAddedRecord = null;
+    let idInput = 'repair';
 
-    if(props.name === "equipment") {
+    if(props.name === "repair") {
         onAddedRecord = () => {
             props.onHandleRepairCount();
         }
@@ -422,6 +422,8 @@ function InputGroupButtonSmall(props) {
        onAddedRecord = () => {
             props.onHandleMaterialCount();
         }
+
+        idInput = 'material';
     }
 
     return (
@@ -430,19 +432,12 @@ function InputGroupButtonSmall(props) {
                 className=""
                 data-placement="top" 
                 title="Добавить запись"
-                id='btnAddDescription'
+                id={'btnAddDesc_' + idInput}
                 onClick={() => onAddedRecord()}
                 >+</Button>
     );
 };
 function DatePickerDiv(props) {
-
-    // todo довать возможность выбора времени (интервалы полчаса)
-    // доваить выбор начал и окончания ремонта
-
-    //Locale with time
-
-
 
     const year =  new Date().getFullYear();
     const month = new Date().getMonth()
@@ -451,43 +446,39 @@ function DatePickerDiv(props) {
 
     const [valueDate, setValueDate] = useState(new Date(year, month, day, hours));
 
-
+    let idInput = 'inputDateStart';
   
-    const handlerOptedData = (e) => {
+    function handlerOptedData(e) {
         setValueDate(e);    
         props.onSelectOptedData(e);
-
     };
 
     useEffect(() => {
-        
-
         if(props.setDate) {
-
             let newDate = parseISO(props.setDate);
             setValueDate(newDate);
-
         } else {
             props.onSelectOptedData(valueDate);
         }
 
         return function cleanup() {
             setValueDate('');
-
         }
 
     }, [props.setDate]);
 
-    if(props.type === 'dateStart') {
+   
 
-    }
+        if(props.type == 'dateStart') {
 
-    if(props.type === 'dateEnd') {
+        }
+    
+        if(props.type == 'dateEnd') {
+            idInput = 'inputDateEnd';
+        }
 
-    }
 
-
-
+    
 
     return (
         <React.Fragment>
@@ -501,8 +492,7 @@ function DatePickerDiv(props) {
                             timeFormat="p"
                             timeIntervals={30}
                             dateFormat="dd MMMM yyyy HH:mm"
-                            //startDate={valueDate}
-                            id='StartDateValue' />
+                            id={idInput} />
         </React.Fragment>
     );
 };
@@ -511,14 +501,12 @@ function FormInputRepair(props) {
     const [count, setCount] = useState([]);
     const [repair, setRepair] = useState([]);
 
-
     function onHandleRepair(e, i) {
         let cloneRepair = [...repair];
         cloneRepair[i] = e;
         setRepair(cloneRepair);
         props.onHandleRepair(cloneRepair);
     }
-
 
 
     useEffect(() => {
@@ -536,8 +524,8 @@ function FormInputRepair(props) {
             setRepair(props.onLoadRepair); // задай массив данных в состояние
             let newCount = new Array(props.onLoadRepair.length);
             setCount(newCount);
+            props.onHandleRepair(props.onLoadRepair);
         }
-
       
         return function cleanup() {
             setCount([]);
@@ -554,7 +542,7 @@ function FormInputRepair(props) {
         
     function result(i) {
         return(
-            <Form.Control id='inputRepairDescription' as='textarea' size="sm" rows={3} 
+            <Form.Control id={'inputRepairDescription_'+i} as='textarea' size="sm" rows={3} 
                 placeholder="Что сделано?"
                 key={i} 
                 size="sm" rows={4}
@@ -563,65 +551,87 @@ function FormInputRepair(props) {
                 />
         )
     }
-    
 
     return (
         <React.Fragment>
          { arrayList }
         </React.Fragment>
     )
-
-   
-    
 };
-
-
 function FormInputMaterial(props) {
 
     const [count, setCount] = useState([]);
     const [material, setMaterial] = useState([]);
     const [valueMat, setValueMat] = useState([]);
 
-
-
     function onHandleMaterial(e, i) {
         let cloneMaterial = [...material];
         cloneMaterial[i] = e
         setMaterial(cloneMaterial);
-        props.onHandleMaterial(material);
-
-   }
-
+        props.onHandleMaterial(cloneMaterial);
+    };
     function onHandleMaterialVal(e, i) {
         let cloneValue = [...valueMat];
         cloneValue[i] = e;
         setValueMat(cloneValue);
-        props.onHandleMaterialVal(valueMat);
-        
-    }
+        props.onHandleMaterialVal(cloneValue);
+    };
 
 
     useEffect(() => {
         setCount([...count, 1]);
+
+        return function cleanup() {
+            setCount([]);
+        }
         
     }, [props.count])
 
+    useEffect(() => {
+        if(props.onLoadMaterial.length) {
+            let loadMat = props.onLoadMaterial;
+            let mat = loadMat.map(value => {
+                return value.name;
+            })
+            let val = loadMat.map(value => {
+                return value.value;
+            })
+            setMaterial(mat);
+            setValueMat(val);
+            let newCount = new Array(loadMat.length);
+            setCount(newCount);
+            props.onHandleMaterial(mat);
+            props.onHandleMaterialVal(val);
+
+        }
+
+        return function cleanup() {
+            setCount([]);
+            setMaterial([]);
+            setValueMat([]);
+
+        }
+    }, [props.onLoadMaterial])
+
+
+    
     function result(i) {
         return (
-            <Row key={'inputMaterial-'+i}>
+            <Row key={'inputMaterialForm' + i}>
                 <Col>
-                    <Form.Control id={'inputMaterialName-'+i} size="sm" type="text" 
+                    <Form.Control id={'inputMaterialName_' +i} size="sm" type="text" 
+
                     placeholder="Введите материал"
-                    key={i+'name'}
-                    value={material[i]}
+                    key={i}
+                    value={material[i] || ''}
                     onChange={(e) => onHandleMaterial(e.target.value, i)}
                     />
                 </Col>
                 <Col md={3}>
-                    <Form.Control id={'inputMaterialVal-'+i}  size="sm" type="text"  
+                    <Form.Control id={'inputMaterialVal_'+i}  size="sm" type="text"  
                     placeholder="Введите его количество"
-                    key={i+'val'}
-                    value={valueMat[i]}
+                    key={i}
+                    value={valueMat[i] || ''}
                     onChange={(e) => onHandleMaterialVal(e.target.value, i)}
                     />
                 </Col>
@@ -629,8 +639,15 @@ function FormInputMaterial(props) {
             )
         };
 
-    let arrayList = count.map((a, i) => result(i));
-    return arrayList;
+    const arrayList = count.map((a, i) => {
+        return result(i);
+    });
+    
+    return (
+        <React.Fragment>
+            {arrayList}
+        </React.Fragment>
+    )
 
 
 };

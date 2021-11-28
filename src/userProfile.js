@@ -1,30 +1,17 @@
-
-// Страница для регистрации
 /*
-
-Личный кабинет пользователя
-  редактирование данных.
-  Что-еще? посмотреть свои заявки и статус по ним
-            заметки свои?
-
-
-
-
+* Личный кабинет пользователя
+*  редактирование данных.
+*  Что-еще? посмотреть свои заявки и статус по ним
+*            заметки свои?
 */
 
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import { redirect } from "statuses";
 import * as log from 'loglevel';
-import { concat } from "lodash";
+import { loadFromDb, unloadInDbPatch } from "./utils/loader";
 
 
 
@@ -35,23 +22,46 @@ log.setLevel('debug');
 
 function ProfileUserComponent() {
 
-
   const [password2, setPassword2] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
+  const [email, setEmail] = useState('');
+
 
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    log.debug('handleSubmit');
+    let data = {
+      password: password,
+      name: name,
+      position: position
+    }
+
+    const id = localStorage.getItem('userId');
+    const url = new URL ( process.env.HTTP_API_HOST + ":" + 
+                          process.env.HTTP_API_PORT + "/users/" + id);
+
+     const queryServer = unloadInDbPatch(url, data);
+     
+     queryServer
+     .then(res => {
+
+     })
+     .catch(err => {
+      throw new Error ('respnse from server', err);
+     });
+    
+
+
+
+  };
+  function changePassword(e) {
+    e.preventDefault();
 
 
     if(password === password2) {
-
-
-
 
     } else {
       alert ('пароли не совпадают');
@@ -60,28 +70,34 @@ function ProfileUserComponent() {
 
 
 
-    let data = {
-      password: password,
-      name: name,
-      position: position
-    }
-
-    const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/users/profile"
-    
-
-
-
-  }
-
-
-
-  function changePassword(e) {
-
-    e.preventDefault();
-
-    log.debug('click changePassword');
 
   };
+
+
+  useEffect(() => {
+    const id = localStorage.getItem('userId');
+    let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT +
+    "/users/" + id);
+    const queryServer = loadFromDb(url);
+
+    queryServer
+    .then(res => {
+      
+      log.debug(res);
+      setName(res.name);
+      setPosition((res.position || ""));
+      setEmail(res.email);
+
+
+    })
+    .catch(err => {
+      throw new Error ('error from server', err);
+    })
+
+
+
+  }, []);
+
 
 
       return (
@@ -106,20 +122,30 @@ function ProfileUserComponent() {
                 value={position}
                 onChange = {(e) => setPosition(e.target.value)} />
             </Form.Group>
+
+            <Form.Group controlId="UserPosition">
+                <Form.Label>Ваш емаил</Form.Label>
+                <Form.Control type="text" placeholder="email" disabled
+                value={email}
+                onChange = {(e) => setEmail(e.target.value)} />
+            </Form.Group>
+
             <Form.Group>
-              
-              <br></br>
-              <Button id='changeProfileBtn' variant="primary" type="submit">
+              <Button id='changeProfileBtn' variant="primary" type="submit"
+                        disabled                        >
                   Обновить данные
               </Button>
             </Form.Group>
 
 
           </Form>
+          <Row>
+          </Row>
+          <Row>
+          </Row>
 
-            <br></br>
-            <br></br>
-            <br></br>
+
+
 
             <Row className="justify-content-md-center">
               <h4>Изменение пароля</h4>
@@ -142,7 +168,10 @@ function ProfileUserComponent() {
             </Form.Group>
             <br>
             </br>
-            <Button id='changePasswordBtn' variant="secondary" type="submit">
+            <Button id='changePasswordBtn' variant="secondary" 
+                    type="submit"
+                    disabled
+                    >
                 Сменить пароль
             </Button>
             </Form>

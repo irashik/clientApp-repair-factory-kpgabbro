@@ -22,28 +22,24 @@ function ReadPlansListModule(props) {
     const [idRecord, setIdRecord] = useState('');
 
 
-
     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan");
 
     if (props.onSelectEquipment) {
         url.searchParams.set("equipment", props.onSelectEquipment);
     }
-
     if (props.onSelectStatus) {
         url.searchParams.set("status", props.onSelectStatus);
     }
 
     function onChangeRecord(e) {
         setIdRecord(e);
-    }
-
+    };
     function onHandleAddedPlan() {
         setUpdatedPlan([...updatedPlan, 1]);
     };
 
 
     useEffect(() => {
-        
             loadFromDb(url)
             .then(queryFromDb => {
                     setQueryFromDb(queryFromDb);

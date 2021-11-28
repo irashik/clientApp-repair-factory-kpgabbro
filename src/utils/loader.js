@@ -1,35 +1,26 @@
-// модуль построитель запросов к базе данных
-// плюс обработка токенов.
-
-
 /*
-  при вызове загрузчиков следующ алгоритм:
-    Проверка наличия токена
-
+* модуль построитель запросов к базе данных
+*  при вызове загрузчиков следующ алгоритм:
+*    Проверка наличия токена
+*    если ок, то запрос к базе данных
+*    если нет , то обновление по ревреш токену и еще один запрос.
 */
 
 import * as log from 'loglevel';
+
 log.setLevel('debug');
-//import fetch from 'node-fetch';
-//globalThis.fetch = fetch;
 
-
-//const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-//const accesstoken = localStorage.getItem('accessToken');
-//const refreshToken = localStorage.getItem('refreshToken');
 
 
 class Loader {
- 
   constructor(url, method, data, accessToken, refreshToken) {
     this.url = url,
     this.method =  method,
     this.data = data,
-
     this.refreshToken = refreshToken,
     this.accessToken = accessToken
 
-    this.tokenstr = "Bearer " + this.accesstoken,
+    this.tokenstr = "Bearer " + this.accessToken,
     
     this.refOptions = {
       method: "GET",
@@ -65,41 +56,37 @@ class Loader {
     }
 
   }
+
+
+
 };
 
+function checkTokenAndUpdate(refreshToken) {
+  return new Promise((resolve, reject) => {
+      const url = new URL(process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/refresh-token");
+      const loader = new Loader(url, "GET", null, null, refreshToken);
+      const resAuthServer = fetch(loader.url, loader.refOptions);
 
-  
+      resAuthServer
+      .then(res => {
+          if (res.status == 401) {
+            throw new Error('Unauthorized - invalid refreshToken');
+            //todo как пробросить ошибку далее
 
-
-
-  function checkTokenAndUpdate() {
-    return new Promise((resolve, reject) => {
-
-        const url_ref = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/refresh-token"
-    
-          
-
-        fetch(url_ref, this.refOptions)
-          .then(res => {
-            if (res.status === 401) {
-              throw new Error('Unauthorized - invalid refreshToken');
-
-            } else if (res.status === 200) {
-              return res.json()
-            } else {
-              reject(new Error(res));
-            }
-          })
-          .then(newTokens => {
-              resolve(newTokens);
-          })
-          .catch(err => {
-            reject(new Error(err));
-          })
-       });
-  }
-
-
+          } else if (res.status == 200) {
+            return res.json();
+          } else {
+            reject(new Error(res));
+          }
+        })
+        .then(newTokens => {
+          resolve(newTokens);
+        })
+        .catch(err => {
+          reject(new Error(err));
+        })
+      });
+};
 
 
 function loadFromDb(url) {
@@ -120,17 +107,60 @@ function loadFromDb(url) {
 
     responseDb
     .then(res => {
-        if(res.status === 401) { //UNAUTHORIZED
-            throw new Error('UNAUTHORIZED');
+        if(res.status == 401) { //UNAUTHORIZED
+          /* тогда делаем запрос на обновление токена
+          сохраняем токены полученные
+          делаем запрос еще раз
+          если ок то продолжить...
+          если нет то ошибку 
+          */
+
+          const newTokens = checkTokenAndUpdate(refreshToken);    
+          
+          newTokens
+          .then(newTokensRes => {
+            localStorage.setItem('accessToken', newTokensRes.accessToken);
+            localStorage.setItem('refreshToken', newTokensRes.refreshToken);
+            
+            // делаем изначальный запрос еще раз.
+            const loader = new Loader(url, "GET", null, newTokensRes.accessToken, null);
+            const requestInDb = fetch(loader.url, loader.options);
+    
+            requestInDb
+              .then(newres => {
+                if(newres.status == 401) {
+                  throw new Error ('UNAUTHORIZED');
+
+                } else if (newres.status === 201 || newres.status == 200 || res.status == 304) {
+                 
+                  return newres.json();
+
+                } else {
+                  reject (new Error(newres));
+                }
+              })
+              .catch(err => {
+                reject(new Error(err));
+              });
+
+              
+          })
+          .catch(err => {
+            reject(new Error('server not return tokens' + err));
+          });
+        
+          
+
         }
-        if (res.status === 200 || 201) {
-            return res.json()
+        else if (res.status == 200 || res.status == 201 || res.status == 304) {
+            return res.json();
         } else {
             reject(new Error(res));
         }
+
         })
         .then(result => {
-            resolve(result);
+          resolve(result);
         })
         .catch(err => {
           reject(new Error(err));
@@ -140,46 +170,29 @@ function loadFromDb(url) {
 export { loadFromDb };
 
 
-
-
-
 function unloadInDb(url, data) {
   return new Promise((resolve, reject) => {
 
     const accesstoken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
 
-    if (!accesstoken) {
-        const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/login"
-      window.location = url;
-      reject(new Error('Not found accessToken'));
-    }
-
     const loaderUnload = new Loader(url, "POST", data, accesstoken, refreshToken);
-    
     const responseDb = fetch(loaderUnload.url, loaderUnload.options);
 
     responseDb
       .then(res => {
-        if (res.status === 401) { //Unauthorized
-
-          console.log(res.status);
-
+        if (res.status == 401) { //Unauthorized
           throw new Error('UNAUTHORIZED');
-
-
-
           // здесь нужно выполнить один цикл по обновлению токена.
 
 
 
-
-        } else if (res.status === 201 || 200) {
+        } else if (res.status == 400 || res.status == 403) {
+          throw new Error ('bad request' + res.json());
+        
+        } else if (res.status === 201 || res.status == 200) {
           return res.json()
         } else {
-
-          console.log('error server = ' + JSON.stringify(res.message));
-
           reject (new Error(res));
         }
       })
@@ -187,27 +200,11 @@ function unloadInDb(url, data) {
         resolve(result);
       })
       .catch(err => {
-
-        console.log('error server = ' + JSON.stringify(err));
-
         reject(new Error(err));
       });
   });
 };
 export { unloadInDb };
-
-
-
-    // сохраняем данные в localStorage
-
- //   localStorage.setItem('accessToken', newTokens.accessToken);
-  //  localStorage.setItem('refreshToken', newTokens.refreshToken);
-    
-
-    // делаем изначальный запрос еще раз.
-
-
-
 
 
 function unloadInDbPatch(url, data) {
@@ -223,36 +220,31 @@ function unloadInDbPatch(url, data) {
     }
 
     const loaderUnload = new Loader(url, "PATCH", data, accesstoken, refreshToken);
-    
     const responseDb = fetch(loaderUnload.url, loaderUnload.options);
 
     responseDb
       .then(res => {
-        log.debug('res.status =', res.status);
-
-        if (res.status == 401 || 400 || 500) { //Unauthorized
-
-          log.debug('message error server = ' + JSON.stringify(res.message));
-          log.debug('res.status==' + res.status);
+        if (res.status == 401) { //Unauthorized
+     
           
-          throw new Error('UNAUTHORIZED');
-          // здесь нужно выполнить один цикл по обновлению токена.
 
-        } else if (res.status ===  200 || 204 || 201) {
+          throw new Error('UNAUTHORIZED');
+          
+
+
+
+
+
+        } else if (res.status ===  200 || res.status == 204 || res.status == 201) {
           return res.json()
         } else {
           reject (new Error(res));
         }
       })
       .then(result => {
-        log.info('loadPath resolve true');
         resolve(result);
-
       })
-      
       .catch(err => {
-        log.info('loadPatch reject catch + ',  err);
-        
         reject(new Error(err));
       });
   });

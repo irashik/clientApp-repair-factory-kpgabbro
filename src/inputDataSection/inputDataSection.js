@@ -1,7 +1,6 @@
 // страница ввода данных о ремонте.
 
 import React, { useEffect, useState } from "react";
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,14 +8,13 @@ import Button from 'react-bootstrap/Button';
 import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
-registerLocale('ru', ru);
 import * as log from 'loglevel';
-log.setLevel('debug');
 
 import InputRepairForm from "./inputRepairForm";
 import ReadModuleList from '../readModuleList';
 
-
+registerLocale('ru', ru);
+log.setLevel('debug');
 
 function InputDataSection(props) {
 
@@ -28,20 +26,9 @@ function InputDataSection(props) {
     const [addedRepair, setAddedRepair] = useState([]);
     const [modalShow, setModalShow] = useState(false);
 
-    
-    // если нет в лок хранилище или срок использованиея..
-    // проверка что вернуля не null? обработка ошибок?
-    // await getUnitEquipmentList();
-    //console.log('localstorage.setitem' + this.state.resultKeyListEquipment);
-    //localStorage.setItem("resultKeyListEquipment", resultKeyListEquipment);
-   
-
-
-
     function onSelectOptedData(selectedDate) {
         setOptedData(selectedDate);
     };
-
     function onHandleAddedRepair() {
         setAddedRepair([...addedRepair, 1]);
      };
@@ -72,7 +59,7 @@ function InputDataSection(props) {
             <InputRepairForm    show={modalShow} 
                                 onHide={() => setModalShow(false)}
                                 handleAddedRepair={onHandleAddedRepair}
-                                
+                                resetIdRecord={() => {return null}}
                                 />
             
             <ReadModuleList optedData={optedData} onAddedRepair={addedRepair}/>

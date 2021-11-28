@@ -1,48 +1,33 @@
 /* модуль для загрузки списка записей ремонтов. */
 
 import React, { useEffect, useState } from "react";
-
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
 import Table from 'react-bootstrap/Table'
-
-
-import ru from 'date-fns/locale/ru';
 import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
-
-//import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
-//import "react-datepicker/dist/react-datepicker.css";
-//registerLocale('ru', ru);
-
 import * as log from 'loglevel';
-log.setLevel('debug');
-import { loadFromDb } from './utils/loader';
 import * as _ from 'lodash';
+
+import { loadFromDb } from './utils/loader';
 import InputRepairForm from "./inputDataSection/inputRepairForm";
 
 
-
+log.setLevel('debug');
 
 
 function ReadModuleList(props) {
-
     const [queryFromDb, setQueryFromDb] = useState([]);
     const [modalShow, setModalShow] = useState(false);
     const [idRecord, setIdRecord] = useState('');
     const [addedRepair, setAddedRepair] = useState([]);
 
-
-
     let url = new URL (process.env.HTTP_API_HOST + ":" + 
                         process.env.HTTP_API_PORT + "/equipment");
     
 
-    if ( _.isEmpty(props.unitEquipment) === false) {
+    if (props.unitEquipment) {
         url.searchParams.set("equipment", props.unitEquipment);
     }
-
 
     if (props.optedData || props.onAddedRepair) {
        let date1 = startOfDay(props.optedData); // дата со временем 00:00 
@@ -58,25 +43,32 @@ function ReadModuleList(props) {
 
 
     useEffect(() => {
-            loadFromDb(url).then(queryFromDb => {
-                    setQueryFromDb(queryFromDb);
-            });
+            loadFromDb(url)
+                .then(result => {
+                    
+                        setQueryFromDb(result);
+                    
+
+                })
+                .catch(err => {
+                    alert('Error from server', err);
+                    throw new Error('respons from server bad', err);
+
+                });
 
     }, [props.repair, props.optedData, props.unitEquipment, props.onAddedRepair, addedRepair]);
     
 
     function onChangeRecord(e) {
         setIdRecord(e);
-    }
-
+    };
     function onHandleAddedRepair() {
         setAddedRepair([...addedRepair, 1]);
     };
 
 
 
-
-    if(!queryFromDb.length) {
+    if(!queryFromDb) {
         return (
             <div>
                 <h2>Нет записей</h2>
@@ -125,18 +117,14 @@ export default ReadModuleList;
 
 function ReadModuleBlock(props) {
 
-    const idRecord = props.i._id;
-
     function onRepairEdit() {
         props.onModalShow();
         props.onOpenRecord();
     };
-    
 
     const arrayRepair = props.i.repair.map((i, a) => {
         return <li key={a}>{i}</li>
     });
-
     const arrayMaterial = props.i.material.map((i,a) => {
         return (
             <li key={a}>
@@ -158,6 +146,7 @@ function ReadModuleBlock(props) {
             </td>
             <td>{ format(parseISO(props.i.dateRepairStart), 'dd-MM-yyyy, HH:mm') }</td>
             <td>{ format(parseISO(props.i.dateRepairEnd), 'dd-MM-yyyy, HH:mm') }</td>
+            
             <td>{props.i.equipment}</td>
             <td>
                 <ul>

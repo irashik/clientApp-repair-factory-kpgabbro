@@ -30,6 +30,7 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
     <button
       aria-label="Close"
       className="btn-close"
+      onClick={[Function]}
       type="button"
     />
   </ModalHeader>
@@ -48,6 +49,8 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
             Время начало ремонта
             <DatePickerDiv
               onSelectOptedData={[Function]}
+              setDate=""
+              type="dateStart"
             />
           </label>
         </Col>
@@ -56,6 +59,8 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
             Время окончания ремонта
             <DatePickerDiv
               onSelectOptedData={[Function]}
+              setDate=""
+              type="dateEnd"
             />
           </label>
         </Col>
@@ -82,8 +87,13 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
           md={6}
         >
           <FormInputRepair
-            count={Array []}
+            count={
+              Array [
+                1,
+              ]
+            }
             onHandleRepair={[Function]}
+            onLoadRepair={Array []}
           />
         </Col>
         <Col
@@ -100,9 +110,14 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
       >
         <Col>
           <FormInputMaterial
-            count={Array []}
+            count={
+              Array [
+                1,
+              ]
+            }
             onHandleMaterial={[Function]}
             onHandleMaterialVal={[Function]}
+            onLoadMaterial={Array []}
           />
         </Col>
         <Col
@@ -126,19 +141,19 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
           value=""
         />
       </Row>
+      <Row
+        noGutters={false}
+      >
+        <AuthorView
+          author=""
+        />
+      </Row>
     </Container>
   </ModalBody>
   <ModalFooter>
-    <Button
-      active={false}
-      className="m-3 d-grid gap-2"
-      disabled={false}
-      id="AddRepairEquipment"
-      onClick={[Function]}
-      variant="primary"
-    >
-      Записать
-    </Button>
+    <BtnView
+      onLoadRecord=""
+    />
   </ModalFooter>
 </Modal>
 `;

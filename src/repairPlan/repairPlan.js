@@ -11,8 +11,6 @@ import Form from 'react-bootstrap/Form';
 
 import InputPlanRepairForm from "./inputPlanRepairForm";
 import ReadPlansListModule from "./readPlansListModule";
-
-
 import SearchList from "../searchListUnitEquipment";
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -23,19 +21,17 @@ function RepairPlan(props) {
   const [modalShow, setModalShow] = useState(false);
   const [addedPlan, setAddedPlan] = useState([]);
   const [statusState, setStatusState] = useState('');
-
-
   const [searchString, setSearchString] = useState('');
   const [filter, setFilter] = useState('');
   const [idEquipment, setIdEquipment] = useState('');
 
 
-  const delay = 1000;
+
   const debouncedSetFilter = useDebouncedCallback(
       filter => setFilter(filter),
-      delay
-  );
+      process.env.DEBOUNCEDDELAY
 
+  );
   function onChangeSearch(e) {
       const { value } = e.target
       setSearchString(value);
@@ -43,22 +39,15 @@ function RepairPlan(props) {
       setIdEquipment(null)
 
   };
-
   function handlerSelectEquipment(id, joinNameUnit, e) {
     setSearchString(joinNameUnit);
     setIdEquipment(id);
     
   };
-
   function onHandleAddedPlan() {
     setAddedPlan([...addedPlan, 1]);
   };
   
-
-
-  useEffect(() => {
-        //setAddedPlan(false);
-    }, []);
 
 
     
@@ -80,9 +69,8 @@ function RepairPlan(props) {
           <label>Фильтр по статусу задачи</label>
           <Form.Control as='select' size="sm" aria-label="Выберите статус задачи"
                         value={statusState}
-                        onChange={(e) => setStatusState(e.target.value)}
-                        
-          >
+                        onChange={(e) => setStatusState(e.target.value)}   >
+
                             <option value=''> -- select an option -- </option>
                             <option value="DRAFT">Черновик</option>
                             <option value="CANCELLED">Отменено</option>
@@ -108,6 +96,8 @@ function RepairPlan(props) {
         <InputPlanRepairForm    show={modalShow} 
                                 onHide={() => setModalShow(false)}
                                 handleAddedPlan={onHandleAddedPlan}
+                                //resetIdRecord={() => {return null}}
+                                
         />
         <ReadPlansListModule    onAddedPlan={addedPlan} 
                                 onSelectEquipment={idEquipment} 

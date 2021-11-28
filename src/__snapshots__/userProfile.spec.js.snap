@@ -51,11 +51,34 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
           value=""
         />
       </FormGroup>
-      <br />
-      <br />
+      <FormGroup>
+        <br />
+        <Button
+          active={false}
+          disabled={false}
+          id="changeProfileBtn"
+          type="submit"
+          variant="primary"
+        >
+          Обновить данные
+        </Button>
+      </FormGroup>
+    </Form>
+    <br />
+    <br />
+    <br />
+    <Row
+      className="justify-content-md-center"
+      noGutters={false}
+    >
       <h4>
         Изменение пароля
       </h4>
+    </Row>
+    <Form
+      inline={false}
+      onSubmit={[Function]}
+    >
       <FormGroup
         controlId="formBasicPassword"
       >
@@ -86,10 +109,11 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
       <Button
         active={false}
         disabled={false}
+        id="changePasswordBtn"
         type="submit"
-        variant="primary"
+        variant="secondary"
       >
-        Сохранить
+        Сменить пароль
       </Button>
     </Form>
   </Row>

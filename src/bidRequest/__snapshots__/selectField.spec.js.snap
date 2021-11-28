@@ -4,7 +4,6 @@ exports[`MatchSnapShot components CategorySelectField snapShot 1`] = `
 <FormControl
   aria-label="Выберите категорию"
   as="select"
-  defaultValue=""
   id="selectCategory"
   onChange={[Function]}
   placeholder="Выберите категорию"

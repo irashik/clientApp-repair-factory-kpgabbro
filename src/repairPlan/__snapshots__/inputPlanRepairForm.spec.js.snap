@@ -20,7 +20,7 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
   show={false}
 >
   <ModalHeader
-    closeButton={true}
+    closeButton={false}
     closeLabel="Close"
   >
     <ModalTitle
@@ -28,6 +28,12 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
     >
       Форма ввода данных о плановых работах
     </ModalTitle>
+    <button
+      aria-label="Close"
+      className="btn-close"
+      onClick={[Function]}
+      type="button"
+    />
   </ModalHeader>
   <ModalBody
     className="show-grid"
@@ -59,7 +65,11 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
           md={6}
         >
           <FormInputRepair
-            count={Array []}
+            count={
+              Array [
+                1,
+              ]
+            }
             onHandleRecordRepair={[Function]}
             onLoadRepair={Array []}
           />
@@ -175,7 +185,7 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
   </ModalBody>
   <ModalFooter>
     <BtnView
-      onLoadRecord=""
+      onLoadRecord={Array []}
     />
   </ModalFooter>
 </Modal>

@@ -1,21 +1,14 @@
 
 import React, { useEffect, useState } from "react";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
-
 import {format, parseISO } from 'date-fns';
-
-
+import * as log from 'loglevel';
+import * as _ from 'lodash';
 
 import InputBidRequestForm from "./inputBidRequestForm";
 import { loadFromDb } from "../utils/loader";
-
-import * as log from 'loglevel';
-import * as _ from 'lodash';
 
 
 log.setLevel('debug');
@@ -34,7 +27,6 @@ function  ReadListBidRequest(props) {
 
 
     useEffect(() => {
-    
         const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest");
         
         // if(props.category || props.statusBid || props.priority == null) {
@@ -60,8 +52,6 @@ function  ReadListBidRequest(props) {
         loadFromDb(url)
             .then(queryFromDb => {
                     setListBidRequest(queryFromDb);
-
-
                     setIsLoaded(true);
       });
 
@@ -69,7 +59,7 @@ function  ReadListBidRequest(props) {
   
   
 
-    if (!listBidRequest.length) {
+    if (!listBidRequest) {
       return <div>Нет заявок</div> 
     } else {
         return (

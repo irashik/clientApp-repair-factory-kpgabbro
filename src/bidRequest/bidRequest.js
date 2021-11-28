@@ -36,9 +36,7 @@ function BidRequest(props) {
 
 
   return (
-
     <Container fluid className="m-0">
-
       <InputBidRequestForm  show={modalShow} 
                             onHide={() => setModalShow(false)}
                             handleAddedRecord={() => setAddedRecord([...addedRecord, 1])}
