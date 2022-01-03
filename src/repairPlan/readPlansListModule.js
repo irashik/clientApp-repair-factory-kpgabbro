@@ -44,8 +44,9 @@ function ReadPlansListModule(props) {
             .then(queryFromDb => {
                     setQueryFromDb(queryFromDb);
             })
-            .catch(e => {
-                return new Error(e);
+            .catch(err => {
+                alert('Error from server', err);
+                throw new Error(err);
             })
 
     }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment, updatedPlan]);

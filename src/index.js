@@ -5,7 +5,7 @@ import App from './app';
 import { CookiesProvider, Cookies } from 'react-cookie';
 
 // Importing the Bootstrap CSS
-//import '../bower_components/bootstrap/dist/css/bootstrap.min.css';
+import '../bower_components/bootstrap/dist/css/bootstrap.min.css';
 
 
 

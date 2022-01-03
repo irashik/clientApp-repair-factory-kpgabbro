@@ -25,18 +25,8 @@ function  ReadListBidRequest(props) {
     const [addedRecord, setAddedRecord] = useState([]);
 
 
-
     useEffect(() => {
         const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest");
-        
-        // if(props.category || props.statusBid || props.priority == null) {
-
-        //     let filter = `{ "statusBid": {"$ne": "FINISHED"}}`; // изначально все кроме выполненных
-        
-
-        //     url.searchParams.set("filter", filter );
-
-        // }
 
         if (props.statusBid) {
             url.searchParams.set("statusBid", props.statusBid);
@@ -53,6 +43,10 @@ function  ReadListBidRequest(props) {
             .then(queryFromDb => {
                     setListBidRequest(queryFromDb);
                     setIsLoaded(true);
+            })
+            .catch(err => {
+                setIsLoaded(false)
+                log.debug('response server is error' + err);
       });
 
     }, [props.addedRecord, addedRecord, props.category, props.statusBid, props.priority]);

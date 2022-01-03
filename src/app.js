@@ -31,9 +31,6 @@ import ProfileUserComponent from './userProfile';
 
 
 function App() {
-  const [user, setUser] = useState('testuser');
-
-
   
 
   return (
@@ -60,7 +57,7 @@ function App() {
         </Route>
         <Route path="/bidRequest">
           <Row>
-            <BidRequest user={user} />
+            <BidRequest />
           </Row>
         </Route>
         <Route path="/register">

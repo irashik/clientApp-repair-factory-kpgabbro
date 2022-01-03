@@ -251,13 +251,10 @@ function InputPlanRepairForm(props) {
         }
     }
     function modalClose() {
-            
         if(props.onLoadRecord) {
             props.resetIdRecord(); // сбросить id после выполнения.    
         }
-        
             props.onHide();
-
             setIdRecord('');
             setIdEquipment('');
             setSpendingJob(0);
@@ -268,11 +265,9 @@ function InputPlanRepairForm(props) {
             setPriority('');
             setAuthor('')
             setDateFinished('');
-
             setSearchString('')
             setRepairCount([1]);
             setFilter('');
-
             setSourceRepair([]);
     }
 

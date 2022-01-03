@@ -5,8 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
 import Table from 'react-bootstrap/Table'
 import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
-import * as log from 'loglevel';
-import * as _ from 'lodash';
+import log from 'loglevel';
+import _ from 'lodash';
 
 import { loadFromDb } from './utils/loader';
 import InputRepairForm from "./inputDataSection/inputRepairForm";
@@ -45,15 +45,11 @@ function ReadModuleList(props) {
     useEffect(() => {
             loadFromDb(url)
                 .then(result => {
-                    
                         setQueryFromDb(result);
-                    
-
                 })
                 .catch(err => {
                     alert('Error from server', err);
                     throw new Error('respons from server bad', err);
-
                 });
 
     }, [props.repair, props.optedData, props.unitEquipment, props.onAddedRepair, addedRepair]);
@@ -123,7 +119,9 @@ function ReadModuleBlock(props) {
     };
 
     const arrayRepair = props.i.repair.map((i, a) => {
-        return <li key={a}>{i}</li>
+        return (
+             <li key={a}>{i.type}:{i.description}</li>
+        )
     });
     const arrayMaterial = props.i.material.map((i,a) => {
         return (

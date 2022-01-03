@@ -1,3 +1,10 @@
 {
-    "projectId": "ykrvrk"
+    "projectId": "ykrvrk",
+    "baseUrl": "http://localhost:8080",
+    "env": {
+        "login_url": "/auth"
+        
+    },
+    "experimentalSessionSupport": true
+    
 }

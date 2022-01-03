@@ -50,7 +50,7 @@ function ProfileUserComponent() {
 
      })
      .catch(err => {
-      throw new Error ('respnse from server', err);
+        throw new Error ('respnse from server', err);
      });
     
 
@@ -82,20 +82,13 @@ function ProfileUserComponent() {
 
     queryServer
     .then(res => {
-      
-      log.debug(res);
       setName(res.name);
       setPosition((res.position || ""));
       setEmail(res.email);
-
-
     })
     .catch(err => {
       throw new Error ('error from server', err);
     })
-
-
-
   }, []);
 
 

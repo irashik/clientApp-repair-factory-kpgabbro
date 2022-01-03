@@ -54,28 +54,24 @@ function AuthButton() {
   const user = localStorage.getItem('userName');
 
   function onClickLogout() {
-      const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/logout");
-
-      url.searchParams.set('userId', localStorage.getItem('userId'));
-      url.searchParams.set('userName', localStorage.getItem('userName'));
+    const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/logout");
+    url.searchParams.set('userId', localStorage.getItem('userId'));
+    url.searchParams.set('userName', localStorage.getItem('userName'));
 
     const load = loadFromDb(url);
 
-
-
     load
-      .then(result => {
+      .then(() => {
         alert('Logout is successfully!');
         localStorage.clear();
-        const homeUrl = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/");
+        const homeUrl = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT + "/");
         document.location.href = homeUrl;
-
 
       })
       .catch(err => {
-        alert('Logout is not successfully. Err= ' + err);
+        alert('Logout Error: ' + err);
+        localStorage.clear();
         throw new Error('Logout not successfully');
-
       });
   }
 
@@ -90,14 +86,15 @@ function AuthButton() {
         <Button size="sm" variant="outline-secondary" className='m-2'
                 id="LogoutBtn"
                 onClick={onClickLogout}>
-                  LogOut</Button>
+                  Выход</Button>
       </ButtonGroup>
     )
   } else {
     return (
       <ButtonGroup className='col-5' aria-label='Basic example'>
         <LinkContainer to='/register'>
-          <Button href='/register' variant="outline-secondary align-items-end btn-sm mr-2" id="registerButton">Register</Button>
+          <Button href='/register' variant="outline-secondary align-items-end btn-sm mr-2" 
+                  id="registerButton">Register</Button>
         </LinkContainer>
         <LinkContainer to='/auth'>
           <Button href='/auth' variant="outline-secondary btn-sm mr-2" id="loginButton">Sign in</Button>

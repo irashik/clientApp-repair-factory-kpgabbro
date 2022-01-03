@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import * as log from 'loglevel';
+import log from 'loglevel';
 import { format, parseISO } from 'date-fns';
 
 import {StatusSelectField, CategorySelectField, PrioritySelectField } from "./selectField";
@@ -32,12 +32,14 @@ function InputBidRequestForm(props) {
     function onClickAddedRecord() {
 
         const dateCreated = new Date();
+        const dateStatusBid = new Date();
+
         let data = {
             dateCreated: dateCreated,
             description: description,
             statusBid: statusBid,
-            //dateStatusBid: 
-            // lastAuthor: 
+            dateStatusBid: dateStatusBid.toISOString(),
+            lastAuthor: null,
             priority: priority,
             author: localStorage.getItem('userId'),
             category: category,
@@ -75,7 +77,7 @@ function InputBidRequestForm(props) {
         let data = {
             description: description,
             statusBid: statusBid,
-            dateStatusBid: dateStatusBid,
+            dateStatusBid: dateStatusBid.toISOString(),
             lastAuthor:  localStorage.getItem('userId'),
             priority: priority,
             category: category,

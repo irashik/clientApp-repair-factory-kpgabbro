@@ -24,7 +24,7 @@ describe('main page test', () => {
     cy.get('#formBasicPassword').type('dima');
     cy.get('#signIn').click();
 
-    cy.url().should('include', 'localhost:8080/')
+    cy.url().should('eq', 'http://localhost:8080/')
     
   })
 

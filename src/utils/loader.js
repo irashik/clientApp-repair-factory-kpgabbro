@@ -14,6 +14,7 @@ log.setLevel('debug');
 
 class Loader {
   constructor(url, method, data, accessToken, refreshToken) {
+    
     this.url = url,
     this.method =  method,
     this.data = data,
@@ -21,7 +22,6 @@ class Loader {
     this.accessToken = accessToken
 
     this.tokenstr = "Bearer " + this.accessToken,
-    
     this.refOptions = {
       method: "GET",
       mode: 'cors',
@@ -34,8 +34,6 @@ class Loader {
       },
       redirect: 'follow'
     }
-
-
     this.options = {
       method: this.method,
       mode: 'cors',
@@ -122,7 +120,7 @@ function loadFromDb(url) {
             localStorage.setItem('accessToken', newTokensRes.accessToken);
             localStorage.setItem('refreshToken', newTokensRes.refreshToken);
             
-            // делаем изначальный запрос еще раз.
+            // еще раз делаем запрос на получение данных
             const loader = new Loader(url, "GET", null, newTokensRes.accessToken, null);
             const requestInDb = fetch(loader.url, loader.options);
     
@@ -130,11 +128,8 @@ function loadFromDb(url) {
               .then(newres => {
                 if(newres.status == 401) {
                   throw new Error ('UNAUTHORIZED');
-
                 } else if (newres.status === 201 || newres.status == 200 || res.status == 304) {
-                 
                   return newres.json();
-
                 } else {
                   reject (new Error(newres));
                 }
@@ -142,13 +137,12 @@ function loadFromDb(url) {
               .catch(err => {
                 reject(new Error(err));
               });
-
-              
           })
           .catch(err => {
             reject(new Error('server not return tokens' + err));
           });
         
+
           
 
         }
@@ -183,7 +177,7 @@ function unloadInDb(url, data) {
       .then(res => {
         if (res.status == 401) { //Unauthorized
           throw new Error('UNAUTHORIZED');
-          // здесь нужно выполнить один цикл по обновлению токена.
+          // todo здесь желательно выполнить один цикл по обновлению токена.
 
 
 
