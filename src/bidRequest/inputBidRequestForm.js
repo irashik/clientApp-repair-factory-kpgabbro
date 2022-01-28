@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -28,18 +27,15 @@ function InputBidRequestForm(props) {
     const [lastAuthor, setLastAuthor] = useState('');
     const [author, setAuthor] = useState('');
 
+
     
     function onClickAddedRecord() {
-
-        const dateCreated = new Date();
-        const dateStatusBid = new Date();
-
+        
         let data = {
-            dateCreated: dateCreated,
+            dateCreated: new Date(),
             description: description,
             statusBid: statusBid,
-            dateStatusBid: dateStatusBid.toISOString(),
-            lastAuthor: null,
+            dateStatusBid: new Date (),
             priority: priority,
             author: localStorage.getItem('userId'),
             category: category,
@@ -73,11 +69,11 @@ function InputBidRequestForm(props) {
             });
     };
     function onClickUpdateRecord() {
-        const dateStatusBid = new Date();
+        
         let data = {
             description: description,
             statusBid: statusBid,
-            dateStatusBid: dateStatusBid.toISOString(),
+            dateStatusBid: new Date(),
             lastAuthor:  localStorage.getItem('userId'),
             priority: priority,
             category: category,
@@ -106,12 +102,9 @@ function InputBidRequestForm(props) {
                 catch(e) {
                     throw new Error('error=', e);
                 }
-
-
             })
             .catch(err => {
                 throw new Error('какая-то ошибка', err);
-
             })
     };
 
@@ -131,7 +124,7 @@ function InputBidRequestForm(props) {
                     setDateCreated(result.dateCreated);
                     setDateStatusBid(result.dateStatusBid);
                     setPriority(result.priority);
-                    setAuthor(result.author);
+                    setAuthor(result.author[0].name);
                     setLastAuthor(result.lastAuthor);
                     setCategory(result.category);
                     setIdRecord(result._id);

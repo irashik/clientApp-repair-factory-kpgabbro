@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
@@ -6,14 +5,10 @@ import { TiPen } from 'react-icons/ti';
 import {format, parseISO } from 'date-fns';
 import * as log from 'loglevel';
 import * as _ from 'lodash';
-
 import InputBidRequestForm from "./inputBidRequestForm";
 import { loadFromDb } from "../utils/loader";
 
-
 log.setLevel('debug');
-
-
 
 
 
@@ -57,16 +52,13 @@ function  ReadListBidRequest(props) {
       return <div>Нет заявок</div> 
     } else {
         return (
-
             <React.Fragment>
-
                 <InputBidRequestForm    show={modalShow}
                                         onHide={() => setModalShow(false)}
                                         onLoadRecord={idRecord}
                                         resetIdRecord={() => setIdRecord('')}
                                         handleAddedRecord={() => setAddedRecord([...addedRecord, 1])}
                 />
-
 
                 <Table id='tableBidRequest' responsive='mg' bordered hover>
                     <thead>
@@ -77,14 +69,12 @@ function  ReadListBidRequest(props) {
                             <th>Дата изм. статуса</th>
                             <th>Автор изменений</th>
 
-
                             <th>Категория</th>
                             <th>Приоритет</th>
                             
                             <th>Дата создания</th>
                             <th>Автор</th>
                             <th>Комментарий</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -104,16 +94,12 @@ function  ReadListBidRequest(props) {
             </React.Fragment>
         )
     }
-}
+};
 export default ReadListBidRequest;
 
 
 
-
-
-
 function ReadModuleBlock(props) {
-
 
     function onBidRequestEdit() {
         props.onModalShow();
@@ -121,7 +107,6 @@ function ReadModuleBlock(props) {
     }
 
     let { onOpenRecord, onModalShow, ...customProps } = props;
-    
     customProps = customProps.i;
 
     
@@ -134,6 +119,7 @@ function ReadModuleBlock(props) {
             return (<td></td>)
         }
     };
+
     function DateCreatedView(customProps) {
         if(customProps.dateCreated) {
             return (
@@ -144,6 +130,19 @@ function ReadModuleBlock(props) {
         }
     };
 
+
+    function LastAuthorView(customProps) {
+        console.log('lastAuthor == ' + customProps.lastAuthor);
+
+
+        if(customProps.lastAuthor.length) {
+            return (
+                <td>{customProps.lastAuthor[0].name}</td>
+            )
+        } else {
+            return (<td></td>)
+        }
+    }
     return (
         <tr key={customProps._id}>
             <td>
@@ -160,13 +159,13 @@ function ReadModuleBlock(props) {
             <td>{customProps.description}</td>
             <td>{customProps.statusBid}</td>
             <DateStatusBidView dateStatusBid={customProps.dateStatusBid} />
-            <td>{customProps.lastAuthor}</td>
+            
+            <LastAuthorView lastAuthor={customProps.lastAuthor} />
+
             <td>{customProps.category}</td>
             <td>{customProps.priority}</td>    
-         
             <DateCreatedView dateCreated={customProps.dateCreated} />
-
-            <td>{customProps.author}</td>
+            <td>{customProps.author[0].name}</td>
             <td>{customProps.comment}</td>
         </tr>
     )

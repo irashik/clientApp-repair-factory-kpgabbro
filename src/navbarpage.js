@@ -1,7 +1,3 @@
-/*
-компонент навбара с сылками
-*/
-
 import React, { useState, Fragment } from 'react';
 import { LinkContainer } from  'react-router-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -54,15 +50,19 @@ function AuthButton() {
   const user = localStorage.getItem('userName');
 
   function onClickLogout() {
+
     const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/logout");
     url.searchParams.set('userId', localStorage.getItem('userId'));
     url.searchParams.set('userName', localStorage.getItem('userName'));
 
-    const load = loadFromDb(url);
+    
 
-    load
-      .then(() => {
+    loadFromDb(url)
+      .then((response) => {
         alert('Logout is successfully!');
+        
+        console.log(response);
+
         localStorage.clear();
         const homeUrl = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT + "/");
         document.location.href = homeUrl;
@@ -72,6 +72,7 @@ function AuthButton() {
         alert('Logout Error: ' + err);
         localStorage.clear();
         throw new Error('Logout not successfully');
+
       });
   }
 

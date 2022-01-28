@@ -23,20 +23,18 @@ function InputPlanRepairForm(props) {
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
-
     const [repairCount, setRepairCount] = useState([1]);
     const [repair, setRepair] = useState([]);
     const [sourceRepair, setSourceRepair] = useState([]);
-
     const [spendingJob, setSpendingJob] = useState(0);
     const [statusState, setStatusState] = useState('DRAFT');
     const [priority, setPriority] = useState('');
     const [comment, setComment] = useState('');
-    
     const [idRecord, setIdRecord] = useState([]);
     const [dateCreated, setDateCreated] = useState('');
     const [dateFinished, setDateFinished] = useState('');
     const [author, setAuthor] = useState('');
+    const [idAuthor, setIdAuthor] = useState('');
     
 
     
@@ -79,6 +77,8 @@ function InputPlanRepairForm(props) {
                 setPriority('');
                 setComment('');
                 setRepair([]);
+                setAuthor('');
+                setIdAuthor('');
 
                 //todo toast message add ?
                 props.onHide();
@@ -116,6 +116,8 @@ function InputPlanRepairForm(props) {
                     setRepair([]);
                     setSourceRepair([]);
                     setRepairCount([1]);
+                    setAuthor('');
+                    setIdAuthor('');
     
                     //todo toast message add ?
                     props.handleAddedPlan();
@@ -140,8 +142,7 @@ function InputPlanRepairForm(props) {
     }
 
     const { handleAddedPlan, onLoadRecord, resetIdRecord, ...modal} = props; // исключаю пропсы-функции
-
-    
+   
     
 
     useEffect(() => {
@@ -152,7 +153,7 @@ function InputPlanRepairForm(props) {
             loadFromDb(url)
                 .then(result => {
                     setIdRecord(result._id);
-                    setIdEquipment(result.equipment);
+                    setIdEquipment(result.equipment[0]._id);
                     setSpendingJob(result.spendingJob);
                     
                     setSourceRepair(result.description);
@@ -164,7 +165,8 @@ function InputPlanRepairForm(props) {
                     setDateCreated(result.dateCreated);
                     setDateFinished(result.dateFinished);
                     setPriority(result.priority);
-                    setAuthor(result.author);
+                    setAuthor(result.author[0].name);
+                    setIdAuthor(result.author[0]._id);
     
                     // idEquipment есть нужна строка.
                     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
@@ -195,7 +197,8 @@ function InputPlanRepairForm(props) {
                 setComment('');
                 setDateCreated('');
                 setPriority('');
-                setAuthor('')
+                setAuthor('');
+                setIdAuthor('');
                 setDateFinished('');
                 setSearchString('')
                 setRepairCount([1]);
@@ -213,6 +216,7 @@ function InputPlanRepairForm(props) {
         } else { 
             return (null) }
     };
+
     function DateFinishedView(modal) {
         if(modal.dateFinished) {
             return (
@@ -220,10 +224,11 @@ function InputPlanRepairForm(props) {
             )
         } else { return(null) }
     };
+
     function AuthorView(modal) {
         if(modal.author) {
             return (
-        <p>Автор записи: {modal.author}</p>
+        <p>Автор записи: {modal.author[0].name}</p>
             )
         } else { return(null) }
     };
@@ -249,7 +254,8 @@ function InputPlanRepairForm(props) {
                 </Button>
             );
         }
-    }
+    };
+
     function modalClose() {
         if(props.onLoadRecord) {
             props.resetIdRecord(); // сбросить id после выполнения.    
@@ -263,13 +269,16 @@ function InputPlanRepairForm(props) {
             setComment('');
             setDateCreated('');
             setPriority('');
-            setAuthor('')
+            setAuthor('');
+            setIdAuthor('');
             setDateFinished('');
             setSearchString('')
             setRepairCount([1]);
             setFilter('');
             setSourceRepair([]);
-    }
+    };
+
+
 
     return(    
         <Modal {...modal} 
@@ -300,6 +309,16 @@ function InputPlanRepairForm(props) {
                                     />
                             <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
                             <br></br>
+                            <label>Трудозатраты</label>
+                        <Form.Control 
+                                id='inputSpendingJob' size="sm" pattern="[0-9]*" 
+                                type="number" 
+                                placeholder="трудозатраты"
+                                onChange={(e)=> setSpendingJob(e.target.value)}
+                                value={spendingJob}
+                                />
+                                
+
                         </Col>
                         <Col md={6}>
                             <FormInputRepair    count={repairCount} onHandleRecordRepair={onRecordRepair} 
@@ -339,14 +358,7 @@ function InputPlanRepairForm(props) {
                                         />
                     </Row>
                     <Row>
-                        <label>Трудозатраты</label>
-                        <Form.Control 
-                                id='inputSpendingJob' size="sm" pattern="[0-9]*" 
-                                type="number" 
-                                placeholder="трудозатраты"
-                                onChange={(e)=> setSpendingJob(e.target.value)}
-                                value={spendingJob}
-                                />
+                        
                     </Row>
                     <Row>
                         <DateCreatedView dateCreated={dateCreated}/>
@@ -380,6 +392,7 @@ function InputGroupButtonSmall(props) {
                 >+</Button>
     );
 };
+
 function FormInputRepair(props) {
     const [count, setCount] = useState([]);
     const [repair, setRepair] = useState([]);

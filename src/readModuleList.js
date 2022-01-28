@@ -90,7 +90,7 @@ function ReadModuleList(props) {
                             <th>Выполненные работы</th>
                             <th>Материалы, запчасти</th>
                             <th>Автор</th>
-                            <th>Трудозатраты</th>
+                           
                         </tr>
                     </thead>
                     <tbody>
@@ -145,7 +145,7 @@ function ReadModuleBlock(props) {
             <td>{ format(parseISO(props.i.dateRepairStart), 'dd-MM-yyyy, HH:mm') }</td>
             <td>{ format(parseISO(props.i.dateRepairEnd), 'dd-MM-yyyy, HH:mm') }</td>
             
-            <td>{props.i.equipment}</td>
+            <td>{props.i.equipment[0].position}</td>
             <td>
                 <ul>
                     {arrayRepair}
@@ -156,8 +156,8 @@ function ReadModuleBlock(props) {
                     {arrayMaterial}
                 </ul>
             </td>
-            <td>{props.i.author}</td>
-            <td>{props.i.spendingJob}</td>
+            <td>{props.i.author[0].name}</td>
+           
         </tr>
     )
 };

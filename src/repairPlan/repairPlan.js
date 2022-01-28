@@ -1,14 +1,9 @@
-// Отчет по планируемым работам
-
-
 import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
-
 import InputPlanRepairForm from "./inputPlanRepairForm";
 import ReadPlansListModule from "./readPlansListModule";
 import SearchList from "../searchListUnitEquipment";
@@ -17,7 +12,6 @@ import { useDebouncedCallback } from 'use-debounce';
 
 
 function RepairPlan(props) {
-
   const [modalShow, setModalShow] = useState(false);
   const [addedPlan, setAddedPlan] = useState([]);
   const [statusState, setStatusState] = useState('');
@@ -26,24 +20,23 @@ function RepairPlan(props) {
   const [idEquipment, setIdEquipment] = useState('');
 
 
-
   const debouncedSetFilter = useDebouncedCallback(
       filter => setFilter(filter),
       process.env.DEBOUNCEDDELAY
-
   );
+
   function onChangeSearch(e) {
       const { value } = e.target
       setSearchString(value);
       debouncedSetFilter(value);
       setIdEquipment(null)
-
   };
+
   function handlerSelectEquipment(id, joinNameUnit, e) {
     setSearchString(joinNameUnit);
     setIdEquipment(id);
-    
   };
+  
   function onHandleAddedPlan() {
     setAddedPlan([...addedPlan, 1]);
   };

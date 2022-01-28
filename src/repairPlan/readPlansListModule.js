@@ -1,8 +1,4 @@
-/* 
-    модуль для загрузки списка записей о плановых работах! 
-*/
-
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
 import Table from 'react-bootstrap/Table'
@@ -10,7 +6,6 @@ import {format, parseISO } from 'date-fns';
 import * as log from 'loglevel';
 import { loadFromDb } from "../utils/loader";
 import InputPlanRepairForm from './inputPlanRepairForm';
-
 
 log.setLevel('debug');
 
@@ -20,7 +15,6 @@ function ReadPlansListModule(props) {
     const [modalShow, setModalShow] = useState(false);
     const [updatedPlan, setUpdatedPlan] = useState([]);
     const [idRecord, setIdRecord] = useState('');
-
 
     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan");
 
@@ -61,7 +55,6 @@ function ReadPlansListModule(props) {
     } else {
         return (
             <React.Fragment>
-        
                 <InputPlanRepairForm    show={modalShow}
                                         onHide={() => setModalShow(false)}
                                         onLoadRecord={idRecord}
@@ -144,16 +137,14 @@ function ReadModuleBlock(props) {
                     {arrayPlanRepair}
                 </ul>
             </td>
-            <td>{props.i.equipment}      </td>
+            <td>{props.i.equipment[0].position}      </td>
             <td>{props.i.status}      </td>
             <td>{ format(parseISO(props.i.dateCreated), 'dd-MM-yyyy') }</td>
             <td>{props.i.comment}    </td>
             <td>{props.i.priority}</td>         
-            <td>{props.i.author}</td>
-
+            <td>{props.i.author[0].name}</td>
             <DateFinishView dateFinished={props.i.dateFinished} />
             <td>{props.i.spendingJob}</td>
-
         </tr>
     )
 };

@@ -1,30 +1,18 @@
-// Страница заявок и предложений
-/*
-пользователь может добавить новую заявку
-Пользователь видит все заявки
-
-*/
-
 import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import * as log from 'loglevel';
-
-
 import InputBidRequestForm from "./inputBidRequestForm";
 import ReadListBidRequest from "./readListBidRequest";
 import { StatusSelectField, CategorySelectField, PrioritySelectField } from './selectField';
 
-
-
-
 log.setLevel('debug');
 
 
+
 function BidRequest(props) {
-  
   const [statusBid, setStatusBid] = useState("");
   const [priority, setPriority] = useState("");
   const [category, setCategory] = useState("");

@@ -14,22 +14,19 @@ import { useDebouncedCallback } from 'use-debounce';
 import ru from 'date-fns/locale/ru';
 import {parseISO } from 'date-fns';
 import * as log from 'loglevel';
-
-
 import SearchList from "../searchListUnitEquipment";
 import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
 
 log.setLevel('debug');
 registerLocale('ru', ru);
 
-
 function InputRepairForm(props) {
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
+    const [equipment, setEquipment] = useState('')
     const [dateStart, setDateStart] = useState('');
     const [dateEnd, setDateEnd] = useState('');
-    const [spendingJob, setSpendingJob] = useState('');
     const [repair, setRepair] = useState([]);
     const [repairCount, setRepairCount] = useState([1]);
     const [materialCount, setMaterialCount] = useState([1]);
@@ -37,6 +34,7 @@ function InputRepairForm(props) {
     const [idRecord, setIdRecord] = useState('');
     const [sourceRepair, setSourceRepair] = useState([]);
     const [sourceMaterial, setSourceMaterial] = useState([]);
+    const [idAuthor, setIdAuthor] = useState('')
     const [author, setAuthor] = useState('');
     const [sourceDateStart, setSourceDateStart] = useState('');
     const [sourceDateEnd, setSourceDateEnd] = useState('');
@@ -46,7 +44,6 @@ function InputRepairForm(props) {
         filter => setFilter(filter),
         process.env.DEBOUNCEDDELAY
     );
-
     function onChangeSearch(e) {
         const a = e.target.value.toString();
         setSearchString(a);
@@ -66,9 +63,7 @@ function InputRepairForm(props) {
             repair: repair,
             author: localStorage.getItem('userId'),
             material: material,
-            spendingJob: spendingJob
         };
-        // записать в базу
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/equipment";
 
         unloadInDb(url, data)
@@ -81,9 +76,7 @@ function InputRepairForm(props) {
                     return new Error(err);
             });
     };
-
     function onClickUpdateRepair() {
-
         let data = {
             dateRepairStart: dateStart,
             dateRepairEnd: dateEnd,
@@ -91,24 +84,19 @@ function InputRepairForm(props) {
             repair: repair,
             author: localStorage.getItem('userId'),
             material: material,
-            spendingJob: spendingJob
         };
-
-        // записать в базу
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT +
                     "/equipment" + "/" + idRecord;
-
 
         unloadInDbPatch(url, data)
             .then(() => {
                 modalClose(); // закрыть модальное окно.
                 props.handleAddedRepair(); // для обновление списка ремонтов. 
-
-                })
-                .catch(err => {
+            })
+            .catch(err => {
                     alert('catch==' + JSON.stringify(err));
                     return new Error(err);
-                });
+            });
 
     };
     function onSelectOptedDateStart(selectedDate) {
@@ -118,7 +106,6 @@ function InputRepairForm(props) {
         setDateEnd(selectedDate);
     };
     function BtnView(props) {
-       
         if(props.onLoadRecord) {
             return (
                 <Button variant="primary"    
@@ -146,13 +133,15 @@ function InputRepairForm(props) {
         }
         cleanupState();
     };
+
     function cleanupState() {
         setIdRecord('');
         setIdEquipment('');
-        setSpendingJob('');
+        setEquipment('');
         setDateStart('');
         setDateEnd('');
         setAuthor('');
+        setIdAuthor('');
  
         setSourceRepair([]);
         setSourceMaterial([]);
@@ -169,12 +158,13 @@ function InputRepairForm(props) {
         setSearchString('');
         setFilter('');
     };
+
     function AuthorView(modal) {
         if(modal.author) {
             return (
-        <p id='textAuthor'>Автор записи: {modal.author}</p>
+                <p id='textAuthor'>Автор записи: {modal.author}</p>
             )
-        } else { return(null) }
+        } else { return null }
     };
 
 
@@ -186,8 +176,9 @@ function InputRepairForm(props) {
             loadFromDb(url)
                 .then(result => {
                     setIdRecord(result._id);
-                    setIdEquipment(result.equipment);
-                    setSpendingJob(result.spendingJob);
+                    setIdEquipment(result.equipment[0]._id);
+                    setEquipment(result.equipment[0].position);
+
                     setSourceDateStart(result.dateRepairStart);
                     setSourceDateEnd(result.dateRepairEnd);
                     setDateStart(result.dateRepairStart);
@@ -202,16 +193,16 @@ function InputRepairForm(props) {
                     const newMatCount = new Array(result.material.length);
                     setMaterialCount(newMatCount);
 
-                    setAuthor(result.author);
+                    setAuthor(result.author[0].name);
+                    setIdAuthor(result.author[0]._id);
                     
                     // idEquipment есть нужна строка.
                     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
-                            "/unit-equipment" + "/" + result.equipment);
+                            "/unit-equipment" + "/" + result.equipment[0]._id);
 
                     loadFromDb(url).then(result => {
                         let fullName = result.position + " " + result.group;
                         setSearchString(fullName);
-                        // а как же отслеживание состояния? - будет тогда еще один запрос.
                        //todo этот код похоже ненадежный, но он работает. )
                     })
                     .catch(e => {
@@ -301,15 +292,8 @@ function InputRepairForm(props) {
                                 <InputGroupButtonSmall name="material" onHandleMaterialCount={() => setMaterialCount([...materialCount, 1])} />
                             </Col>
                         </Row>
-                        <Row>
-                            <Col md={3}>
-                                <Form.Control id='inputSpendingJob' size="sm" type="text" 
-                                                placeholder="Трудозатраты"
-                                                value={spendingJob}
-                                                onChange={(e) => setSpendingJob(e.target.value)}
-                                                />
-                            </Col>
-                        </Row>
+                       
+
                         <Row>
                             <AuthorView author={author} />
                         </Row>
