@@ -1,20 +1,20 @@
-// страница ввода данных о ремонте.
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import DatePicker, { registerLocale, setDefaultLocale} from 'react-datepicker';
+import DatePicker, { registerLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import * as log from 'loglevel';
-
 import InputRepairForm from "./inputRepairForm";
 import ReadModuleList from '../readModuleList';
 
+
 registerLocale('ru', ru);
 log.setLevel('debug');
+
+
 
 function InputDataSection(props) {
 

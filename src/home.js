@@ -4,9 +4,6 @@ import Row from 'react-bootstrap/Row';
 
 
 function HomeComponent() {
-
-  
-
     
       return (
         <Container fluid >

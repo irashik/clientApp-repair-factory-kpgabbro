@@ -1,23 +1,15 @@
-/*
-модуль делающий запрос к базе по еденицам оборудования и осуществляющем поиск.
-
-*/
 import React, { useState, useEffect }  from "react";
-import Fuse from 'fuse.js';
-import { loadFromDb } from "./utils/loader";
-
-
 import * as log from 'loglevel';
+import { loadFromDb } from './utils/loader';
+
 log.setLevel('debug');
 
 
 function SearchList(props) {
-
     const [filteredList, setFilteredList] = useState([]);
     const [selected, setSelected] = useState(false);
 
     useEffect(() => {
-
         setSelected(false);
         const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/unit-equipment");
 

@@ -1,10 +1,3 @@
-/*
-* Личный кабинет пользователя
-*  редактирование данных.
-*  Что-еще? посмотреть свои заявки и статус по ним
-*            заметки свои?
-*/
-
 import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -14,20 +7,17 @@ import * as log from 'loglevel';
 import { loadFromDb, unloadInDbPatch } from "./utils/loader";
 
 
-
 log.setLevel('debug');
 
 
 
 
 function ProfileUserComponent() {
-
   const [password2, setPassword2] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
   const [email, setEmail] = useState('');
-
 
 
   function handleSubmit(e) {
@@ -43,10 +33,7 @@ function ProfileUserComponent() {
     const url = new URL ( process.env.HTTP_API_HOST + ":" + 
                           process.env.HTTP_API_PORT + "/users/" + id);
 
-     const queryServer = unloadInDbPatch(url, data);
-     
-     queryServer
-     .then(res => {
+     unloadInDbPatch(url, data).then(res => {
 
      })
      .catch(err => {
@@ -57,12 +44,13 @@ function ProfileUserComponent() {
 
 
   };
+  
   function changePassword(e) {
     e.preventDefault();
 
 
     if(password === password2) {
-
+        //todo
     } else {
       alert ('пароли не совпадают');
       return new Error('password not equal');

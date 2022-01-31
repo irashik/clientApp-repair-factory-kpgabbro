@@ -1,17 +1,95 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ReadModuleList/> should render correctly empty list 1`] = `
-<div>
-  <h2>
-    Нет записей
-  </h2>
-</div>
+<Fragment>
+  <InputRepairForm
+    handleAddedRepair={[Function]}
+    onHide={[Function]}
+    onLoadRecord=""
+    resetIdRecord={[Function]}
+    show={false}
+  />
+  <ForwardRef
+    bordered={true}
+    hover={true}
+    id="tableRepair"
+    responsive="mg"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          #
+        </th>
+        <th>
+          Дата начала
+        </th>
+        <th>
+          Дата окончания
+        </th>
+        <th>
+          Оборудование
+        </th>
+        <th>
+          Выполненные работы
+        </th>
+        <th>
+          Материалы, запчасти
+        </th>
+        <th>
+          Автор
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </ForwardRef>
+</Fragment>
 `;
 
 exports[`<ReadModuleList/> should render correctly full list 1`] = `
-<div>
-  <h2>
-    Нет записей
-  </h2>
-</div>
+<Fragment>
+  <InputRepairForm
+    handleAddedRepair={[Function]}
+    onHide={[Function]}
+    onLoadRecord=""
+    resetIdRecord={[Function]}
+    show={false}
+  />
+  <ForwardRef
+    bordered={true}
+    hover={true}
+    id="tableRepair"
+    responsive="mg"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          #
+        </th>
+        <th>
+          Дата начала
+        </th>
+        <th>
+          Дата окончания
+        </th>
+        <th>
+          Оборудование
+        </th>
+        <th>
+          Выполненные работы
+        </th>
+        <th>
+          Материалы, запчасти
+        </th>
+        <th>
+          Автор
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </ForwardRef>
+</Fragment>
 `;

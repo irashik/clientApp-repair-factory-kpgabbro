@@ -191,7 +191,7 @@ function InputBidRequestForm(props) {
         if(props.onLoadRecord) {
             return (
                 <Button variant="primary"    
-                            id="UpdatePlanbtn"
+                            id="UpdateBidBtn"
                             className="m-3 d-grid gap-2" 
                             onClick={onClickUpdateRecord}
                         >Обновить
@@ -200,7 +200,7 @@ function InputBidRequestForm(props) {
         } else {
             return (
                 <Button variant="primary"    
-                            id="CreatePlanbtn"
+                            id="CreateBidBtn"
                             className="m-3 d-grid gap-2" 
                             onClick={onClickAddedRecord}
                         >Создать

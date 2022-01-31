@@ -1,7 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ReadListBidRequest /> snapShot correctly 1`] = `
-<div>
-  Нет заявок
-</div>
+<Fragment>
+  <InputBidRequestForm
+    handleAddedRecord={[Function]}
+    onHide={[Function]}
+    onLoadRecord=""
+    resetIdRecord={[Function]}
+    show={false}
+  />
+  <ForwardRef
+    bordered={true}
+    hover={true}
+    id="tableBidRequest"
+    responsive="mg"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          #
+        </th>
+        <th
+          className="col-2"
+        >
+          Описание заявки
+        </th>
+        <th>
+          Статус заявки
+        </th>
+        <th>
+          Дата изм. статуса
+        </th>
+        <th>
+          Автор изменений
+        </th>
+        <th>
+          Категория
+        </th>
+        <th>
+          Приоритет
+        </th>
+        <th>
+          Дата создания
+        </th>
+        <th>
+          Автор
+        </th>
+        <th>
+          Комментарий
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </ForwardRef>
+</Fragment>
 `;

@@ -60,6 +60,18 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
             onSelectEquipment={[Function]}
           />
           <br />
+          <label>
+            Трудозатраты
+          </label>
+          <FormControl
+            id="inputSpendingJob"
+            onChange={[Function]}
+            pattern="[0-9]*"
+            placeholder="трудозатраты"
+            size="sm"
+            type="number"
+            value={0}
+          />
         </Col>
         <Col
           md={6}
@@ -154,20 +166,7 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
       </Row>
       <Row
         noGutters={false}
-      >
-        <label>
-          Трудозатраты
-        </label>
-        <FormControl
-          id="inputSpendingJob"
-          onChange={[Function]}
-          pattern="[0-9]*"
-          placeholder="трудозатраты"
-          size="sm"
-          type="number"
-          value={0}
-        />
-      </Row>
+      />
       <Row
         noGutters={false}
       >

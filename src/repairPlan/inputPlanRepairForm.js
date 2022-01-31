@@ -170,7 +170,8 @@ function InputPlanRepairForm(props) {
     
                     // idEquipment есть нужна строка.
                     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
-                            "/unit-equipment" + "/" + result.equipment);
+                            "/unit-equipment" + "/" + result.equipment[0]._id);
+                           
                     loadFromDb(url).then(result => {
                         let fullName = result.position + " " + result.group;
                         setSearchString(fullName);
@@ -204,6 +205,7 @@ function InputPlanRepairForm(props) {
                 setRepairCount([1]);
                 setFilter('');
                 setSourceRepair([]);
+
         }
     }, [props.onLoadRecord]);
     
@@ -419,9 +421,6 @@ function FormInputRepair(props) {
             const newCount = new Array(props.onLoadRepair.length);
             setCount(newCount);
             props.onHandleRecordRepair(props.onLoadRepair);
-
-            log.debug('newCount = ' + newCount.length);
-
         }
 
         return function cleanup() {
@@ -431,8 +430,6 @@ function FormInputRepair(props) {
 
     }, [props.onLoadRepair])
     
-
-    log.debug('count=' + count.length)
 
     const arrayList = count.map((a, i) => {
         return result(i);
@@ -455,7 +452,6 @@ function FormInputRepair(props) {
             { arrayList }
         </React.Fragment>
     )
-    
 };
 
 

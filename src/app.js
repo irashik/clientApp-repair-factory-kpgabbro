@@ -1,8 +1,4 @@
-/*
-  основной файл приложения (корневой элемент )
-*/
-
-import React, { useState } from 'react';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { BrowserRouter as Router, 
@@ -16,17 +12,15 @@ import './scss/app.scss';
 import NavbarPage from './navbarpage.js';
 import HeaderComponent from './header.js';
 import FooterComponent from './footer.js';
-
-
 import HomeComponent from './home.js';
-import InputDataSection from './inputDataSection/inputDataSection.js';
+
 import ReportEquipment from './reportEquipment.js';
 import RepairPlan from './repairPlan/repairPlan.js';
 import BidRequest from './bidRequest/bidRequest.js';
 import AuthComponent from './authpage.js';
 import RegisterComponent from './authRegister.js';
 import ProfileUserComponent from './userProfile';
-
+import InputDataSection from './inputDataSection/inputDataSection';
 
 
 

@@ -4,7 +4,7 @@ exports[`MatchSnapShot components CategorySelectField snapShot 1`] = `
 <FormControl
   aria-label="Выберите категорию"
   as="select"
-  id="selectCategory"
+  id="filterSelectCategoryBid"
   onChange={[Function]}
   placeholder="Выберите категорию"
   size="sm"
@@ -41,7 +41,7 @@ exports[`MatchSnapShot components PrioritySelectField snapShot 1`] = `
 <FormControl
   aria-label="Выберите приоритет"
   as="select"
-  id="selectPriority"
+  id="filterSelectPriorityBid"
   onChange={[Function]}
   size="sm"
 >
@@ -72,6 +72,7 @@ exports[`MatchSnapShot components StatusSelectField snapShot 1`] = `
 <FormControl
   aria-label="Выберите статус заявки"
   as="select"
+  id="filterSelectStatusBid"
   onChange={[Function]}
   size="sm"
 >

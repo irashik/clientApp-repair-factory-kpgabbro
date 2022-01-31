@@ -14,7 +14,7 @@ exports[`<App/> should render correctly 1`] = `
       <Row
         noGutters={false}
       >
-        <InputDataSection />
+        <Component />
       </Row>
     </Route>
     <Route
@@ -41,9 +41,7 @@ exports[`<App/> should render correctly 1`] = `
       <Row
         noGutters={false}
       >
-        <BidRequest
-          user="testuser"
-        />
+        <BidRequest />
       </Row>
     </Route>
     <Route

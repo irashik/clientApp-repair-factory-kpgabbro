@@ -19,10 +19,7 @@ function BidRequest(props) {
   const [addedRecord, setAddedRecord] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
-  
-
-
-
+ 
   return (
     <Container fluid className="m-0">
       <InputBidRequestForm  show={modalShow} 
@@ -47,18 +44,13 @@ function BidRequest(props) {
         </Col>
         <Col>
           <Button variant="primary" 
-                  id="AddedBidRequest"
+                  id="AddBidRequest"
                   onClick={() => setModalShow(true)}>
                   Добавить заявку</Button>
 
         </Col>
-        
-        
-        
-        
       </Row>
       <Row>
-
         <ReadListBidRequest   addedRecord={addedRecord}
                               category={category}
                               priority={priority}

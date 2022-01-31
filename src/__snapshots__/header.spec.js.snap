@@ -5,9 +5,21 @@ exports[`<HeaderComponent /> should render correctly 1`] = `
   <Container
     fluid={true}
   >
-    <h3>
-      АО "КП-Габбро", Карьер Новый Поселок
-    </h3>
+    <Row
+      noGutters={false}
+    >
+      <Col>
+        <h3>
+          Журнал ремонтов
+        </h3>
+      </Col>
+      <Col />
+      <Col>
+        <h5>
+          АО "КП-Габбро", Карьер Новый Поселок
+        </h5>
+      </Col>
+    </Row>
   </Container>
 </header>
 `;

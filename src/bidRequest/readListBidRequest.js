@@ -11,7 +11,6 @@ import { loadFromDb } from "../utils/loader";
 log.setLevel('debug');
 
 
-
 function  ReadListBidRequest(props) {
     const [listBidRequest, setListBidRequest] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -42,6 +41,7 @@ function  ReadListBidRequest(props) {
             .catch(err => {
                 setIsLoaded(false)
                 log.debug('response server is error' + err);
+                alert(err);
       });
 
     }, [props.addedRecord, addedRecord, props.category, props.statusBid, props.priority]);
@@ -132,8 +132,6 @@ function ReadModuleBlock(props) {
 
 
     function LastAuthorView(customProps) {
-        console.log('lastAuthor == ' + customProps.lastAuthor);
-
 
         if(customProps.lastAuthor.length) {
             return (
@@ -150,7 +148,7 @@ function ReadModuleBlock(props) {
                         data-toggle="tooltip" 
                         data-placement="top" 
                         title="Редактировать"
-                        id='EditPlanRepair'
+                        id='EditBidRequest'
                         onClick={() => onBidRequestEdit()}
                         >
                             <TiPen />

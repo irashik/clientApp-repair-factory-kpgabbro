@@ -1,10 +1,5 @@
-/*
-    компонент отвечающий за отображение полей селект
-*/
-
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
-
 
 function StatusSelectField(props) {
 
@@ -14,7 +9,7 @@ function StatusSelectField(props) {
     
     return (
         <Form.Control as='select' size="sm" aria-label="Выберите статус заявки"
-            value={props.statusBid}
+            value={props.statusBid} id='filterSelectStatusBid'
             onChange={(e) => handleStatusSelect(e.target.value)}  >
                 
             <option value=''>Выберите статус</option>
@@ -23,8 +18,7 @@ function StatusSelectField(props) {
             <option value="FINISHED">Завершено</option>
             <option value="DEFERRED">Отложено</option>
             <option value="INWORK">В работе</option>
-            
-            <option value="ACTIVE">Активная</option>
+            <option value="NEW">Новая</option>
             {/* Заказано, отправлено, согласование ... */}
 
         </Form.Control>  
@@ -47,7 +41,7 @@ function CategorySelectField(props) {
                         value={props.category}
                         onChange = { (e) => handleCategorySelect(e.target.value)}
                         placeholder="Выберите категорию"
-                        id='selectCategory'>
+                        id='filterSelectCategoryBid'>
 
                         <option value='' >Выберите категорию</option>
                         <option value="Инструмент">Инструмент</option>
@@ -68,7 +62,7 @@ function PrioritySelectField(props) {
     return (
             <Form.Control   as="select" size="sm" 
                             aria-label="Выберите приоритет"
-                            id='selectPriority'
+                            id='filterSelectPriorityBid'
                             onChange={(e) => handlePrioritySelect(e.target.value)}
                             value={props.priority} >
 

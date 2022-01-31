@@ -21,9 +21,9 @@ function AuthComponent() {
     e.preventDefault();
     
     const data = {
-      email: email,
-      password: password
-      }
+      email,
+      password
+    }
             
     const url = new URL(  process.env.HTTP_API_HOST + ":" + 
                           process.env.HTTP_API_PORT + "/auth/login");

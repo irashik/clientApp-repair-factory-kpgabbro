@@ -1,5 +1,3 @@
-/* модуль для загрузки списка записей ремонтов. */
-
 import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
@@ -7,7 +5,6 @@ import Table from 'react-bootstrap/Table'
 import {format, parseISO, formatISO, endOfDay, startOfDay } from 'date-fns';
 import log from 'loglevel';
 import _ from 'lodash';
-
 import { loadFromDb } from './utils/loader';
 import InputRepairForm from "./inputDataSection/inputRepairForm";
 

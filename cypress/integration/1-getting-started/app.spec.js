@@ -1,19 +1,23 @@
-/// <reference types="cypress" />
 
-// Welcome to Cypress!
-//
-// This spec file contains a variety of sample tests
-// for a todo list app that are designed to demonstrate
-// the power of writing tests in Cypress.
-//
-// To learn more about how Cypress works and
-// what makes it such an awesome testing tool,
-// please read our getting started guide:
-// https://on.cypress.io/introduction-to-cypress
 
-describe('main page test', () => {
+describe('main page test and main link passage', () => {
+  
+
   before(() => {
-   
+
+    Cypress.Commands.add('login', (username, password) => {
+      cy.session([username,  password], () => {
+        cy.visit('http://localhost:8080/auth');
+        cy.get('#formBasicEmail').type(username);
+        cy.get('#formBasicPassword').type(password);
+        cy.get('#signIn').click();
+        cy.url().should('eq', 'http://localhost:8080/')
+      })
+    });
+  });
+
+
+  beforeEach(() => {
     cy.visit('http://localhost:8080')
   })
 
@@ -29,8 +33,16 @@ describe('main page test', () => {
   })
 
   it('click navbar button', () => {
+
+    cy.login('dima@test.ru', 'dima')
+    cy.visit('http://localhost:8080')
+
+
+
     cy.get('#inputData').click();
     cy.url().should('include', 'inputData');
+
+    
     cy.get('#tableRepair').contains('#');
 
     cy.get('#reportEquipment').click();
@@ -54,6 +66,11 @@ describe('main page test', () => {
   });
 
   it('user logout', () => {
+
+    cy.login('dima@test.ru', 'dima')
+    cy.visit('http://localhost:8080')
+
+
     cy.get('#LogoutBtn').click();
     
     cy.on('window:alert', (str) => {
@@ -65,6 +82,8 @@ describe('main page test', () => {
   });
 
   
-  
+  after(() => {
+    cy.visit('http://localhost:8080')
+  })
   
 })

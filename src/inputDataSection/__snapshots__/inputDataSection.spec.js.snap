@@ -41,7 +41,7 @@ exports[`<InputDataSection /> snapShot correctly 1`] = `
   />
   <ReadModuleList
     onAddedRepair={Array []}
-    optedData={2021-11-25T21:00:00.000Z}
+    optedData={2022-01-30T21:00:00.000Z}
   />
 </Container>
 `;

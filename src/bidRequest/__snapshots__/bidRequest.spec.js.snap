@@ -48,7 +48,7 @@ exports[`<BidRequest /> snapShot correctly 1`] = `
       <Button
         active={false}
         disabled={false}
-        id="AddedBidRequest"
+        id="AddBidRequest"
         onClick={[Function]}
         variant="primary"
       >
