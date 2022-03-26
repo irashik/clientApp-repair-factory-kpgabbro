@@ -15,7 +15,8 @@ log.setLevel('debug');
 function NavbarPage() {
 
   return (
-    <Navbar bg="light" varian='light' expand="sm">
+    <Navbar expand="sm" className='navbar-custom'
+    >
       <LinkContainer to="/">
         <Navbar.Brand href="/">Журнал ремонтов</Navbar.Brand>
       </LinkContainer>
@@ -64,7 +65,7 @@ function AuthButton() {
         console.log(response);
 
         localStorage.clear();
-        const homeUrl = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT + "/");
+        const homeUrl = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT);
         document.location.href = homeUrl;
 
       })

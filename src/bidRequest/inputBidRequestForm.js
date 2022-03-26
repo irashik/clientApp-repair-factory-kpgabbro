@@ -215,7 +215,8 @@ function InputBidRequestForm(props) {
     return(    
         <Modal {...modal} 
             backdrop="static"
-            dialogClassName='modal-fullscreen'
+            dialogClassName='modal-90w'
+            size='lg'
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             key={idRecord}

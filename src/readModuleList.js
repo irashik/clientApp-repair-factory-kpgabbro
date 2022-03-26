@@ -18,12 +18,15 @@ function ReadModuleList(props) {
     const [idRecord, setIdRecord] = useState('');
     const [addedRepair, setAddedRepair] = useState([]);
 
-    let url = new URL (process.env.HTTP_API_HOST + ":" + 
+    let url = new URL ( process.env.HTTP_API_HOST + ":" + 
                         process.env.HTTP_API_PORT + "/equipment");
     
 
     if (props.unitEquipment) {
         url.searchParams.set("equipment", props.unitEquipment);
+        url.searchParams.set('viewAllPosition', props.viewAllPosition);
+        
+
     }
 
     if (props.optedData || props.onAddedRepair) {
@@ -46,10 +49,11 @@ function ReadModuleList(props) {
                 })
                 .catch(err => {
                     alert('Error from server', err);
-                    throw new Error('respons from server bad', err);
+                    throw new Error('response from server bad', err);
                 });
 
-    }, [props.repair, props.optedData, props.unitEquipment, props.onAddedRepair, addedRepair]);
+    }, [props.repair, props.optedData, props.unitEquipment, 
+        props.onAddedRepair, addedRepair, props.viewAllPosition        ]);
     
 
     function onChangeRecord(e) {
@@ -116,8 +120,22 @@ function ReadModuleBlock(props) {
     };
 
     const arrayRepair = props.i.repair.map((i, a) => {
+        let listType = new Map([
+            ['CHORES', 'Хоз.работы'],
+            ['INSPECTION', 'Осмотр'],
+            ['SERVICE', 'Обслуживание'],
+            ['REPAIR', 'Ремонт'],
+            ['RELINING', 'Перефутеровка']
+        ]);
+
+
         return (
-             <li key={a}>{i.type}:{i.description}</li>
+            
+// <li <p id="repairList_li_repairType" key={a} > {listType.get(i.type)}</p>
+//                     :{i.description}</li>
+
+             <li id="repairList_li_repair"> <p id="repairList_p_repairType" key={a} > {listType.get(i.type)}</p>
+                    : {i.description}</li>
         )
     });
     const arrayMaterial = props.i.material.map((i,a) => {

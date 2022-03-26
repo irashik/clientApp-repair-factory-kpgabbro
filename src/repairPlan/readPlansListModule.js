@@ -120,6 +120,18 @@ function ReadModuleBlock(props) {
                 return ( <td></td>)
             }
     };
+
+
+    const statusTaskList = new Map([
+        ['FINISHED', 'Завершено'],
+        ['CANCELLED','Отменено'],
+        ['DRAFT', 'Заготовка'],
+        ['DEFERRED', 'Отложено'],
+        ['INWORK', 'В работе'],
+        ['ACTIVE', 'Активная']
+    ]);
+
+
      
     return (
         <tr key={idRecord}>
@@ -138,7 +150,7 @@ function ReadModuleBlock(props) {
                 </ul>
             </td>
             <td>{props.i.equipment[0].position}      </td>
-            <td>{props.i.status}      </td>
+            <td>{statusTaskList.get(props.i.status)}</td>
             <td>{ format(parseISO(props.i.dateCreated), 'dd-MM-yyyy') }</td>
             <td>{props.i.comment}    </td>
             <td>{props.i.priority}</td>         

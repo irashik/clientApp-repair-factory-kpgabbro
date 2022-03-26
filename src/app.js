@@ -1,8 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { BrowserRouter as Router, 
-          Route, 
+import {  Route, 
           Switch,
        } from 'react-router-dom';
 
@@ -64,7 +63,7 @@ function App() {
             <ProfileUserComponent />
           </Row>
         </Route>
-        <Route path="/auth">
+        <Route path="/auth" component={AuthComponent}>
           <Row>
             <AuthComponent />
           </Row>

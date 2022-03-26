@@ -6,11 +6,15 @@ import Form from 'react-bootstrap/Form';
 import SearchList from "./searchListUnitEquipment";
 import { useDebouncedCallback } from 'use-debounce';
 import ReadModuleList from "./readModuleList";
+import Button from 'react-bootstrap/Button';
+
+
 
 function ReportEquipment() {
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
+    const [viewAll, setViewAll] = useState(false);
 
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
@@ -21,12 +25,20 @@ function ReportEquipment() {
         setSearchString(value);
         debouncedSetFilter(value);
         setIdEquipment(null);
+        setViewAll(false);
     };
     function handlerSelectEquipment(id, joinNameUnit) {
         setSearchString(joinNameUnit);
         setIdEquipment(id);
     };
 
+    function viewAllPosition() {
+        setIdEquipment(idEquipment);
+        setViewAll(true);
+
+
+
+    }
    
 
     return (
@@ -44,10 +56,13 @@ function ReportEquipment() {
                                 />
                     <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
                 </Col>
+                <Col>
+                    <Button  size="sm" variant="secondary" onClick={viewAllPosition}>Показать все записи</Button>
+                </Col>
                
             </Row>
             <Row>
-                <ShowReadModuleList idEquipment={idEquipment}/>
+                <ShowReadModuleList idEquipment={idEquipment} viewAllPosition={viewAll}/>
             </Row>
         </Container>
       )
@@ -60,7 +75,8 @@ function ShowReadModuleList(props)  {
     if (!props.idEquipment) {
         return null;
     } else {
-        return <ReadModuleList unitEquipment={props.idEquipment} />;
+        return <ReadModuleList  unitEquipment={props.idEquipment} 
+                                viewAllPosition={props.viewAllPosition} />;
     }
 
 };

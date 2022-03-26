@@ -1,6 +1,23 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 
+
+const statusBidList = new Map([
+    ["DRAFT", 'Черновик'],
+    ["CANCELLED", 'Отменено'],
+    ["FINISHED", 'Завершено'],
+    ["DEFERRED", 'Отложено'],
+    ["INWORK", 'В работе'],
+    ["NEW", 'Новая']
+]);
+            /* TODO Заказано, отправлено, согласование ... */
+
+
+export {statusBidList};
+
+
+
+
 function StatusSelectField(props) {
 
     function handleStatusSelect(e) {
@@ -13,12 +30,12 @@ function StatusSelectField(props) {
             onChange={(e) => handleStatusSelect(e.target.value)}  >
                 
             <option value=''>Выберите статус</option>
-            <option value="DRAFT">Черновик</option>
-            <option value="CANCELLED">Отменено</option>
-            <option value="FINISHED">Завершено</option>
-            <option value="DEFERRED">Отложено</option>
-            <option value="INWORK">В работе</option>
-            <option value="NEW">Новая</option>
+            <option value="DRAFT">{statusBidList.get('DRAFT')}</option>
+            <option value="CANCELLED">{statusBidList.get('CANCELLED')}</option>
+            <option value="FINISHED">{statusBidList.get('FINISHED')}</option>
+            <option value="DEFERRED">{statusBidList.get('DEFERRED')}</option>
+            <option value="INWORK">{statusBidList.get('INWORK')}</option>
+            <option value="NEW">{statusBidList.get('NEW')}</option>
             {/* Заказано, отправлено, согласование ... */}
 
         </Form.Control>  

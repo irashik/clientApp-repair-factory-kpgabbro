@@ -7,7 +7,7 @@
     "test": "jest --config=jest.config.js",
     "test:w": "jest --watch --coverage -c=jest.config.js",
     "test:u": "jest -u -c=jest.config.js",
-    "start": "webpack serve --hot",
+    "start": "webpack serve --hot ",
     "build": "webpack",
     "cypress:run": "cypress run --record --key 0f32b339-e00a-44ec-adda-0b2352c50897",
     "cypress:open": "cypress open"

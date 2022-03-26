@@ -285,7 +285,8 @@ function InputPlanRepairForm(props) {
     return(    
         <Modal {...modal} 
             backdrop="static"
-            dialogClassName='modal-fullscreen'
+            dialogClassName='modal-90w'
+            size='lg'
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             key={idRecord}
@@ -301,7 +302,7 @@ function InputPlanRepairForm(props) {
             <Modal.Body className="show-grid">
                 <Container fluid id='input-module'>
                     <Row>
-                        <Col>
+                        <Col md='auto'>
                             <Form.Control 
                                     id='inputEquipment' size="sm" type="text" 
                                     placeholder="Выберите оборудование"
@@ -336,12 +337,13 @@ function InputPlanRepairForm(props) {
                                     value={statusState}
                                     onChange={(e) => setStatusState(e.target.value)}>
 
-                                <option value="DRAFT">Черновик</option>
+                                <option value="DRAFT">Заготовка</option>
                                 <option value="CANCELLED">Отменено</option>
                                 <option value="FINISHED">Завершено</option>
                                 <option value="DEFERRED">Отложено</option>
                                 <option value="INWORK">В работе</option>
                                 <option value="ACTIVE">Активная</option>
+                                
                             </Form.Control>
                     </Row>
                     <Row>

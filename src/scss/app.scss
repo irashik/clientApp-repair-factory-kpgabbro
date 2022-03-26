@@ -3,24 +3,38 @@
 
 //@import "../../node_modules/react-datepicker/dist/react-datepicker.css";
 
+html, body {
+  height: 100%;
+}
 
+
+#root {
+  height: 100%;
+
+}
 
 body {
   margin: 30px;
 
 }
 
+.row {
+
+}
 
 div {
   //border: 1px solid black;
 
 }
 
+#mainPage {
+  
+
+}
+
 .container-fluid {
   padding: 10px !important;
   
-  //margin-left: 10px;
- // margin-right: 10px;
   
 
 
@@ -37,34 +51,48 @@ div {
 }
 
 header {
-  height: 100px;
   //background-color: rgb(197, 212, 245);
-  width: 100%;
   
   padding: 0px;
+  background-color: $header;
+  border-radius: 15px;
+  margin: 5px;
+  margin-top: 0px;
 
 
 }
 
 footer {
   height: 150px;
-  background-color: rgb(126, 172, 162);
-  width: 100%;
+  align-self: flex-end;  
+  background-color: $footer;
+  padding: 20px;
 
-  margin: 0px;
-  padding: 0px;
+  border-radius: 15px;
+  margin: 5px;
+  margin-bottom: 0px;
+
+
+
+}
+
+.navbar-custom {
+  border-radius: 15px;
+  margin: 2px;
+  padding: 5px;
 
 }
 
 footer h5 {
+  font-size: 0.7em;
+  font-style: italic;
+}
+
+label {
   font-size: 0.8em;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
-
-.navbar-expand-sm {
-  
-
-}
 
 .row {
   padding: 0.5rem;
@@ -72,9 +100,14 @@ footer h5 {
 
 }
 
-.header  {
-  padding: 1rem;
+header  {
+  padding: auto;
 
+  #nameCompany {
+    font-size: 0.8em;
+    font-weight: 800;
+    
+  }
 
 }
 
@@ -106,7 +139,7 @@ footer h5 {
 
 
 #input-module {
-  border: 1px solid black;
+  
 }
 
 
@@ -191,7 +224,7 @@ h6 {
 
 
 .navbar {
-  background-color: red !important;
+  background-color: $navbar
 
 }
 
@@ -264,4 +297,15 @@ p {
 
 }
 
+#repairList_li_repair {
+  //display: list-item;
 
+
+  #repairList_p_repairType {
+    font-style: italic;
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    display: inline;
+  }
+}

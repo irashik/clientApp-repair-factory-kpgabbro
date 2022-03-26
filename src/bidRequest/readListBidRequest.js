@@ -7,6 +7,7 @@ import * as log from 'loglevel';
 import * as _ from 'lodash';
 import InputBidRequestForm from "./inputBidRequestForm";
 import { loadFromDb } from "../utils/loader";
+import { statusBidList } from "./selectField";
 
 log.setLevel('debug');
 
@@ -107,8 +108,8 @@ function ReadModuleBlock(props) {
     }
 
     let { onOpenRecord, onModalShow, ...customProps } = props;
+    
     customProps = customProps.i;
-
     
     function DateStatusBidView(customProps) {
         if(customProps.dateStatusBid) {
@@ -119,7 +120,6 @@ function ReadModuleBlock(props) {
             return (<td></td>)
         }
     };
-
     function DateCreatedView(customProps) {
         if(customProps.dateCreated) {
             return (
@@ -129,8 +129,6 @@ function ReadModuleBlock(props) {
             return ( <td></td>)
         }
     };
-
-
     function LastAuthorView(customProps) {
 
         if(customProps.lastAuthor.length) {
@@ -140,7 +138,11 @@ function ReadModuleBlock(props) {
         } else {
             return (<td></td>)
         }
-    }
+    };
+
+    
+
+    
     return (
         <tr key={customProps._id}>
             <td>
@@ -155,11 +157,9 @@ function ReadModuleBlock(props) {
                         </Button>
             </td>
             <td>{customProps.description}</td>
-            <td>{customProps.statusBid}</td>
+            <td>{statusBidList.get(customProps.statusBid)}</td>
             <DateStatusBidView dateStatusBid={customProps.dateStatusBid} />
-            
             <LastAuthorView lastAuthor={customProps.lastAuthor} />
-
             <td>{customProps.category}</td>
             <td>{customProps.priority}</td>    
             <DateCreatedView dateCreated={customProps.dateCreated} />

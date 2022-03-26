@@ -7,7 +7,7 @@ function HomeComponent() {
     
       return (
         <Container fluid >
-          <Row>
+          <Row id='mainPage'>
             <h2>Это вэб приложения для ведения журнала ремонта оборудования.</h2>
           <p>Что-нибудь еще....</p>
 

@@ -226,7 +226,8 @@ function InputRepairForm(props) {
     return   (    
         <Modal {...modal} 
             backdrop="static"
-            dialogClassName='modal-fullscreen'
+            dialogClassName='modal-90w'
+            size='lg'
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             id="modalRepairForm"
@@ -244,18 +245,18 @@ function InputRepairForm(props) {
                 <Container fluid id='input-module'>
                     <Row>
                         <Col>
-                            <label>Время начало ремонта</label>
+                            <label>Время начала</label>
                                 <DatePickerDiv type='dateStart' 
                                                 onSelectOptedData={onSelectOptedDateStart} setDate={sourceDateStart}/>
                             
-                        </Col>
-                        <Col>
-                            <label>Время окончания ремонта</label>
+                        
+                        
+                            <label>Время окончания</label>
                                 <DatePickerDiv type='dateEnd' 
                                                 onSelectOptedData={onSelectOptedDateEnd} setDate={sourceDateEnd}/>
                             
                         </Col>
-                        <Col>
+                        <Col md='auto'>
                             <Form.Control 
                                     id='inputEquipment' size="sm" type="text" 
                                     placeholder="Выберите оборудование"
@@ -385,7 +386,6 @@ function DatePickerDiv(props) {
                             locale="ru" 
                             selected={valueDate}
                             onChange={(date) => handlerOptedData(date)}
-                            locale="ru"
                             showTimeSelect
                             timeFormat="p"
                             timeIntervals={30}
@@ -480,10 +480,11 @@ function FormInputRepair(props) {
 
                 </Col>
                 <Col>
-                    <Form.Control id={'inputRepairDescription_'+i} as='textarea' size="sm" rows={3} 
+                    <Form.Control id={'inputRepairDescription_'+i} as='textarea'  
                         placeholder="Что сделано?"
                         key={i} 
-                        size="sm" rows={4}
+                        size="sm" 
+                        rows={4}
                         value={repair[i] || ''}
                         onChange={(e) => onHandleRepair(e.target.value, i)}
                     />

@@ -82,7 +82,7 @@ export default SearchList;
 function makeKeyListEquipment(sourceArray) {
     let newArray = sourceArray.map(currentValue => {
         const id = currentValue._id;
-        const mergedData = currentValue.position.concat("; ", currentValue.group, "; (", currentValue.name, ")");
+        const mergedData = currentValue.position.concat("; ", currentValue.group, "; (", currentValue.name, ")", "; (", currentValue.alias, ")");
         const resultObject = { "_id": id, "mergedData": mergedData }
         return resultObject
     });

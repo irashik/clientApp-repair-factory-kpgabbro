@@ -16,10 +16,13 @@ function HeaderComponent() {
               <Col>
                 <h3>Журнал ремонтов</h3>
               </Col>
+              
               <Col>
+
               </Col>
+              
               <Col>
-                <h5>АО "КП-Габбро", Карьер Новый Поселок</h5>
+                <p id='nameCompany'>АО "КП-Габбро", Карьер Новый Поселок</p>
               </Col>
               </Row>
             

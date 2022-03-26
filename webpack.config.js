@@ -1,14 +1,22 @@
+
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const DotenvWebpackPlugin = require('dotenv-webpack');
 
 module.exports = {
+  
+  entry: './src/index.js',
+
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
   },
   devServer: {
       historyApiFallback: true,
+      //host: 'http://localhost',
+      //port: 8080,
+      inline: true,
+
   },
   resolve: {
     modules: [path.join(__dirname, 'src'), 'node_modules'],

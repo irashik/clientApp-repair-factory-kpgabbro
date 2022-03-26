@@ -65,7 +65,7 @@ function RepairPlan(props) {
                         onChange={(e) => setStatusState(e.target.value)}   >
 
                             <option value=''> -- select an option -- </option>
-                            <option value="DRAFT">Черновик</option>
+                            <option value="DRAFT">Заготовка</option>
                             <option value="CANCELLED">Отменено</option>
                             <option value="FINISHED">Завершено</option>
                             <option value="DEFERRED">Отложено</option>
