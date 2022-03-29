@@ -13,8 +13,8 @@ module.exports = {
   },
   devServer: {
       historyApiFallback: true,
-      host: 'http://localhost',
-      port: 8080,
+      //host: 'http://localhost',
+      //port: 80,
       
 
   },

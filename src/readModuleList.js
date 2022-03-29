@@ -97,7 +97,7 @@ function ReadModuleList(props) {
                     <tbody>
                         {queryFromDb.map((i) => {
                             return (
-                                <ReadModuleBlock i={i} key={i._id}
+                                <ReadModuleBlock i={i} key={i._id} itemId={i._id}
                                     onOpenRecord={() => onChangeRecord(i._id)}
                                     onModalShow={() => setModalShow(true)}
                                 /> 
@@ -131,7 +131,7 @@ function ReadModuleBlock(props) {
 
         return (
             
-        <li id="repairList_li_repair"> <p id="repairList_p_repairType" key={a} > {listType.get(i.type)}</p>
+        <li id="repairList_li_repair" data-id={a} key={a}> <p id="repairList_p_repairType" key={a} > {listType.get(i.type)}</p>
                 : {i.description}</li>
         )
     });
@@ -145,7 +145,7 @@ function ReadModuleBlock(props) {
 
 
     return (
-        <tr className="itemRecord" key={props.key}>
+        <tr className="itemRecord" id={props.itemId.toString()}>
             <td>
                 <Button variant="outline-dark" data-toggle="tooltip" 
                                 data-placement="top" title="Редактировать"
