@@ -13,9 +13,9 @@ import '../bower_components/bootstrap/dist/css/bootstrap.min.css';
 ReactDOM.render(
     <React.StrictMode>
         <CookiesProvider>
-           <BrowserRouter>
+           
                 <App />
-            </BrowserRouter>
+           
         </CookiesProvider>
        
     </React.StrictMode>,

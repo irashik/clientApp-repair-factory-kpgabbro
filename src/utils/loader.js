@@ -22,6 +22,7 @@ class Loader {
     this.accessToken = accessToken
 
     this.tokenstr = "Bearer " + this.accessToken,
+
     this.refOptions = {
       method: "GET",
       mode: 'cors',
@@ -34,6 +35,7 @@ class Loader {
       },
       redirect: 'follow'
     }
+    
     this.options = {
       method: this.method,
       mode: 'cors',

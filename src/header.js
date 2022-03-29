@@ -14,7 +14,7 @@ function HeaderComponent() {
           <Container fluid>
             <Row>
               <Col>
-                <h3>Журнал ремонтов</h3>
+                
               </Col>
               
               <Col>

@@ -131,16 +131,13 @@ function ReadModuleBlock(props) {
 
         return (
             
-// <li <p id="repairList_li_repairType" key={a} > {listType.get(i.type)}</p>
-//                     :{i.description}</li>
-
-             <li id="repairList_li_repair"> <p id="repairList_p_repairType" key={a} > {listType.get(i.type)}</p>
-                    : {i.description}</li>
+        <li id="repairList_li_repair"> <p id="repairList_p_repairType" key={a} > {listType.get(i.type)}</p>
+                : {i.description}</li>
         )
     });
     const arrayMaterial = props.i.material.map((i,a) => {
         return (
-            <li key={a}>
+            <li key={'arrayMat-' + a}>
                 {i.name}; Кол-во: {i.value};
             </li>
         );
@@ -148,7 +145,7 @@ function ReadModuleBlock(props) {
 
 
     return (
-        <tr className="itemRecord">
+        <tr className="itemRecord" key={props.key}>
             <td>
                 <Button variant="outline-dark" data-toggle="tooltip" 
                                 data-placement="top" title="Редактировать"

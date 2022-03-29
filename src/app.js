@@ -1,9 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import {  Route, 
-          Switch,
-       } from 'react-router-dom';
+import {  Route, Routes, BrowserRouter  } from 'react-router-dom';
 
 
 import './scss/app.scss';
@@ -32,48 +30,23 @@ function App() {
       
       <NavbarPage />
 
-      <Switch>
-        <Route path="/inputData">
-          <Row>
-            <InputDataSection />
-          </Row>
-        </Route>
-        <Route path="/reportEquipment">
-          <Row>
-            <ReportEquipment />
-          </Row>
-        </Route>
-        <Route path="/repairPlan">
-          <Row>
-            <RepairPlan />
-          </Row>
-        </Route>
-        <Route path="/bidRequest">
-          <Row>
-            <BidRequest />
-          </Row>
-        </Route>
-        <Route path="/register">
-          <Row>
-            <RegisterComponent />
-          </Row>
-        </Route>
-        <Route path="/profile">
-          <Row>
-            <ProfileUserComponent />
-          </Row>
-        </Route>
-        <Route path="/auth" component={AuthComponent}>
-          <Row>
-            <AuthComponent />
-          </Row>
-        </Route>
-        <Route path="/">
-          <Row>
-            <HomeComponent />
-          </Row>
-        </Route>
-      </Switch>
+      <BrowserRouter>
+
+        <Routes>
+          <Route path="/" element={<HomeComponent /> } />
+          <Route path="/inputData" element={<InputDataSection />} />
+          <Route path="/reportEquipment" element={<ReportEquipment />} />
+          <Route path="/repairPlan" element={<RepairPlan /> } />
+          <Route path="/bidRequest" element={<BidRequest /> } />
+          <Route path="/register" element={<RegisterComponent /> } />
+          <Route path="/profile" element={<ProfileUserComponent /> } />
+          <Route path="/auth" element={<AuthComponent />} />
+          
+          
+            
+        </Routes>
+      </BrowserRouter>
+
 
       <FooterComponent />
     </Container>
