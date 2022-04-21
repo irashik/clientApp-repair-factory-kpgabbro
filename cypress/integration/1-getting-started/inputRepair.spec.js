@@ -75,7 +75,7 @@ describe('testing inputRepair page', () => {
     // todo выбор даты и времени 
     cy.get('#AddRepairEquipment').click();
     cy.get('#inputEquipment').type('ЩД');
-    cy.get('#filteredListUnitEquipment').contains("(Бункер ЩД").click();
+    cy.get('#filteredListUnitEquipment').first().click();
     cy.get('#inputRepairDescription_0').type(repair1);
     cy.get('#btnAddDesc_repair').click();
     cy.get('#inputTypeRepair_0').select('Хоз.работы').should('have.value', 'CHORES');
@@ -98,8 +98,8 @@ describe('testing inputRepair page', () => {
 
     //  проверить появление этих данных 
 
-    cy.get('td').contains('CHORES');
-    cy.get('td').contains('SERVICE');
+    cy.get('td').contains('Хоз.работы');
+    cy.get('td').contains('Обслуживание');
 
     cy.get('td').contains(repair1.toString());
     cy.get('td').contains(repair2).toString();
@@ -132,13 +132,13 @@ describe('testing inputRepair page', () => {
     cy.get('#editRepair').first().click();
     
     cy.wait(2000)
-    let pattern = '3 приемный бункер';
+    let pattern = '7 дробилка';
     cy.get('#inputEquipment').should('have.value', pattern);
     cy.get('#inputRepairDescription_0').contains(repair1.toString());
-    cy.get('#inputTypeRepair_0').should('have.value', 'CHORES');
+    cy.get('#inputTypeRepair_0').should('have.value', 'Хоз.работы');
 
     cy.get('#inputRepairDescription_1').contains(repair2.toString());
-    cy.get('#inputTypeRepair_1').should('have.value', 'SERVICE')
+    cy.get('#inputTypeRepair_1').should('have.value', 'Обслуживание')
 
 
 

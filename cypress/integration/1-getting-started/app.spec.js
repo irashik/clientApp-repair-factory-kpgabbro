@@ -48,7 +48,7 @@ describe('main page test and main link passage', () => {
     cy.get('#reportEquipment').click();
     cy.url().should('include', 'reportEquipment');
     cy.get('#reportInputEquipment').type('ЩД');
-    cy.get('#filteredListUnitEquipment').contains("(Бункер ЩД");
+    cy.get('#filteredListUnitEquipment').first();
 
 
     cy.get('#repairPlan').click();
@@ -74,7 +74,7 @@ describe('main page test and main link passage', () => {
     cy.get('#LogoutBtn').click();
     
     cy.on('window:alert', (str) => {
-      expect(str).to.equal('Logout is successfully!');
+      expect(str).contains('is logout');
     });
     cy.on('window:confirm', () => true);
     cy.url().should('eq', 'http://localhost:8080/');

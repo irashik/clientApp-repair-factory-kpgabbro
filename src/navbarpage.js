@@ -25,10 +25,10 @@ function NavbarPage() {
       <Navbar.Collapse id="basic-navbar-nav">
 
           <Nav className="mr-auto">
-              <Nav.Link href="/inputData">Ввод данных</Nav.Link>
-              <Nav.Link href="/reportEquipment">Отчет по оборудованию</Nav.Link>
-              <Nav.Link href="/repairPlan">План ремонтов</Nav.Link>
-              <Nav.Link href='/bidRequest'>Заявки снабжение</Nav.Link>
+              <Nav.Link href="/inputData" id='inputData'>Ввод данных</Nav.Link>
+              <Nav.Link href="/reportEquipment" id="reportEquipment">Отчет по оборудованию</Nav.Link>
+              <Nav.Link href="/repairPlan" id="repairPlan">План ремонтов</Nav.Link>
+              <Nav.Link href='/bidRequest' id="bidRequest">Заявки снабжение</Nav.Link>
               <AuthButton />
         </Nav>
       </Navbar.Collapse>
@@ -53,17 +53,18 @@ function AuthButton() {
     
 
     loadFromDb(url)
-      .then((response) => {
-        alert('Logout is successfully!');
+      .then(response => {
+        alert(response.res);
         localStorage.clear();
         const homeUrl = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT);
         document.location.href = homeUrl;
       })
       .catch(err => {
-        alert('Logout Error: ' + err);
+        alert('Logout Error: ' + JSON.stringify(err));
         localStorage.clear();
         throw new Error('Logout not successfully');
       });
+
   }
 
 
