@@ -218,7 +218,6 @@ function InputPlanRepairForm(props) {
         } else { 
             return (null) }
     };
-
     function DateFinishedView(modal) {
         if(modal.dateFinished) {
             return (
@@ -226,7 +225,6 @@ function InputPlanRepairForm(props) {
             )
         } else { return(null) }
     };
-
     function AuthorView(modal) {
         if(modal.author) {
             return (
@@ -250,6 +248,7 @@ function InputPlanRepairForm(props) {
             return (
                 <Button variant="primary"    
                             id="CreatePlanbtn"
+                            disabled={!idEquipment}
                             className="m-3 d-grid gap-2" 
                             onClick={() => onClickAddedPlan()}
                         >Создать

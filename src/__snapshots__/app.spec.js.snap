@@ -7,80 +7,42 @@ exports[`<App/> should render correctly 1`] = `
 >
   <HeaderComponent />
   <NavbarPage />
-  <Switch>
-    <Route
-      path="/inputData"
-    >
-      <Row
-        noGutters={false}
-      >
-        <Component />
-      </Row>
-    </Route>
-    <Route
-      path="/reportEquipment"
-    >
-      <Row
-        noGutters={false}
-      >
-        <ReportEquipment />
-      </Row>
-    </Route>
-    <Route
-      path="/repairPlan"
-    >
-      <Row
-        noGutters={false}
-      >
-        <RepairPlan />
-      </Row>
-    </Route>
-    <Route
-      path="/bidRequest"
-    >
-      <Row
-        noGutters={false}
-      >
-        <BidRequest />
-      </Row>
-    </Route>
-    <Route
-      path="/register"
-    >
-      <Row
-        noGutters={false}
-      >
-        <RegisterComponent />
-      </Row>
-    </Route>
-    <Route
-      path="/profile"
-    >
-      <Row
-        noGutters={false}
-      >
-        <ProfileUserComponent />
-      </Row>
-    </Route>
-    <Route
-      path="/auth"
-    >
-      <Row
-        noGutters={false}
-      >
-        <AuthComponent />
-      </Row>
-    </Route>
-    <Route
-      path="/"
-    >
-      <Row
-        noGutters={false}
-      >
-        <HomeComponent />
-      </Row>
-    </Route>
-  </Switch>
+  <BrowserRouter>
+    <Routes>
+      <Route
+        element={<HomeComponent />}
+        path="/"
+      />
+      <Route
+        element={<UNDEFINED />}
+        path="/inputData"
+      />
+      <Route
+        element={<ReportEquipment />}
+        path="/reportEquipment"
+      />
+      <Route
+        element={<RepairPlan />}
+        path="/repairPlan"
+      />
+      <Route
+        element={<BidRequest />}
+        path="/bidRequest"
+      />
+      <Route
+        element={<RegisterComponent />}
+        path="/register"
+      />
+      <Route
+        element={<ProfileUserComponent />}
+        path="/profile"
+      />
+      <Route
+        element={<AuthComponent />}
+        path="/auth"
+      />
+    </Routes>
+  </BrowserRouter>
   <FooterComponent />
 </Container>
 `;

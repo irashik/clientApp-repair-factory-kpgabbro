@@ -43,7 +43,7 @@ function AuthComponent() {
             const url = new URL ( process.env.HTTP_CLIENT_HOST + ":" + 
                                   process.env.HTTP_CLIENT_PORT + "/");
 
-            document.location.href = url;
+            location.href = url;
       })
       .catch(err => {
         alert(err);

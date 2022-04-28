@@ -6,7 +6,6 @@ exports[`<ReportEquipment/> should render correctly empty list 1`] = `
 >
   <Row
     className="justify-content-md-center"
-    noGutters={false}
   >
     <h2>
       Отчет по оборудованию
@@ -14,7 +13,6 @@ exports[`<ReportEquipment/> should render correctly empty list 1`] = `
   </Row>
   <Row
     className="justify-content-start"
-    noGutters={false}
   >
     <Col>
       <FormControl
@@ -31,12 +29,22 @@ exports[`<ReportEquipment/> should render correctly empty list 1`] = `
         onSelectEquipment={[Function]}
       />
     </Col>
+    <Col>
+      <Button
+        active={false}
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        variant="secondary"
+      >
+        Показать все записи
+      </Button>
+    </Col>
   </Row>
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <ShowReadModuleList
       idEquipment=""
+      viewAllPosition={false}
     />
   </Row>
 </Container>

@@ -46,7 +46,7 @@ function RegisterComponent() {
             log.debug(result);
 
             const url = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT + "/auth");
-            document.location.href = url;
+            location.href = url;
             setPassword("");
             setEmail("");
             setName("");

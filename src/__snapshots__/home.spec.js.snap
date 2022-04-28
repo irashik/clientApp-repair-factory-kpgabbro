@@ -5,14 +5,11 @@ exports[`<HomeComponent /> should render correctly 1`] = `
   fluid={true}
 >
   <Row
-    noGutters={false}
+    id="mainPage"
   >
     <h2>
-      Это вэб приложения для ведения журнала ремонта оборудования.
+      Журнал учета ремонтов оборудования.
     </h2>
-    <p>
-      Что-нибудь еще....
-    </p>
   </Row>
 </Container>
 `;

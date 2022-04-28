@@ -3,16 +3,13 @@
 exports[`<FooterComponent /> should render correctly 1`] = `
 <footer>
   <h5>
-    Разработчик: Ирашин Дмитрий
+    Разработчик Ирашин Дмитрий Андреевич
   </h5>
   <h5>
-    Licensed 
+    Лицензия 
   </h5>
   <h5>
     Инструкция
-  </h5>
-  <h5>
-    О предприятии
   </h5>
 </footer>
 `;

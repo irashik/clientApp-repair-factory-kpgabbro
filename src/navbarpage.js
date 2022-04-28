@@ -57,7 +57,7 @@ function AuthButton() {
         alert(response.res);
         localStorage.clear();
         const homeUrl = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT);
-        document.location.href = homeUrl;
+        location.href = homeUrl;
       })
       .catch(err => {
         alert('Logout Error: ' + JSON.stringify(err));

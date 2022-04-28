@@ -6,7 +6,6 @@ exports[`ReadPlanListModule snapShot correctly 1`] = `
 >
   <Row
     className="justify-content-md-center"
-    noGutters={false}
   >
     <Col>
       <h2>
@@ -29,9 +28,7 @@ exports[`ReadPlanListModule snapShot correctly 1`] = `
       </Button>
     </Col>
   </Row>
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <Col
       id="bidRequestFilter"
       sm={4}
@@ -54,7 +51,7 @@ exports[`ReadPlanListModule snapShot correctly 1`] = `
         <option
           value="DRAFT"
         >
-          Черновик
+          Заготовка
         </option>
         <option
           value="CANCELLED"

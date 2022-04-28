@@ -10,9 +10,7 @@ exports[`<BidRequest /> snapShot correctly 1`] = `
     onHide={[Function]}
     show={false}
   />
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <Col
       sm={4}
     >
@@ -56,9 +54,7 @@ exports[`<BidRequest /> snapShot correctly 1`] = `
       </Button>
     </Col>
   </Row>
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <ReadListBidRequest
       addedRecord={Array []}
       category=""

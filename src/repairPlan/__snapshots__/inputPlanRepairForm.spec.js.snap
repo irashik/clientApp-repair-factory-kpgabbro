@@ -12,12 +12,13 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
       "render": [Function],
     }
   }
-  dialogClassName="modal-fullscreen"
+  dialogClassName="modal-90w"
   enforceFocus={true}
   key=""
   keyboard={true}
   restoreFocus={true}
   show={false}
+  size="lg"
 >
   <ModalHeader
     closeButton={false}
@@ -42,10 +43,10 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
       fluid={true}
       id="input-module"
     >
-      <Row
-        noGutters={false}
-      >
-        <Col>
+      <Row>
+        <Col
+          md="auto"
+        >
           <FormControl
             id="inputEquipment"
             onChange={[Function]}
@@ -94,9 +95,7 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
           />
         </Col>
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <label>
           Статус задачи
         </label>
@@ -110,7 +109,7 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
           <option
             value="DRAFT"
           >
-            Черновик
+            Заготовка
           </option>
           <option
             value="CANCELLED"
@@ -139,9 +138,7 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
           </option>
         </FormControl>
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <FormControl
           id="inputPriority"
           onChange={[Function]}
@@ -151,9 +148,7 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
           value=""
         />
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <FormControl
           as="textarea"
           id="inputComment"
@@ -164,12 +159,8 @@ exports[`<InputPlanRepairForm /> snapShot correctly 1`] = `
           value=""
         />
       </Row>
-      <Row
-        noGutters={false}
-      />
-      <Row
-        noGutters={false}
-      >
+      <Row />
+      <Row>
         <DateCreatedView
           dateCreated=""
         />

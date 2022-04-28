@@ -114,8 +114,10 @@ function InputRepairForm(props) {
             ) ;
         } else {
             return (
+
                 <Button variant="primary"    
                             id="CreateRepairbtn"
+                            disabled={!idEquipment}
                             className="m-3 d-grid gap-2" 
                             onClick={onClickAddedRepair}
                         >Создать

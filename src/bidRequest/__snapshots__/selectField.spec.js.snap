@@ -107,9 +107,9 @@ exports[`MatchSnapShot components StatusSelectField snapShot 1`] = `
     В работе
   </option>
   <option
-    value="ACTIVE"
+    value="NEW"
   >
-    Активная
+    Новая
   </option>
 </FormControl>
 `;

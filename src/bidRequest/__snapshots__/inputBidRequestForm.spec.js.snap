@@ -12,12 +12,13 @@ exports[`<InputBidRequestForm /> snapShot correctly 1`] = `
       "render": [Function],
     }
   }
-  dialogClassName="modal-fullscreen"
+  dialogClassName="modal-90w"
   enforceFocus={true}
   key=""
   keyboard={true}
   restoreFocus={true}
   show={false}
+  size="lg"
 >
   <ModalHeader
     closeButton={false}
@@ -41,9 +42,7 @@ exports[`<InputBidRequestForm /> snapShot correctly 1`] = `
       fluid={true}
       id="input-module"
     >
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <FormControl
           as="textarea"
           className="m-0"
@@ -54,9 +53,7 @@ exports[`<InputBidRequestForm /> snapShot correctly 1`] = `
           value=""
         />
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <label>
           Текущий статус заявки
         </label>
@@ -65,9 +62,7 @@ exports[`<InputBidRequestForm /> snapShot correctly 1`] = `
           statusBid="DRAFT"
         />
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <Col
           sm={4}
         >
@@ -85,9 +80,7 @@ exports[`<InputBidRequestForm /> snapShot correctly 1`] = `
           />
         </Col>
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <FormControl
           as="textarea"
           id="inputComment"
@@ -98,9 +91,7 @@ exports[`<InputBidRequestForm /> snapShot correctly 1`] = `
           value=""
         />
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <DateCreatedView
           dateCreated=""
         />

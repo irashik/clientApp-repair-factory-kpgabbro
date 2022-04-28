@@ -6,17 +6,13 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
 >
   <Row
     className="justify-content-md-center"
-    noGutters={false}
   >
     <h2>
       Профиль пользователя
     </h2>
   </Row>
-  <Row
-    noGutters={false}
-  >
+  <Row>
     <Form
-      inline={false}
       onSubmit={[Function]}
     >
       <FormGroup
@@ -24,7 +20,7 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
       >
         <FormLabel
           column={false}
-          srOnly={false}
+          visuallyHidden={false}
         >
           Ваши Имя и Фамилия
         </FormLabel>
@@ -40,7 +36,7 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
       >
         <FormLabel
           column={false}
-          srOnly={false}
+          visuallyHidden={false}
         >
           Ваша должность
         </FormLabel>
@@ -56,7 +52,7 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
       >
         <FormLabel
           column={false}
-          srOnly={false}
+          visuallyHidden={false}
         >
           Ваш емаил
         </FormLabel>
@@ -80,22 +76,16 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
         </Button>
       </FormGroup>
     </Form>
-    <Row
-      noGutters={false}
-    />
-    <Row
-      noGutters={false}
-    />
+    <Row />
+    <Row />
     <Row
       className="justify-content-md-center"
-      noGutters={false}
     >
       <h4>
         Изменение пароля
       </h4>
     </Row>
     <Form
-      inline={false}
       onSubmit={[Function]}
     >
       <FormGroup
@@ -103,7 +93,7 @@ exports[`<ProfileUserComponent/> should render correctly empty list 1`] = `
       >
         <FormLabel
           column={false}
-          srOnly={false}
+          visuallyHidden={false}
         >
           Введите новый пароль
         </FormLabel>

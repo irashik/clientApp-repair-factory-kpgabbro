@@ -96,8 +96,9 @@ function loadFromDb(url) {
 
     if (!accesstoken) {
       const url = process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT + "/auth";
+      
+      location.href = url;
 
-      window.location = url;
       reject(new Error('Not found accessToken'));
       //todo нужно как-то пробросить ошибку и показать в сообщении.
     }
@@ -211,7 +212,7 @@ function unloadInDbPatch(url, data) {
 
     if (!accesstoken) {
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/login"
-      window.location = url;
+      location.href = url;
       reject(new Error('Not found accessToken'));
     }
 

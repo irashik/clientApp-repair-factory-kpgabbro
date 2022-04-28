@@ -12,12 +12,13 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
       "render": [Function],
     }
   }
-  dialogClassName="modal-fullscreen"
+  dialogClassName="modal-90w"
   enforceFocus={true}
   id="modalRepairForm"
   keyboard={true}
   restoreFocus={true}
   show={false}
+  size="lg"
 >
   <ModalHeader
     closeButton={false}
@@ -42,22 +43,18 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
       fluid={true}
       id="input-module"
     >
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <Col>
           <label>
-            Время начало ремонта
+            Время начала
           </label>
           <DatePickerDiv
             onSelectOptedData={[Function]}
             setDate=""
             type="dateStart"
           />
-        </Col>
-        <Col>
           <label>
-            Время окончания ремонта
+            Время окончания
           </label>
           <DatePickerDiv
             onSelectOptedData={[Function]}
@@ -65,7 +62,9 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
             type="dateEnd"
           />
         </Col>
-        <Col>
+        <Col
+          md="auto"
+        >
           <FormControl
             id="inputEquipment"
             idunit=""
@@ -100,9 +99,7 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
           onLoadRepair={Array []}
         />
       </Col>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <Col>
           <FormInputMaterial
             count={
@@ -123,9 +120,7 @@ exports[`<InputRepairFrom /> snapShot correctly 1`] = `
           />
         </Col>
       </Row>
-      <Row
-        noGutters={false}
-      >
+      <Row>
         <AuthorView
           author=""
         />

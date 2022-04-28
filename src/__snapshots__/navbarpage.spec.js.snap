@@ -2,21 +2,16 @@
 
 exports[`<NavbarPage /> should render correctly 1`] = `
 <Navbar
-  bg="light"
+  className="navbar-custom"
   collapseOnSelect={false}
   expand="sm"
-  varian="light"
   variant="light"
 >
-  <withRouter(LinkContainer)
-    to="/"
+  <NavbarBrand
+    href="/"
   >
-    <NavbarBrand
-      href="/"
-    >
-      Журнал ремонтов
-    </NavbarBrand>
-  </withRouter(LinkContainer)>
+    Журнал ремонтов
+  </NavbarBrand>
   <NavbarToggle
     aria-controls="basic-navbar-nav"
     label="Toggle navigation"
@@ -29,74 +24,34 @@ exports[`<NavbarPage /> should render correctly 1`] = `
       fill={false}
       justify={false}
     >
-      <withRouter(LinkContainer)
+      <NavLink
+        disabled={false}
+        href="/inputData"
         id="inputData"
-        to="/inputData"
       >
-        <NavLink
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          href="/inputData"
-        >
-          Ввод данных
-        </NavLink>
-      </withRouter(LinkContainer)>
-      <withRouter(LinkContainer)
+        Ввод данных
+      </NavLink>
+      <NavLink
+        disabled={false}
+        href="/reportEquipment"
         id="reportEquipment"
-        to="reportEquipment"
       >
-        <NavLink
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          href="/reportEquipment"
-        >
-          Отчет по оборудованию
-        </NavLink>
-      </withRouter(LinkContainer)>
-      <withRouter(LinkContainer)
+        Отчет по оборудованию
+      </NavLink>
+      <NavLink
+        disabled={false}
+        href="/repairPlan"
         id="repairPlan"
-        to="/repairPlan"
       >
-        <NavLink
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          href="/repairPlan"
-        >
-          План ремонтов
-        </NavLink>
-      </withRouter(LinkContainer)>
-      <withRouter(LinkContainer)
+        План ремонтов
+      </NavLink>
+      <NavLink
+        disabled={false}
+        href="/bidRequest"
         id="bidRequest"
-        to="/bidRequest"
       >
-        <NavLink
-          as={
-            Object {
-              "$$typeof": Symbol(react.forward_ref),
-              "render": [Function],
-            }
-          }
-          disabled={false}
-          href="/bidRequest"
-        >
-          Заявки снабжение
-        </NavLink>
-      </withRouter(LinkContainer)>
+        Заявки снабжение
+      </NavLink>
       <AuthButton />
     </Nav>
   </NavbarCollapse>
