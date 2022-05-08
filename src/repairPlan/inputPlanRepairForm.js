@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -10,16 +9,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useDebouncedCallback } from 'use-debounce';
 import * as log from 'loglevel';
 import {format, parseISO } from 'date-fns';
-
 import SearchList from "../searchListUnitEquipment";
 import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
 
 log.setLevel('debug');
 
 
-
 function InputPlanRepairForm(props) {
-
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
@@ -56,7 +52,6 @@ function InputPlanRepairForm(props) {
         const dateCreated = new Date();
         let data = {
             dateCreated: dateCreated,
-            //dateFinished:
             equipment: idEquipment,
             author: localStorage.getItem('userId'),
             description: repair,
@@ -79,6 +74,8 @@ function InputPlanRepairForm(props) {
                 setRepair([]);
                 setAuthor('');
                 setIdAuthor('');
+                setFilter('');
+
 
                 //todo toast message add ?
                 props.onHide();
@@ -118,6 +115,7 @@ function InputPlanRepairForm(props) {
                     setRepairCount([1]);
                     setAuthor('');
                     setIdAuthor('');
+                    setFilter('');
     
                     //todo toast message add ?
                     props.handleAddedPlan();
@@ -286,6 +284,7 @@ function InputPlanRepairForm(props) {
             backdrop="static"
             dialogClassName='modal-90w'
             size='lg'
+            fullscreen="xl-down"
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             key={idRecord}

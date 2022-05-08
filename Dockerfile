@@ -14,5 +14,5 @@ RUN sed -i 's/AllowOverride None/AllowOverride All/' /usr/local/apache2/conf/htt
 
 
 
-EXPOSE 8080
+EXPOSE 80
 

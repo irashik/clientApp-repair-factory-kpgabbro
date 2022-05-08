@@ -7,8 +7,8 @@
     "test": "jest --config=jest.config.js",
     "test:w": "jest --watch --coverage -c=jest.config.js",
     "test:u": "jest -u -c=jest.config.js",
-    "start": "webpack serve --hot ",
-    "build": "webpack",
+    "start": "webpack serve --hot  --mode=none",
+    "build": "webpack --mode=production",
     "cypress:run": "cypress run --record --key 0f32b339-e00a-44ec-adda-0b2352c50897",
     "cypress:open": "cypress open"
   },
@@ -21,6 +21,7 @@
     "data-uri-to-buffer": "^4.0.0",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
+    "dotenv-flow": "^3.2.0",
     "fetch-blob": "^3.1.5",
     "fuse.js": "^6.5.3",
     "history": "^5.3.0",
