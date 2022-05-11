@@ -17,7 +17,10 @@ function RepairPlan(props) {
   const [statusState, setStatusState] = useState('');
   const [searchString, setSearchString] = useState('');
   const [filter, setFilter] = useState('');
+  const [filterText, setFilterText] = useState('');
   const [idEquipment, setIdEquipment] = useState('');
+  const [importance, setImportance] = useState('');
+  const [searchTextDescription, setSearchTextDescription] = useState('');
 
 
   const debouncedSetFilter = useDebouncedCallback(
@@ -25,12 +28,25 @@ function RepairPlan(props) {
       process.env.DEBOUNCEDDELAY
   );
 
+  const debouncedSetFilterText = useDebouncedCallback(
+    filterText => setFilterText(filterText),
+    process.env.DEBOUNCEDDELAY
+  )
+
   function onChangeSearch(e) {
       const { value } = e.target
       setSearchString(value);
       debouncedSetFilter(value);
       setIdEquipment(null)
   };
+
+
+  function onChangeSearchDescription(e) {
+    const {value} = e.target;
+    debouncedSetFilterText(value);
+    setSearchTextDescription(value);
+  }
+
 
   function handlerSelectEquipment(id, joinNameUnit, e) {
     setSearchString(joinNameUnit);
@@ -47,7 +63,7 @@ function RepairPlan(props) {
   return (
     <Container fluid>
       <Row className="justify-content-md-center">
-        <Col><h2>План ремонтов</h2></Col>
+        <Col xl={4}><h2>План ремонтов</h2></Col>
         <Col></Col>
         <Col xs={2}>
             <Button variant="primary" 
@@ -57,10 +73,11 @@ function RepairPlan(props) {
                     Добавить задачу</Button>
         </Col>
       </Row>
-      <Row>
-        <Col sm={4} id='bidRequestFilter'>
+      <Row id="blockFilterString">
+        <Col sm >
           <label>Фильтр по статусу задачи</label>
-          <Form.Control as='select' size="sm" aria-label="Выберите статус задачи"
+          <Form.Control id='inputFilterStatus'
+                        as='select' size="sm" aria-label="Выберите статус задачи"
                         value={statusState}
                         onChange={(e) => setStatusState(e.target.value)}   >
 
@@ -73,7 +90,7 @@ function RepairPlan(props) {
                             <option value="ACTIVE">Активная</option>
           </Form.Control>
         </Col>
-        <Col sm={4}>
+        <Col sm>
           <label>Фильтр по оборудованию</label>
           <Form.Control
                     id='inputEquipment' size="sm" type="text" 
@@ -83,8 +100,35 @@ function RepairPlan(props) {
                     title={idEquipment} >
           </Form.Control>
           <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
-          <br></br>
         </Col>
+        <Col sm>
+          <label>Фильтр по описанию</label>
+          <Form.Control
+                    id='inputFilterDescription' size="sm" type="text" 
+                    placeholder="Текст для поиска"
+                    value={searchTextDescription}
+                    onChange={onChangeSearchDescription}
+                    >
+          </Form.Control>
+        </Col>
+        <Col sm>
+          <label>Фильтр по важности</label>
+          <Form.Control
+                    id='inputFilterImportance'
+                    as='select' size="sm" aria-label="Выберите статус задачи"
+                    placeholder="Выберите категорию"
+                    value={importance}
+                    onChange={(e) => setImportance(e.target.value)} >
+                    
+                    <option value=''> -- select an option -- </option>
+                    <option value="A">Важно-срочно</option>
+                    <option value="B">Важно-несрочно</option>
+                    <option value="C">Срочно-неважно</option>
+                    <option value="D">Несрочно-неважно</option>
+          </Form.Control>
+        </Col>
+
+
       </Row>
         <InputPlanRepairForm    show={modalShow} 
                                 onHide={() => setModalShow(false)}
@@ -95,6 +139,8 @@ function RepairPlan(props) {
         <ReadPlansListModule    onAddedPlan={addedPlan} 
                                 onSelectEquipment={idEquipment} 
                                 onSelectStatus={statusState}
+                                onSelectImportance={importance}
+                                onSelectDescription={filterText}
         />
     </Container>
   );

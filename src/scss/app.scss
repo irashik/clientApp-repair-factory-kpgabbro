@@ -311,3 +311,40 @@ p {
   }
 }
 
+
+.cardItem {
+  .container-fluid, .row, .col, .card-header, div {
+
+    margin: 0px;
+    padding: 0px;
+  } 
+  
+  ul li {
+    font-size: 0.9rem;
+  }
+
+  p {
+    
+    margin: 0px;
+    margin-left: 5px;
+
+  }
+
+  margin: .3rem;
+  padding: 0px;
+
+  .card-body {
+    padding: auto;
+    padding-top: 5px;
+
+
+  }
+
+  
+}
+
+#blockFilterString {
+  .col-sm {
+    min-width: 215px;
+  }
+}

@@ -6,9 +6,12 @@ import {format, parseISO } from 'date-fns';
 import * as log from 'loglevel';
 import { loadFromDb } from "../utils/loader";
 import InputPlanRepairForm from './inputPlanRepairForm';
+import Card from 'react-bootstrap/Card'
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 log.setLevel('debug');
-
 
 function ReadPlansListModule(props) {
     const [queryFromDb, setQueryFromDb] = useState([]);
@@ -24,6 +27,13 @@ function ReadPlansListModule(props) {
     if (props.onSelectStatus) {
         url.searchParams.set("status", props.onSelectStatus);
     }
+    if (props.onSelectImportance) {
+        url.searchParams.set("importance", props.onSelectImportance)
+    }
+    if (props.onSelectDescription) {
+        url.searchParams.set('description', props.onSelectDescription)
+    }
+    
 
     function onChangeRecord(e) {
         setIdRecord(e);
@@ -31,7 +41,6 @@ function ReadPlansListModule(props) {
     function onHandleAddedPlan() {
         setUpdatedPlan([...updatedPlan, 1]);
     };
-
 
     useEffect(() => {
             loadFromDb(url)
@@ -42,8 +51,12 @@ function ReadPlansListModule(props) {
                 alert('Error from server', err);
                 throw new Error(err);
             })
+            return function cleanup() {
+                setIdRecord('');
+            }
 
-    }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment, updatedPlan]);
+    }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment, 
+        updatedPlan, props.onSelectDescription, props.onSelectImportance]);
     
 
     if(!queryFromDb.length) {
@@ -53,6 +66,7 @@ function ReadPlansListModule(props) {
             </div>
         )
     } else {
+        
         return (
             <React.Fragment>
                 <InputPlanRepairForm    show={modalShow}
@@ -63,32 +77,18 @@ function ReadPlansListModule(props) {
 
                 />
 
-                <Table id='tablePlansRepair' responsive='mg' bordered hover>
-                    <thead>
-                        <tr>
-                            <th scope='col'>#</th>
-                            <th id='colPlan'>Плановые работы</th>
-                            <th>Оборудование</th>
-                            <th>Статус</th>
-                            <th>Дата создания</th>
-                            <th>Примечание</th>
-                            <th>Приоритет</th>
-                            <th>Автор</th>
-                            <th>Дата изменения статуса</th>
-                            <th>Трудозатраты</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {queryFromDb.map((i) => {
-                            return (
-                                <ReadModuleBlock key={i._id} i={i}  
+
+                <Container fluid id='CardListPlanRepairs' className="d-flex flex-row flex-wrap"
+                >
+                    {queryFromDb.map((i) => {
+                        return (
+                            <ReadModuleBlock key={i._id} i={i}  
                                     onOpenRecord={() => onChangeRecord(i._id)}
                                     onModalShow={() => setModalShow(true)}
-                                /> 
+                            /> 
                             )
                         })}
-                    </tbody>
-                </Table>
+                </Container>
             </React.Fragment>
         )
     }
@@ -99,7 +99,9 @@ export default ReadPlansListModule;
 
 function ReadModuleBlock(props) {
     const idRecord = props.i._id;
+    const curImportance = props.i.importance;
     
+
     function onRepairEdit() {
         props.onModalShow();
         props.onOpenRecord();
@@ -110,18 +112,15 @@ function ReadModuleBlock(props) {
             <li key={i}>{a} </li> 
         )
     });
-
-    function DateFinishView(props) {
-            if(props.dateFinished) {
-                return (
-                    <td>   { format(parseISO(props.dateFinished), 'dd-MM-yyyy HH:mm') }</td>
-                )
-            } else {
-                return ( <td></td>)
-            }
+    function PriorityView(props) {
+        if(props.priority) {
+            return (
+                <p>Приоритет: <i>{props.priority}</i></p>
+            )
+        } else {
+            return ( null )
+        }
     };
-
-
     const statusTaskList = new Map([
         ['FINISHED', 'Завершено'],
         ['CANCELLED','Отменено'],
@@ -130,34 +129,77 @@ function ReadModuleBlock(props) {
         ['INWORK', 'В работе'],
         ['ACTIVE', 'Активная']
     ]);
+    const imporanceTaskList = new Map([
+        ['A', 'Важно-срочно'],
+        ['B', 'Важно-несрочно'],
+        ['C', 'Срочно-неважно'],
+        ["D", 'Несрочно-неважно']
+    ])
+    const importanceTaskCard = new Map([
+        ['A', 'danger'],
+        ['B', 'success'],
+        ['C', 'warning'],
+        ["D", 'secondary'],
+        ['', 'light']
+    ])
+    const textColor = () => {
+        const i = imporanceTaskList.get(curImportance);
+        if (i === 'light' || i === undefined) {
+            return 'dark'    
+        } else { return 'white'} 
+    };
+
 
 
      
     return (
-        <tr key={idRecord}>
-            <td>
-                <Button variant="outline-dark" data-toggle="tooltip" 
-                        data-placement="top" title="Редактировать"
-                        id='EditPlanRepair'
-                        onClick={onRepairEdit}
-                        >
-                            <TiPen />
-                        </Button>
-            </td>
-            <td>
-                <ul>
-                    {arrayPlanRepair}
-                </ul>
-            </td>
-            <td>{props.i.equipment[0].position}      </td>
-            <td>{statusTaskList.get(props.i.status)}</td>
-            <td>{ format(parseISO(props.i.dateCreated), 'dd-MM-yyyy') }</td>
-            <td>{props.i.comment}    </td>
-            <td>{props.i.priority}</td>         
-            <td>{props.i.author[0].name}</td>
-            <DateFinishView dateFinished={props.i.dateFinished} />
-            <td>{props.i.spendingJob}</td>
-        </tr>
+        <Card
+                bg={importanceTaskCard.get(curImportance)}
+                text={textColor()}
+                style={{ width: '18rem' }}
+                className="mb-2 cardItem"
+                id={idRecord}
+                >
+            <Card.Header>
+                <Container fluid>
+                    <Row>
+                    <Col className="text-start">
+                        <p><span className="align-middle"><i>{props.i.equipment[0].position}</i></span></p>
+                    </Col>
+
+                    <Col className="text-end" >
+                        <Button variant="outline-dark" data-toggle="tooltip" 
+                            data-placement="top" title="Редактировать"
+                            id='EditPlanRepair'
+                            onClick={onRepairEdit}
+                            >
+                                <TiPen />
+                            </Button>
+                    </Col>
+                    </Row>
+                    
+                </Container>
+                
+            
+            </Card.Header>
+            <Card.Body>
+                <Card.Title>
+                    <ul>
+                        {arrayPlanRepair}
+                    </ul>
+                </Card.Title>
+
+                <Card.Text>
+                    <p>Статус заявки: <i>{statusTaskList.get(props.i.status)}</i></p>
+                    <p>Дата создания: <i>{ format(parseISO(props.i.dateCreated), 'dd-MM-yyyy') }</i></p>
+                    <PriorityView priority={props.i.priority} />
+
+                    
+                    
+                    
+                </Card.Text>
+            </Card.Body>
+        </Card>
     )
 };
 

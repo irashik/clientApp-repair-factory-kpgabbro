@@ -1,16 +1,12 @@
-
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const DotenvWebpackPlugin = require('dotenv-webpack');
 const { EnvironmentPlugin } = require('webpack');
-const { argv } = require('process');
 
 
 
 
 module.exports = {
-
-
   
   entry: './src/index.js',
 
@@ -65,7 +61,7 @@ module.exports = {
       favicon: './src/image/favicon.ico'
     }),
     new DotenvWebpackPlugin({
-      path: '.env.development',
+      path: '.development.env',
 
     }),
     new EnvironmentPlugin({

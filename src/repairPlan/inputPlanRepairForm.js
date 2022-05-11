@@ -25,12 +25,14 @@ function InputPlanRepairForm(props) {
     const [spendingJob, setSpendingJob] = useState(0);
     const [statusState, setStatusState] = useState('DRAFT');
     const [priority, setPriority] = useState('');
+    const [importance, setImportance] = useState('');
     const [comment, setComment] = useState('');
     const [idRecord, setIdRecord] = useState([]);
     const [dateCreated, setDateCreated] = useState('');
     const [dateFinished, setDateFinished] = useState('');
     const [author, setAuthor] = useState('');
     const [idAuthor, setIdAuthor] = useState('');
+
     
 
     
@@ -58,7 +60,8 @@ function InputPlanRepairForm(props) {
             status: statusState,
             comment: comment,
             spendingJob: spendingJob,
-            priority: priority
+            priority: priority,
+            importance: importance
         }
        
         const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan");
@@ -95,7 +98,8 @@ function InputPlanRepairForm(props) {
             status: statusState,
             comment: comment,
             spendingJob: spendingJob,
-            priority: priority
+            priority: priority,
+            importance: importance
         }
               
 
@@ -116,10 +120,13 @@ function InputPlanRepairForm(props) {
                     setAuthor('');
                     setIdAuthor('');
                     setFilter('');
+                    setImportance('');
+                    setIdRecord('');
     
                     //todo toast message add ?
-                    props.handleAddedPlan();
+                   
                     props.onHide();
+                    props.handleAddedPlan();
     
                 }
                 catch(e) {
@@ -163,6 +170,7 @@ function InputPlanRepairForm(props) {
                     setDateCreated(result.dateCreated);
                     setDateFinished(result.dateFinished);
                     setPriority(result.priority);
+                    setImportance(result.importance);
                     setAuthor(result.author[0].name);
                     setIdAuthor(result.author[0]._id);
     
@@ -203,6 +211,7 @@ function InputPlanRepairForm(props) {
                 setRepairCount([1]);
                 setFilter('');
                 setSourceRepair([]);
+                setImportance('');
 
         }
     }, [props.onLoadRecord]);
@@ -351,6 +360,22 @@ function InputPlanRepairForm(props) {
                                     value={priority}
                                     onChange={(e) => setPriority(e.target.value)}
                                     />
+                    </Row>
+                    <Row>
+                        <label>Важность задачи</label>
+                        <Form.Control 
+                                id='inputImportance'
+                                as='select' size="sm" aria-label="Выберите важность задачи"
+                                value={importance}
+                                onChange={(e) => setImportance(e.target.value)}>
+
+                            <option value=''> -- select an option -- </option>
+                            <option value="A">Важно-срочно</option>
+                            <option value="B">Важно-несрочно</option>
+                            <option value="C">Срочно-неважно</option>
+                            <option value="D">Несрочно-неважно</option>
+                            </Form.Control>
+                     
                     </Row>
                     <Row>
                         <Form.Control id='inputComment' size="sm" as="textarea" rows={3} 
