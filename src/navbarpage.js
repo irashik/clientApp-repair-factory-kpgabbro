@@ -41,27 +41,28 @@ export default NavbarPage;
 
 function AuthButton() {
 
-  const user = localStorage.getItem('userName');
+  const user = window.localStorage.getItem('userName');
 
   function onClickLogout() {
 
+    // сначала проверь логин.
+
     const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/auth/logout");
-    
     url.searchParams.set('userId', localStorage.getItem('userId'));
     url.searchParams.set('userName', localStorage.getItem('userName'));
 
-    
-
     loadFromDb(url)
       .then(response => {
+        window.localStorage.clear();
         alert(response.res);
-        localStorage.clear();
         const homeUrl = new URL (process.env.HTTP_CLIENT_HOST + ":" + process.env.HTTP_CLIENT_PORT);
         location.href = homeUrl;
       })
       .catch(err => {
+        window.localStorage.clear();
+        
         alert('Logout Error: ' + JSON.stringify(err));
-        localStorage.clear();
+        
         throw new Error('Logout not successfully');
       });
 

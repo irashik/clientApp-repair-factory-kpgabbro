@@ -10,7 +10,6 @@ import SearchList from "../searchListUnitEquipment";
 import { useDebouncedCallback } from 'use-debounce';
 
 
-
 function RepairPlan(props) {
   const [modalShow, setModalShow] = useState(false);
   const [addedPlan, setAddedPlan] = useState([]);
@@ -18,18 +17,22 @@ function RepairPlan(props) {
   const [searchString, setSearchString] = useState('');
   const [filter, setFilter] = useState('');
   const [filterText, setFilterText] = useState('');
+  const [filterTag, setFilterTag] = useState('');
   const [idEquipment, setIdEquipment] = useState('');
   const [importance, setImportance] = useState('');
   const [searchTextDescription, setSearchTextDescription] = useState('');
-
+  const [searchTextTag, setSearchTextTag] = useState('');
 
   const debouncedSetFilter = useDebouncedCallback(
       filter => setFilter(filter),
       process.env.DEBOUNCEDDELAY
   );
-
   const debouncedSetFilterText = useDebouncedCallback(
     filterText => setFilterText(filterText),
+    process.env.DEBOUNCEDDELAY
+  )
+  const debouncedSetFilterTag = useDebouncedCallback(
+    filterTag => setFilterTag(filterTag),
     process.env.DEBOUNCEDDELAY
   )
 
@@ -40,28 +43,31 @@ function RepairPlan(props) {
       setIdEquipment(null)
   };
 
-
   function onChangeSearchDescription(e) {
     const {value} = e.target;
     debouncedSetFilterText(value);
     setSearchTextDescription(value);
   }
 
+  function onChangeSearchTag(e) {
+    const {value} = e.target;
+    debouncedSetFilterTag(value);
+    setSearchTextTag(value);
+  }
 
   function handlerSelectEquipment(id, joinNameUnit, e) {
     setSearchString(joinNameUnit);
     setIdEquipment(id);
   };
-  
+
   function onHandleAddedPlan() {
     setAddedPlan([...addedPlan, 1]);
   };
   
 
-
     
   return (
-    <Container fluid>
+    <Container fluid id='repairPlanComponent'>
       <Row className="justify-content-md-center">
         <Col xl={4}><h2>План ремонтов</h2></Col>
         <Col></Col>
@@ -112,6 +118,16 @@ function RepairPlan(props) {
           </Form.Control>
         </Col>
         <Col sm>
+          <label>Фильтр по тэгу</label>
+          <Form.Control
+                    id='inputFilterTag' size="sm" type="text" 
+                    placeholder="Текст для поиска по тэгу"
+                    value={searchTextTag}
+                    onChange={onChangeSearchTag}
+                    >
+          </Form.Control>
+        </Col>
+        <Col sm>
           <label>Фильтр по важности</label>
           <Form.Control
                     id='inputFilterImportance'
@@ -141,6 +157,8 @@ function RepairPlan(props) {
                                 onSelectStatus={statusState}
                                 onSelectImportance={importance}
                                 onSelectDescription={filterText}
+                                onSelectTag={filterTag}
+
         />
     </Container>
   );

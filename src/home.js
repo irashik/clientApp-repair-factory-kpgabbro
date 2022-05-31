@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 function HomeComponent() {
     
       return (
-        <Container fluid >
+        <Container fluid id='homeComponent' >
           <Row id='mainPage'>
             <h2>Журнал учета ремонтов оборудования.</h2>
           

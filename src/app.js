@@ -25,7 +25,7 @@ function App() {
   
 
   return (
-    <Container fluid className="container-fluid">
+    <Container fluid className="container-fluid" id='bodyPage'>
       <HeaderComponent />
       
       <NavbarPage />

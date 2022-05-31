@@ -42,7 +42,7 @@ function ReportEquipment() {
    
 
     return (
-        <Container fluid>
+        <Container fluid id='reportComponent'>
             <Row className="justify-content-md-center">
                 <h2>Отчет по оборудованию</h2>
             </Row>

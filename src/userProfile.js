@@ -3,9 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import * as log from 'loglevel';
 import { loadFromDb, unloadInDbPatch } from "./utils/loader";
-
+import log from 'loglevel';
 
 log.setLevel('debug');
 
@@ -34,10 +33,13 @@ function ProfileUserComponent() {
                           process.env.HTTP_API_PORT + "/users/" + id);
 
      unloadInDbPatch(url, data).then(res => {
+      
 
      })
      .catch(err => {
-        throw new Error ('respnse from server', err);
+      
+      log.debug(err);  
+      throw new Error ('respnse from server', err);
      });
     
 
@@ -82,7 +84,7 @@ function ProfileUserComponent() {
 
 
       return (
-        <Container fluid>
+        <Container fluid id='userProfileComponent'>
           <Row className="justify-content-md-center">
             <h2>Профиль пользователя</h2>
           </Row>

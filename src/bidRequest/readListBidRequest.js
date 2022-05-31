@@ -49,7 +49,7 @@ function  ReadListBidRequest(props) {
   
   
 
-    if (!listBidRequest) {
+    if (!isLoaded || !listBidRequest) {
       return <div>Нет заявок</div> 
     } else {
         return (

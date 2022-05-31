@@ -37,9 +37,9 @@ function InputBidRequestForm(props) {
             statusBid: statusBid,
             dateStatusBid: new Date (),
             priority: priority,
-            author: localStorage.getItem('userId'),
+            author: window.localStorage.getItem('userId'),
             category: category,
-            comment: comment,
+            comment: comment
         }
         const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest");
         
@@ -74,16 +74,18 @@ function InputBidRequestForm(props) {
             description: description,
             statusBid: statusBid,
             dateStatusBid: new Date(),
-            lastAuthor:  localStorage.getItem('userId'),
+            lastAuthro: lastAuthor,
+            lastAuthor:  window.localStorage.getItem('userId'),
             priority: priority,
             category: category,
             comment: comment,
-        }
+        };
        
         const url = process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest/" + idRecord;
 
         unloadInDbPatch(url, data)
             .then(result => {
+                log.debug("record in database" + result)
                 try{
                     setIdRecord('');
                     setDescription('');
@@ -91,13 +93,10 @@ function InputBidRequestForm(props) {
                     setPriority('');
                     setComment('');
                     setCategory('');
-                    
                     setLastAuthor('');
                     setDateStatusBid('');
-
                     props.handleAddedRecord();
                     props.onHide();
-    
                 }
                 catch(e) {
                     throw new Error('error=', e);
@@ -125,13 +124,14 @@ function InputBidRequestForm(props) {
                     setDateStatusBid(result.dateStatusBid);
                     setPriority(result.priority);
                     setAuthor(result.author[0].name);
-                    setLastAuthor(result.lastAuthor);
+                    if(result.lastAuthor.length) {
+                        setLastAuthor(result.lastAuthor[0].name);
+                    }
                     setCategory(result.category);
                     setIdRecord(result._id);
                    
                 })
                 .catch(e => {
-                    log.debug('error= ' + e);
                     throw new Error(e);
                 })
         }
@@ -173,18 +173,14 @@ function InputBidRequestForm(props) {
             )
         } else { return(null) }
     };
-    function AuthorView(modal) {
-        if(modal.author) {
-            return (
-        <p>Автор записи: {modal.author}</p>
-            )
+    function AuthorView(props) {
+        if(props.author) {
+            return (<p>Автор записи: {props.author}</p>)
         } else { return(null) }
     };
-    function LastAuthorView(modal) {
-        if(modal.lastAuthor) {
-            return (
-        <p>Автор последней записи: {modal.LastAuthor}</p>
-            )
+    function LastAuthorView(props) {
+        if(props.lastAuthor) {
+            return (<p>Автор последней записи: {props.lastAuthor}</p>)
         } else { return(null) }
     };
     function BtnView(props) {
@@ -196,7 +192,7 @@ function InputBidRequestForm(props) {
                             onClick={onClickUpdateRecord}
                         >Обновить
                 </Button>
-            ) ;
+            );
         } else {
             return (
                 <Button variant="primary"    
@@ -207,7 +203,7 @@ function InputBidRequestForm(props) {
                 </Button>
             );
         }
-    }
+    };
 
 
 

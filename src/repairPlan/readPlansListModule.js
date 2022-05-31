@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { TiPen } from 'react-icons/ti';
-import Table from 'react-bootstrap/Table'
 import {format, parseISO } from 'date-fns';
 import * as log from 'loglevel';
 import { loadFromDb } from "../utils/loader";
@@ -18,6 +17,7 @@ function ReadPlansListModule(props) {
     const [modalShow, setModalShow] = useState(false);
     const [updatedPlan, setUpdatedPlan] = useState([]);
     const [idRecord, setIdRecord] = useState('');
+    const [isLoaded, setIsLoaded] = useState(false);
 
     let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan");
 
@@ -33,7 +33,10 @@ function ReadPlansListModule(props) {
     if (props.onSelectDescription) {
         url.searchParams.set('description', props.onSelectDescription)
     }
-    
+    if(props.onSelectTag) {
+        url.searchParams.set('tag', props.onSelectTag)
+    }
+   
 
     function onChangeRecord(e) {
         setIdRecord(e);
@@ -44,22 +47,28 @@ function ReadPlansListModule(props) {
 
     useEffect(() => {
             loadFromDb(url)
-            .then(queryFromDb => {
+                .then(queryFromDb => {
+                    log.debug('loadfromdb = then');
+                    setIsLoaded(true);    
                     setQueryFromDb(queryFromDb);
-            })
-            .catch(err => {
-                alert('Error from server', err);
-                throw new Error(err);
-            })
+                })
+                .catch(err => {
+                    setIsLoaded(false);
+                    log.debug("response server is error = " + err);
+                    alert('Error from server', err);
+                    //throw new Error(err);
+                })
             return function cleanup() {
                 setIdRecord('');
+                setIsLoaded(false);
             }
 
     }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment, 
-        updatedPlan, props.onSelectDescription, props.onSelectImportance]);
+        updatedPlan, props.onSelectDescription, props.onSelectImportance, props.onSelectTag]);
     
+        log.debug(isLoaded);
 
-    if(!queryFromDb.length) {
+    if(!isLoaded || !queryFromDb) {
         return (
             <div>
                 <h2>Нет записей</h2>
@@ -121,6 +130,15 @@ function ReadModuleBlock(props) {
             return ( null )
         }
     };
+    function TagView(props) {
+        if(props.tag) {
+            return (
+                <p>Тэг: <i>{props.tag}</i></p>
+            )
+        } else {
+            return ( null )
+        }
+    };
     const statusTaskList = new Map([
         ['FINISHED', 'Завершено'],
         ['CANCELLED','Отменено'],
@@ -163,19 +181,27 @@ function ReadModuleBlock(props) {
             <Card.Header>
                 <Container fluid>
                     <Row>
-                    <Col className="text-start">
-                        <p><span className="align-middle"><i>{props.i.equipment[0].position}</i></span></p>
+                    <Col className="text-start align-middle">
+                        <p id="EditPlanRepair" className="align-middle"> 
+                            <i>{props.i.equipment[0].position}, {props.i.equipment[0].group}</i>
+
+
+                        </p>
+                    </Col>
+                       <Col className="text-end">
+                        
+                        <Button size='sm'
+                        id="editPlanRepair-btn"
+                        variant="btn-secondary"
+                        data-toggle="tooltip" 
+                        data-placement="top" 
+                        title="Редактировать"
+
+                        onClick={onRepairEdit}>
+                        <TiPen />
+                        </Button>
                     </Col>
 
-                    <Col className="text-end" >
-                        <Button variant="outline-dark" data-toggle="tooltip" 
-                            data-placement="top" title="Редактировать"
-                            id='EditPlanRepair'
-                            onClick={onRepairEdit}
-                            >
-                                <TiPen />
-                            </Button>
-                    </Col>
                     </Row>
                     
                 </Container>
@@ -190,10 +216,20 @@ function ReadModuleBlock(props) {
                 </Card.Title>
 
                 <Card.Text>
-                    <p>Статус заявки: <i>{statusTaskList.get(props.i.status)}</i></p>
-                    <p>Дата создания: <i>{ format(parseISO(props.i.dateCreated), 'dd-MM-yyyy') }</i></p>
-                    <PriorityView priority={props.i.priority} />
+                    <Row>
+                        <Col>
+                            <p><i>{statusTaskList.get(props.i.status)}</i></p>
+                            <TagView tag={props.i.tag} />
+                        </Col>
+                        <Col>
+                            <p>от <i>{ format(parseISO(props.i.dateCreated), 'dd-MM-yyyy') }</i></p>    
+                            <PriorityView priority={props.i.priority} />
+                            
+                        </Col>
+                    </Row>
+                    
 
+                    
                     
                     
                     

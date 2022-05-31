@@ -37,7 +37,7 @@ function InputDataSection(props) {
 
 
     return (
-        <Container fluid >
+        <Container fluid id='inputDataComponent' >
             <Row className="justify-content-md-center">
                 <Col>
                     <h2 className="m-3">Что сегодня сделано?</h2>

@@ -130,7 +130,8 @@ function loadFromDb(url) {
             requestInDb
               .then(newres => {
                 if(newres.status == 401) {
-                  throw new Error ('UNAUTHORIZED');
+
+                  reject(new Error ('UNAUTHORIZED'));
                 } else if (newres.status === 201 || newres.status == 200 || res.status == 304) {
                   return newres.json();
                 } else {

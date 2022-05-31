@@ -32,6 +32,7 @@ function InputPlanRepairForm(props) {
     const [dateFinished, setDateFinished] = useState('');
     const [author, setAuthor] = useState('');
     const [idAuthor, setIdAuthor] = useState('');
+    const [tag, setTag] = useState('');
 
     
 
@@ -51,9 +52,9 @@ function InputPlanRepairForm(props) {
         setIdEquipment(id);
     };
     function onClickAddedPlan() {
-        const dateCreated = new Date();
+        
         let data = {
-            dateCreated: dateCreated,
+            dateCreated: new Date(),
             equipment: idEquipment,
             author: localStorage.getItem('userId'),
             description: repair,
@@ -61,7 +62,9 @@ function InputPlanRepairForm(props) {
             comment: comment,
             spendingJob: spendingJob,
             priority: priority,
-            importance: importance
+            importance,
+            tag
+
         }
        
         const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/repairplan");
@@ -78,6 +81,7 @@ function InputPlanRepairForm(props) {
                 setAuthor('');
                 setIdAuthor('');
                 setFilter('');
+                setTag('');
 
 
                 //todo toast message add ?
@@ -89,17 +93,17 @@ function InputPlanRepairForm(props) {
             })
     };
     function onClickUpdatePlan() {
-
-        const dateFinished = new Date();
+       
         let data = {
-            dateFinished: dateFinished,
+            dateFinished: new Date(),
             equipment: idEquipment,
             description: repair,
             status: statusState,
             comment: comment,
             spendingJob: spendingJob,
             priority: priority,
-            importance: importance
+            importance,
+            tag
         }
               
 
@@ -122,6 +126,7 @@ function InputPlanRepairForm(props) {
                     setFilter('');
                     setImportance('');
                     setIdRecord('');
+                    setTag('');
     
                     //todo toast message add ?
                    
@@ -173,12 +178,13 @@ function InputPlanRepairForm(props) {
                     setImportance(result.importance);
                     setAuthor(result.author[0].name);
                     setIdAuthor(result.author[0]._id);
+                    setTag(result.tag);
     
                     // idEquipment есть нужна строка.
-                    let url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
+                    const reqUnitUrl = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
                             "/unit-equipment" + "/" + result.equipment[0]._id);
                            
-                    loadFromDb(url).then(result => {
+                    loadFromDb(reqUnitUrl).then(result => {
                         let fullName = result.position + " " + result.group;
                         setSearchString(fullName);
                         // а как же отслеживание состояние - будет тогда еще один запрос.
@@ -212,6 +218,7 @@ function InputPlanRepairForm(props) {
                 setFilter('');
                 setSourceRepair([]);
                 setImportance('');
+                setTag('');
 
         }
     }, [props.onLoadRecord]);
@@ -235,7 +242,7 @@ function InputPlanRepairForm(props) {
     function AuthorView(modal) {
         if(modal.author) {
             return (
-        <p>Автор записи: {modal.author[0].name}</p>
+        <p>Автор записи: {modal.author}</p>
             )
         } else { return(null) }
     };
@@ -352,6 +359,14 @@ function InputPlanRepairForm(props) {
                                 <option value="ACTIVE">Активная</option>
                                 
                             </Form.Control>
+                    </Row>
+                    <Row>
+                        <Form.Control 
+                                    id='inputTag' size="sm" type="text" 
+                                    placeholder="Тэг"
+                                    value={tag}
+                                    onChange={(e) => setTag(e.target.value)}
+                                    />
                     </Row>
                     <Row>
                         <Form.Control 
