@@ -184,8 +184,8 @@ function InputPlanRepairForm(props) {
                     const reqUnitUrl = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + 
                             "/unit-equipment" + "/" + result.equipment[0]._id);
                            
-                    loadFromDb(reqUnitUrl).then(result => {
-                        let fullName = result.position + " " + result.group;
+                    loadFromDb(reqUnitUrl).then(res => {
+                        let fullName = res.position + " " + res.group;
                         setSearchString(fullName);
                         // а как же отслеживание состояние - будет тогда еще один запрос.
                        //todo этот код похоже ненадежный, но он работает. )
