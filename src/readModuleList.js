@@ -29,9 +29,9 @@ function ReadModuleList(props) {
 
     }
 
-    if (props.optedData || props.onAddedRepair) {
-       let date1 = startOfDay(props.optedData); // дата со временем 00:00 
-       let date2 = endOfDay(date1);    // прибавляю день
+    if (props.startDate || props.endDate || props.onAddedRepair) {
+       let date1 = props.startDate; 
+       let date2 = endOfDay(props.endDate); 
 
        date1 = formatISO(date1, {});
        date2 = formatISO(date2, {});
@@ -52,7 +52,7 @@ function ReadModuleList(props) {
                     throw new Error('response from server bad', err);
                 });
 
-    }, [props.repair, props.optedData, props.unitEquipment, 
+    }, [props.repair, props.startDate, props.endDate, props.unitEquipment, 
         props.onAddedRepair, addedRepair, props.viewAllPosition        ]);
     
 

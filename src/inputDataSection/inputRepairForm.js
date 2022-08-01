@@ -9,7 +9,7 @@ import DatePicker, { registerLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useDebouncedCallback } from 'use-debounce';
 import ru from 'date-fns/locale/ru';
-import {parseISO } from 'date-fns';
+import {parseISO, startOfHour } from 'date-fns';
 import * as log from 'loglevel';
 import SearchList from "../searchListUnitEquipment";
 import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
@@ -230,6 +230,7 @@ function InputRepairForm(props) {
             backdrop="static"
             dialogClassName='modal-90w'
             size='lg'
+            fullscreen="xl-down"
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             id="modalRepairForm"
@@ -247,17 +248,20 @@ function InputRepairForm(props) {
                 <Container fluid id='input-module'>
                     <Row>
                         <Col>
-                            <label>Время начала</label>
+                            <label className="setTimeLabel">Время начала</label>
                                 <DatePickerDiv type='dateStart' 
                                                 onSelectOptedData={onSelectOptedDateStart} setDate={sourceDateStart}/>
                             
+                        </Col>
+                        <Col>
                         
-                        
-                            <label>Время окончания</label>
+                            <label className="setTimeLabel">Время окончания</label>
                                 <DatePickerDiv type='dateEnd' 
                                                 onSelectOptedData={onSelectOptedDateEnd} setDate={sourceDateEnd}/>
                             
                         </Col>
+                    </Row>
+                    <Row>
                         <Col md='auto'>
                             <Form.Control 
                                     id='inputEquipment' size="sm" type="text" 
@@ -268,9 +272,9 @@ function InputRepairForm(props) {
                                     />
                             <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
                         </Col>
-
-                        </Row>
-                            <Col md={2}>
+                    </Row>
+                    <Row>
+                        <Col md={1}>
                                 <InputGroupButtonSmall name="repair" onHandleRepairCount={() => setRepairCount([...repairCount, 1])} />
                             </Col>
 
@@ -280,7 +284,7 @@ function InputRepairForm(props) {
                                                     onLoadRepair={sourceRepair}
                                                     />
                             </Col>
-                        
+                        </Row>
                         <Row>
                             <Col >
                                 <FormInputMaterial  count={materialCount} 
@@ -288,7 +292,7 @@ function InputRepairForm(props) {
                                                     onLoadMaterial={sourceMaterial}
                                                     />
                             </Col>
-                            <Col md={2}>
+                            <Col md={1}>
                                 <InputGroupButtonSmall name="material" onHandleMaterialCount={() => setMaterialCount([...materialCount, 1])} />
                             </Col>
                         </Row>
@@ -339,13 +343,8 @@ function InputGroupButtonSmall(props) {
     );
 };
 function DatePickerDiv(props) {
-
-    const year =  new Date().getFullYear();
-    const month = new Date().getMonth()
-    const day = new Date().getDate();
-    const hours = new Date().getHours();
-
-    const [valueDate, setValueDate] = useState(new Date(year, month, day, hours));
+    let currentTime = startOfHour(new Date());
+    const [valueDate, setValueDate] = useState(currentTime);
 
     let idInput = 'inputDateStart';
   
@@ -384,7 +383,7 @@ function DatePickerDiv(props) {
     return (
         <React.Fragment>
             <DatePicker 
-                            className="m-3"
+                            className="form-control-sm"
                             locale="ru" 
                             selected={valueDate}
                             onChange={(date) => handlerOptedData(date)}
@@ -415,7 +414,6 @@ function FormInputRepair(props) {
         const joinArr = arrJoin(repair, cloneType);
         props.onHandleRepair(joinArr);
     };
-
     function arrJoin(repairAr, typeAr)  {
         const newArr = repairAr.map((i, a) => {
             return {    description: i,
@@ -502,7 +500,6 @@ function FormInputRepair(props) {
     )
 };
 function FormInputMaterial(props) {
-
     const [count, setCount] = useState([]);
     const [material, setMaterial] = useState([]);
     const [valueMat, setValueMat] = useState([]);
@@ -520,6 +517,7 @@ function FormInputMaterial(props) {
         setValueMat(cloneValue);
         const joinArr = arrJoin(material, cloneValue);
         props.onHandleMaterial(joinArr);
+
     };
     function arrJoin(materialAr, valueAr) {
         const newArr = materialAr.map((i, a) => {
@@ -529,6 +527,13 @@ function FormInputMaterial(props) {
         });
         return newArr;
     };
+    function onHandleNumberInput(event) {
+        if (!/\d/.test(String.fromCharCode(event.charCode)) &&
+            event.charCode > 9 &&
+            !event.ctrlKey){  //event.ctrlKey не срабатывает.
+                event.preventDefault();
+        }
+    }
 
 
     useEffect(() => {
@@ -582,6 +587,7 @@ function FormInputMaterial(props) {
                     placeholder="Введите его количество"
                     key={i}
                     value={valueMat[i] || ''}
+                    onKeyPress={(event) => onHandleNumberInput(event)}
                     onChange={(e) => onHandleMaterialVal(e.target.value, i)}
                     />
                 </Col>

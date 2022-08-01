@@ -1,12 +1,10 @@
 import React, { useState, Fragment } from 'react';
-
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import * as log from 'loglevel';
 import { loadFromDb } from './utils/loader';
-
 
 log.setLevel('debug');
 
@@ -42,6 +40,10 @@ export default NavbarPage;
 function AuthButton() {
 
   const user = window.localStorage.getItem('userName');
+  const accessToken = window.localStorage.getItem('accessToken');
+  const userId = window.localStorage.getItem('userId');
+  const refreshToken = window.localStorage.getItem('refreshToken');
+  
 
   function onClickLogout() {
 
@@ -70,7 +72,7 @@ function AuthButton() {
 
 
 
-  if(user) {
+  if(user && userId && accessToken && refreshToken) {
     return (
       <ButtonGroup size='sm' className='col-4' aria-label='Basic example'>
         <Nav.Link href='/profile'>

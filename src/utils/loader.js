@@ -56,9 +56,6 @@ class Loader {
     }
 
   }
-
-
-
 };
 
 function checkTokenAndUpdate(refreshToken) {
@@ -125,15 +122,15 @@ function loadFromDb(url) {
             
             // еще раз делаем запрос на получение данных
             const loader = new Loader(url, "GET", null, newTokensRes.accessToken, null);
-            const requestInDb = fetch(loader.url, loader.options);
+            const secondrequestInDb = fetch(loader.url, loader.options);
     
-            requestInDb
+            secondrequestInDb
               .then(newres => {
                 if(newres.status == 401) {
-
                   reject(new Error ('UNAUTHORIZED'));
                 } else if (newres.status === 201 || newres.status == 200 || res.status == 304) {
                   return newres.json();
+                  
                 } else {
                   reject (new Error(newres));
                 }
@@ -151,18 +148,22 @@ function loadFromDb(url) {
 
         }
         else if (res.status == 200 || res.status == 201 || res.status == 304) {
+            
             return res.json();
         } else {
             reject(new Error(res));
         }
 
         })
+
+
         .then(result => {
           resolve(result);
         })
         .catch(err => {
           reject(new Error(err));
         });
+
       });
 };
 export { loadFromDb };

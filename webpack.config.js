@@ -62,7 +62,7 @@ module.exports = {
     }),
     new DotenvWebpackPlugin({
       path: '.development.env',
-        //path: '.production.env'
+      //  path: '.production.env'
 
     }),
     new EnvironmentPlugin({

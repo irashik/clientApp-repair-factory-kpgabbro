@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import DatePicker, { registerLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
+import { startOfDay, subDays } from "date-fns";
 import * as log from 'loglevel';
 import InputRepairForm from "./inputRepairForm";
 import ReadModuleList from '../readModuleList';
@@ -15,20 +16,18 @@ registerLocale('ru', ru);
 log.setLevel('debug');
 
 
+const currentDay = startOfDay(new Date());
+const startDay = subDays(currentDay, 15);
 
 function InputDataSection(props) {
+    
+    const [startDate, setStartDate] = useState(startDay);
+    const [endDate, setEndDate] = useState(currentDay);
 
-    const year =  new Date().getFullYear();
-    const month = new Date().getMonth()
-    const day = new Date().getDate();
-
-    const [optedData, setOptedData] = useState(new Date(year, month, day));
     const [addedRepair, setAddedRepair] = useState([]);
     const [modalShow, setModalShow] = useState(false);
 
-    function onSelectOptedData(selectedDate) {
-        setOptedData(selectedDate);
-    };
+   
     function onHandleAddedRepair() {
         setAddedRepair([...addedRepair, 1]);
      };
@@ -43,7 +42,9 @@ function InputDataSection(props) {
                     <h2 className="m-3">Что сегодня сделано?</h2>
                 </Col>
                 <Col>
-                    <DatePickerDiv onSelectOptedData={onSelectOptedData} />
+                    <DatePickerDivStart name="startDate" onSelectStartDate={(e) => setStartDate(e)} />
+                    <DatePickerDivEnd name="endDate" onSelectEndDate={(e) => setEndDate(e)} />
+
                 </Col>
                 <Col>
                     <Button variant="primary" 
@@ -62,25 +63,20 @@ function InputDataSection(props) {
                                 resetIdRecord={() => {return null}}
                                 />
             
-            <ReadModuleList optedData={optedData} onAddedRepair={addedRepair}/>
+            <ReadModuleList startDate={startDate} endDate={endDate} onAddedRepair={addedRepair}/>
         </Container>
     )
 };
 export default InputDataSection;
 
 
-function DatePickerDiv(props) {
+function DatePickerDivStart(props) {
 
-    const year =  new Date().getFullYear();
-    const month = new Date().getMonth()
-    const day = new Date().getDate();
-
-    const [valueDate, setValueDate] = useState(new Date(year, month, day));
+    const [valueDate, setValueDate] = useState(startDay);
   
-
-    function handlerOptedData(e) {
+    function handlerOptedDate(e) {
         setValueDate(e);    
-        props.onSelectOptedData(e);
+        props.onSelectStartDate(e);
     };
 
     return (
@@ -88,13 +84,30 @@ function DatePickerDiv(props) {
                 className="m-3"
                 locale="ru" 
                 selected={valueDate}
-                onChange={(date) => handlerOptedData(date)}
+                onChange={(date) => handlerOptedDate(date)}
                 dateFormat="dd MMMM yyyy"
-                //startDate={valueDate}
-                id='StartDateValue' />
+                id={'DateValue_start'} />
     );
 };
 
+function DatePickerDivEnd(props) {
+    const [valueDate, setValueDate] = useState(currentDay);
+  
+    function handlerOptedDate(e) {
+        setValueDate(e);    
+        props.onSelectEndDate(e);
+    };
+
+    return (
+            <DatePicker 
+                className="m-3"
+                locale="ru" 
+                selected={valueDate}
+                onChange={(date) => handlerOptedDate(date)}
+                dateFormat="dd MMMM yyyy"
+                id={'DateValue_end'} />
+    );
+};
 
 
 

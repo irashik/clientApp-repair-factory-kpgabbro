@@ -270,6 +270,13 @@ function InputPlanRepairForm(props) {
             );
         }
     };
+    function onHandleNumberInput(event) {
+        if (!/\d/.test(String.fromCharCode(event.charCode)) &&
+            event.charCode > 9 &&
+            !event.ctrlKey){  //event.ctrlKey не срабатывает.
+                event.preventDefault();
+        }
+    }
 
     function modalClose() {
         if(props.onLoadRecord) {
@@ -333,6 +340,7 @@ function InputPlanRepairForm(props) {
                                 placeholder="трудозатраты"
                                 onChange={(e)=> setSpendingJob(e.target.value)}
                                 value={spendingJob}
+                                onKeyPress={(event) => onHandleNumberInput(event)}
                                 />
                                 
 

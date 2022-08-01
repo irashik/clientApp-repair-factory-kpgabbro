@@ -40,6 +40,11 @@ div {
 
 }
 
+#inputDateEnd, #inputDateStart {
+  width: 180px;
+  border-radius: 2px;
+  //height: ;
+}
 
 
 #bodyPage {
@@ -138,22 +143,45 @@ header  {
 
 }
 
-#StartDateValue {
+#DateValue_start, #DateValue_end {
   border-radius: 5px;
-  //border: 2px; 
-
+  // border: 1px; 
+  // border-color: $header;
+  background-color: #ffffff85;
+  width: 150px;
 }
 
 #reportInputEquipment {
   max-width: 300px;
+  // border: 2px;
+  // border-color: black;
+  background-color: #ffffff85;
+  color: black;
 }
 
+#inputEquipment {
+  //min-width: 400px;
+
+}
+
+.setTimeLabel {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  color: gray;
+
+}
 
 #input-module {
   padding: 0px;
   margin: 0px;
 }
 
+.react-datepicker-wrapper {
+  margin: 0px;
+  padding: 0px;
+
+}
 
 
 #read-module, #plan-read-module {
