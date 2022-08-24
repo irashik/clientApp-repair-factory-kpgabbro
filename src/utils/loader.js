@@ -113,6 +113,8 @@ function loadFromDb(url) {
           если нет то ошибку 
           */
 
+          
+
           const newTokens = checkTokenAndUpdate(refreshToken);    
           
           newTokens
@@ -129,6 +131,9 @@ function loadFromDb(url) {
                 if(newres.status == 401) {
                   reject(new Error ('UNAUTHORIZED'));
                 } else if (newres.status === 201 || newres.status == 200 || res.status == 304) {
+
+                  location.reload() // перезагрузка страницы.  дальнейший код нужно вероятно переделать.
+
                   return newres.json();
                   
                 } else {

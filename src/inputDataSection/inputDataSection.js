@@ -39,14 +39,14 @@ function InputDataSection(props) {
         <Container fluid id='inputDataComponent' >
             <Row className="justify-content-md-center">
                 <Col>
-                    <h2 className="m-3">Что сегодня сделано?</h2>
+                    <h2 md={4} className="m-3">Выполненные работы</h2>
                 </Col>
                 <Col>
                     <DatePickerDivStart name="startDate" onSelectStartDate={(e) => setStartDate(e)} />
                     <DatePickerDivEnd name="endDate" onSelectEndDate={(e) => setEndDate(e)} />
 
                 </Col>
-                <Col>
+                <Col xs={3}>
                     <Button variant="primary" 
                         id="AddRepairEquipment"
                         className="m-3" 

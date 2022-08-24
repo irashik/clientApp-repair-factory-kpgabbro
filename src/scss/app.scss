@@ -1,16 +1,19 @@
 
 @import "color";
+@import "@fancyapps/ui/dist/fancybox.css";
+
 
 //@import "../../node_modules/react-datepicker/dist/react-datepicker.css";
 
 html, body {
   height: 100%;
+ 
 }
 
 
 #root {
   height: 100%;
-
+  //min-width: 1035px;
 }
 
 body {
@@ -52,7 +55,7 @@ div {
   }
 
   #homeComponent, #repairPlanComponent, #bidrequestComponent, #inputDataComponent, #reportComponent, #userProfileComponent {
-    min-height: calc(100vh - 330px);
+    min-height: calc(100vh - 290px);
   }
 
 
@@ -79,7 +82,7 @@ header {
 }
 
 footer {
-  height: 150px;
+  height: 100px;
   align-self: flex-end;  
   background-color: $footer;
   padding: 20px;
@@ -394,6 +397,17 @@ p {
 
 
   }
+}
+
+
+.thumbnail {
+  width: 200px;
+  background-color: $imageBackground;
+  
+}
+
+#inputEquipmentRepairForm {
+  max-width: 800px;
 }
 
 

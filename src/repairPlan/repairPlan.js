@@ -23,6 +23,10 @@ function RepairPlan(props) {
   const [searchTextDescription, setSearchTextDescription] = useState('');
   const [searchTextTag, setSearchTextTag] = useState('');
 
+  const [filterPriority, setFilterPriority] = useState('');
+  const [searchTextPriority, setSearchTextPriority] = useState('');
+  
+
   const debouncedSetFilter = useDebouncedCallback(
       filter => setFilter(filter),
       process.env.DEBOUNCEDDELAY
@@ -33,6 +37,11 @@ function RepairPlan(props) {
   )
   const debouncedSetFilterTag = useDebouncedCallback(
     filterTag => setFilterTag(filterTag),
+    process.env.DEBOUNCEDDELAY
+  )
+
+  const debouncedSetFilterPriority = useDebouncedCallback(
+    filterPriority => setFilterPriority(filterPriority),
     process.env.DEBOUNCEDDELAY
   )
 
@@ -47,19 +56,21 @@ function RepairPlan(props) {
     const {value} = e.target;
     debouncedSetFilterText(value);
     setSearchTextDescription(value);
-  }
-
+  };
   function onChangeSearchTag(e) {
     const {value} = e.target;
     debouncedSetFilterTag(value);
     setSearchTextTag(value);
-  }
-
+  };
+  function onChangeSearchPriority(e) {
+    const {value} = e.target;
+    debouncedSetFilterPriority(value);
+    setSearchTextPriority(value);
+  };
   function handlerSelectEquipment(id, joinNameUnit, e) {
     setSearchString(joinNameUnit);
     setIdEquipment(id);
   };
-
   function onHandleAddedPlan() {
     setAddedPlan([...addedPlan, 1]);
   };
@@ -69,9 +80,9 @@ function RepairPlan(props) {
   return (
     <Container fluid id='repairPlanComponent'>
       <Row className="justify-content-md-center">
-        <Col xl={4}><h2>План ремонтов</h2></Col>
-        <Col></Col>
-        <Col xs={2}>
+        <Col xs={5}><h2>План ремонтов</h2></Col>
+        <Col ></Col>
+        <Col xs={3}>
             <Button variant="primary" 
                     id="AddPlanRepair"
                     className="" 
@@ -128,6 +139,16 @@ function RepairPlan(props) {
           </Form.Control>
         </Col>
         <Col sm>
+          <label>Фильтр по приоритету</label>
+          <Form.Control
+                    id='inputFilterPriority' size="sm" type="text" 
+                    placeholder="Поиск по приоритету"
+                    value={searchTextPriority}
+                    onChange={onChangeSearchPriority}
+                    >
+          </Form.Control>
+        </Col>
+        <Col sm>
           <label>Фильтр по важности</label>
           <Form.Control
                     id='inputFilterImportance'
@@ -158,6 +179,7 @@ function RepairPlan(props) {
                                 onSelectImportance={importance}
                                 onSelectDescription={filterText}
                                 onSelectTag={filterTag}
+                                onSelectPriority={filterPriority}
 
         />
     </Container>

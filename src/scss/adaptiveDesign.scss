@@ -17,6 +17,12 @@
         
     }
 
+
+    #root {
+        height: 100%;
+        min-width: none;
+    }
+
 }
 
 
@@ -25,5 +31,13 @@
 
 // для ??? экранов
 @media all and (max-width: 1200px) {
+
+
+    #root {
+        height: 100%;
+        min-width: none;
+      }
+
+
 
 }

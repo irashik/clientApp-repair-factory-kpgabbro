@@ -9,7 +9,7 @@ import DatePicker, { registerLocale} from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useDebouncedCallback } from 'use-debounce';
 import ru from 'date-fns/locale/ru';
-import {parseISO, startOfHour } from 'date-fns';
+import {addHours, parseISO, startOfHour } from 'date-fns';
 import * as log from 'loglevel';
 import SearchList from "../searchListUnitEquipment";
 import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
@@ -229,15 +229,15 @@ function InputRepairForm(props) {
         <Modal {...modal} 
             backdrop="static"
             dialogClassName='modal-90w'
-            size='lg'
-            fullscreen="xl-down"
+            size='xl'
+            fullscreen="lg-down"
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             id="modalRepairForm"
         >
             <Modal.Header >
                 <Modal.Title >
-                    Форма ввода данных о работах
+                    Ввод данных о выполненых работах
                 </Modal.Title>
                 <button type="button" className="btn-close" id='btnCloseModal' aria-label="Close"
                         onClick={modalClose}
@@ -249,28 +249,31 @@ function InputRepairForm(props) {
                     <Row>
                         <Col>
                             <label className="setTimeLabel">Время начала</label>
-                                <DatePickerDiv type='dateStart' 
-                                                onSelectOptedData={onSelectOptedDateStart} setDate={sourceDateStart}/>
+                            <DatePickerDiv type='dateStart' 
+                                           onSelectOptedData={onSelectOptedDateStart} setDate={sourceDateStart}/>
                             
                         </Col>
                         <Col>
-                        
                             <label className="setTimeLabel">Время окончания</label>
-                                <DatePickerDiv type='dateEnd' 
-                                                onSelectOptedData={onSelectOptedDateEnd} setDate={sourceDateEnd}/>
-                            
+                            <DatePickerDiv type='dateEnd' 
+                                            onSelectOptedData={onSelectOptedDateEnd} setDate={sourceDateEnd}/>
                         </Col>
                     </Row>
                     <Row>
-                        <Col md='auto'>
-                            <Form.Control 
-                                    id='inputEquipment' size="sm" type="text" 
-                                    placeholder="Выберите оборудование"
-                                    value={searchString}
-                                    onChange={onChangeSearch}
-                                    idunit={idEquipment}
-                                    />
-                            <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
+                        <Col>
+                            <Row>
+                                <Col>
+                                    <Form.Control 
+                                        id='inputEquipmentRepairForm' size="sm" type="text" 
+                                        placeholder="Выберите оборудование"
+                                        value={searchString}
+                                        onChange={onChangeSearch}
+                                        idunit={idEquipment}
+                                        />
+                                    <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />    
+                                </Col>
+                            </Row>
+                            
                         </Col>
                     </Row>
                     <Row>
@@ -344,40 +347,41 @@ function InputGroupButtonSmall(props) {
 };
 function DatePickerDiv(props) {
     let currentTime = startOfHour(new Date());
+    let idInput = 'inputDateStart';
     const [valueDate, setValueDate] = useState(currentTime);
 
-    let idInput = 'inputDateStart';
   
     function handlerOptedData(e) {
         setValueDate(e);    
         props.onSelectOptedData(e);
     };
 
+
+    if(props.type === 'dateEnd') {
+        idInput = 'inputDateEnd';
+       
+    }
+
+
+        
+    
+
     useEffect(() => {
         if(props.setDate) {
             let newDate = parseISO(props.setDate);
             setValueDate(newDate);
         } else {
-            props.onSelectOptedData(valueDate);
+          
+                props.onSelectOptedData(valueDate);
+          
+            
         }
-
         return function cleanup() {
             setValueDate('');
         }
-
     }, [props.setDate]);
-
    
-
-        if(props.type == 'dateStart') {
-
-        }
-    
-        if(props.type == 'dateEnd') {
-            idInput = 'inputDateEnd';
-        }
-
-
+        
     
 
     return (

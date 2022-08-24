@@ -23,6 +23,9 @@ function  ReadListBidRequest(props) {
     useEffect(() => {
         const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest");
 
+        url.searchParams.set("id", localStorage.getItem('userId'));
+            
+
         if (props.statusBid) {
             url.searchParams.set("statusBid", props.statusBid);
         }
@@ -33,6 +36,11 @@ function  ReadListBidRequest(props) {
             url.searchParams.set('priority', props.priority);
 
         }
+        if (props.onSearchDescription) {
+            url.searchParams.set('description', props.onSearchDescription)
+        }
+
+
 
         loadFromDb(url)
             .then(queryFromDb => {
@@ -45,7 +53,7 @@ function  ReadListBidRequest(props) {
                 alert(err);
       });
 
-    }, [props.addedRecord, addedRecord, props.category, props.statusBid, props.priority]);
+    }, [props.addedRecord, addedRecord, props.category, props.statusBid, props.priority, props.onSearchDescription]);
   
   
 

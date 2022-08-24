@@ -36,6 +36,9 @@ function ReadPlansListModule(props) {
     if(props.onSelectTag) {
         url.searchParams.set('tag', props.onSelectTag)
     }
+    if(props.onSelectPriority) {
+        url.searchParams.set('priority', props.onSelectPriority);
+    }
    
 
     function onChangeRecord(e) {
@@ -48,7 +51,7 @@ function ReadPlansListModule(props) {
     useEffect(() => {
             loadFromDb(url)
                 .then(queryFromDb => {
-                    log.debug('loadfromdb = then');
+                    
                     setIsLoaded(true);    
                     setQueryFromDb(queryFromDb);
                 })
@@ -64,7 +67,7 @@ function ReadPlansListModule(props) {
             }
 
     }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment, 
-        updatedPlan, props.onSelectDescription, props.onSelectImportance, props.onSelectTag]);
+        updatedPlan, props.onSelectDescription, props.onSelectImportance, props.onSelectTag, props.onSelectPriority]);
     
         log.debug(isLoaded);
 
