@@ -1,20 +1,21 @@
-# Клиентская часть вэб журнала ремонтов.
+# Клиентская часть вэб-журнала ремонтов карьера КП-Габбро.
     Реализация клиентской части на ReactJs для взаимодействия с API (api-repair-factory-kpgabbro)
 
 
 
 ## Description
-Клиентская часть отвечает за работу с API и взаимодействую с пользователем.
+Клиентская часть отвечает за работу с API и взаимодействие с пользователем.
 Она реализована на ReactJS.
 
 ### Архитектура
-    Приложение разбито на компоненты
+    Приложение разбито на компоненты:
     app
     authPage
     authRegister
     footer
     header
     home
+    index
     navbarpage
     readModuleList
     reportEquipment
@@ -24,6 +25,8 @@
     inputDataSection -->
     repairPlan -->
     utils -->
+    bidrequest -->
+
 
 
 

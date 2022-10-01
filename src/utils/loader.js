@@ -67,6 +67,7 @@ function checkTokenAndUpdate(refreshToken) {
       resAuthServer
       .then(res => {
           if (res.status == 401) {
+            window.localStorage.clear();
             throw new Error('Unauthorized - invalid refreshToken');
             //todo как пробросить ошибку далее
 
@@ -129,6 +130,7 @@ function loadFromDb(url) {
             secondrequestInDb
               .then(newres => {
                 if(newres.status == 401) {
+                  window.localStorage.clear();
                   reject(new Error ('UNAUTHORIZED'));
                 } else if (newres.status === 201 || newres.status == 200 || res.status == 304) {
 
@@ -137,14 +139,17 @@ function loadFromDb(url) {
                   return newres.json();
                   
                 } else {
+                  window.localStorage.clear();
                   reject (new Error(newres));
                 }
               })
               .catch(err => {
+                window.localStorage.clear();
                 reject(new Error(err));
               });
           })
           .catch(err => {
+            window.localStorage.clear();
             reject(new Error('server not return tokens' + err));
           });
         

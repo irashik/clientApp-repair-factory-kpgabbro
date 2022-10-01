@@ -36,7 +36,7 @@ div {
 }
 
 .container-fluid {
-  padding: 10px !important;
+  padding: 1px !important;
   
   
 
@@ -55,7 +55,7 @@ div {
   }
 
   #homeComponent, #repairPlanComponent, #bidrequestComponent, #inputDataComponent, #reportComponent, #userProfileComponent {
-    min-height: calc(100vh - 290px);
+    min-height: calc(100vh - 265px);
   }
 
 
@@ -75,7 +75,7 @@ header {
   padding: 0px;
   background-color: $header;
   border-radius: 15px;
-  margin: 5px;
+  margin: 0px;
   margin-top: 0px;
 
 
@@ -88,7 +88,7 @@ footer {
   padding: 20px;
 
   border-radius: 15px;
-  margin: 5px;
+  margin: 0px;
   margin-bottom: 0px;
 
 
@@ -155,12 +155,17 @@ header  {
 }
 
 #reportInputEquipment {
+  
+}
+
+.reportInputField {
   max-width: 300px;
   // border: 2px;
   // border-color: black;
   background-color: #ffffff85;
   color: black;
 }
+
 
 #inputEquipment {
   //min-width: 400px;

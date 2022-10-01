@@ -25,7 +25,10 @@ function ReadModuleList(props) {
     if (props.unitEquipment) {
         url.searchParams.set("equipment", props.unitEquipment);
         url.searchParams.set('viewAllPosition', props.viewAllPosition);
-        
+
+        if(props.onSelectSearchText) {
+            url.searchParams.set('searchText', props.onSelectSearchText)
+        }
 
     }
 
@@ -53,7 +56,7 @@ function ReadModuleList(props) {
                 });
 
     }, [props.repair, props.startDate, props.endDate, props.unitEquipment, 
-        props.onAddedRepair, addedRepair, props.viewAllPosition        ]);
+        props.onAddedRepair, addedRepair, props.viewAllPosition, props.onSelectSearchText ]);
     
 
     function onChangeRecord(e) {
@@ -119,6 +122,7 @@ function ReadModuleBlock(props) {
         props.onOpenRecord();
     };
 
+
     const arrayRepair = props.i.repair.map((i, a) => {
         let listType = new Map([
             ['CHORES', 'Хоз.работы'],
@@ -131,10 +135,14 @@ function ReadModuleBlock(props) {
 
         return (
             
-        <li id="repairList_li_repair" data-id={a} key={a}> <p id="repairList_p_repairType" key={a} > {listType.get(i.type)}</p>
-                : {i.description}</li>
+        <li id="repairList_li_repair" data-id={a} key={a}>
+            <p id="repairList_p_repairType" key={a}>
+                {listType.get(i.type)}
+            </p>
+            : {i.description}</li>
         )
     });
+
     const arrayMaterial = props.i.material.map((i,a) => {
         return (
             <li key={'arrayMat-' + a}>
@@ -142,7 +150,6 @@ function ReadModuleBlock(props) {
             </li>
         );
     });
-
 
     return (
         <tr className="itemRecord" id={props.itemId.toString()}>

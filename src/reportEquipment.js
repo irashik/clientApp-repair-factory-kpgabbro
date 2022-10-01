@@ -15,11 +15,19 @@ function ReportEquipment() {
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
     const [viewAll, setViewAll] = useState(false);
+    const [filterText, setFilterText] = useState('');
+    const [searchText, setSearchText] = useState('');
+
 
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
         process.env.DEBOUNCEDDELAY
     );
+    const debouncedSetFilterText = useDebouncedCallback(
+        filterText => setFilterText(filterText),
+        process.env.DEBOUNCEDDELAY
+    );
+
     function onChangeSearch(e) {
         const { value } = e.target;
         setSearchString(value);
@@ -35,9 +43,12 @@ function ReportEquipment() {
     function viewAllPosition() {
         setIdEquipment(idEquipment);
         setViewAll(true);
+    }
 
-
-
+    function onChangeSearchText(e) {
+        const {value} = e.target;
+        debouncedSetFilterText(value);
+        setSearchText(value);
     }
    
 
@@ -47,8 +58,10 @@ function ReportEquipment() {
                 <h2>Отчет по оборудованию</h2>
             </Row>
             <Row className="justify-content-start">
-                <Col>
+                <Col sm>
+                    <label>Выберите оборудование</label>
                     <Form.Control   id='reportInputEquipment' size="sm" type="text" 
+                                className='reportInputField'
                                 placeholder="Выберите оборудование"
                                 value={searchString}
                                 onChange={onChangeSearch}
@@ -56,13 +69,26 @@ function ReportEquipment() {
                                 />
                     <SearchList filter={filter} onSelectEquipment={handlerSelectEquipment} />
                 </Col>
-                <Col>
+                <Col sm>
+                    <label>Поиск по тексту</label>
+                    <Form.Control   id='reportInputTextSearch' size="sm" type="text" 
+                                    className='reportInputField'
+                                    placeholder="Введите текст"
+                                    value={searchText}
+                                    onChange={onChangeSearchText}
+                                    />
+                </Col>
+                <Col sm>
+                    <br></br>
                     <Button  size="sm" variant="secondary" onClick={viewAllPosition}>Показать все записи</Button>
                 </Col>
                
             </Row>
             <Row>
-                <ShowReadModuleList idEquipment={idEquipment} viewAllPosition={viewAll}/>
+                <ShowReadModuleList     idEquipment={idEquipment} 
+                                        viewAllPosition={viewAll}
+                                        onSelectSearchText={filterText}
+                                        />
             </Row>
         </Container>
       )
@@ -76,7 +102,9 @@ function ShowReadModuleList(props)  {
         return null;
     } else {
         return <ReadModuleList  unitEquipment={props.idEquipment} 
-                                viewAllPosition={props.viewAllPosition} />;
+                                viewAllPosition={props.viewAllPosition} 
+                                onSelectSearchText={props.onSelectSearchText}
+                                />;
     }
 
 };

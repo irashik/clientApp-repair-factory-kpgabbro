@@ -6,70 +6,110 @@ const { EnvironmentPlugin } = require('webpack');
 
 
 
-module.exports = {
+module.exports = (env, argv) => {
+
+
+  console.log('mode: ', JSON.stringify(env));
   
-  entry: './src/index.js',
+  let variablePath;
+  
 
-  output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
-  },
-  devServer: {
-      historyApiFallback: true,
-      //host: 'http://localhost',
-      //port: '6000',
-      
+  if (env.production) {
+    variablePath = '.production.env';
+  
+  }
+  else if(env.testing) {
+    variablePath = '.testing.env';
+  
+  } else {
+    variablePath = '.development.env'
+     
+  }
+   
 
-  },
-  resolve: {
-    modules: [path.join(__dirname, 'src'), 'node_modules'],
-    alias: {
-      react: path.join(__dirname, 'node_modules', 'react'),
+  return {
+
+    entry: './src/index.js',
+
+    output: {
+      path: path.resolve(__dirname, 'build'),
+      filename: 'bundle.js',
+      //filename: '[name].bundle.js',
+      //clean: true,
+
     },
-  },
-  module: {
-    rules: [
-      { test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
+
+    // optimization: {
+    //   runtimeChunk: 'single',
+    //   splitChunks: {
+    //     cacheGroups: {
+    //       vendor: {
+    //         test: /[\\/]node_modules[\\/]/,
+    //         name: 'vendors',
+    //         chunks: 'all'
+    //       }
+    //     }
+        
+    //   }
+    // },
+    devServer: {
+        historyApiFallback: true,
+        //host: 'http://localhost',
+        //port: '6000',
+        
+
+    },
+    resolve: {
+      modules: [path.join(__dirname, 'src'), 'node_modules'],
+      alias: {
+        react: path.join(__dirname, 'node_modules', 'react'),
+      },
+    },
+    devtool: 'source-map',
+
+    module: {
+      rules: [
+        { test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
         },
-      },
-      { test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-        ],
-      },
-      { test: /\.s[ac]ss$/i,
-        use: [
-          "style-loader",
-          "css-loader",
-          "sass-loader"
-        ]
+        { test: /\.css$/,
+          use: [
+            {
+              loader: 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+            },
+          ],
+        },
+        { test: /\.s[ac]ss$/i,
+          use: [
+            "style-loader",
+            "css-loader",
+            "sass-loader"
+          ]
 
-      }
+        }
+      ],
+    },
+    plugins: [
+      new HtmlWebPackPlugin({
+        template: './public/index.html',
+        favicon: './src/image/favicon.ico',
+        //title: 'Caching'
+
+      }),
+      new DotenvWebpackPlugin({
+        path: variablePath
+
+      }),
+      new EnvironmentPlugin({
+        NODE_ENV: argv.mode
+      })
     ],
-  },
-  plugins: [
-    new HtmlWebPackPlugin({
-      template: './public/index.html',
-      favicon: './src/image/favicon.ico'
-    }),
-    new DotenvWebpackPlugin({
-      path: '.development.env',
-      //  path: '.production.env'
-
-    }),
-    new EnvironmentPlugin({
-      NODE_ENV: 'development'
-      //NODE_ENV: 'production'
-    })
-  ],
-  
+  }
 };
 
