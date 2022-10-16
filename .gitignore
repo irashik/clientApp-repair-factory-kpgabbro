@@ -1,0 +1,30 @@
+#compiled output
+node_modules
+build
+bower_components
+.dist
+dist
+
+
+#Logs
+logs
+*.log
+
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+
+
+# .env files
+.env
+.development.env
+.production.env
+.testing.env
+
+
+.fake
