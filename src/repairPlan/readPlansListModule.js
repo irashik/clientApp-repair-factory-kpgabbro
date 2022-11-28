@@ -94,9 +94,10 @@ function ReadPlansListModule(props) {
                 >
                     {queryFromDb.map((i) => {
                         return (
-                            <ReadModuleBlock key={i._id} i={i}  
-                                    onOpenRecord={() => onChangeRecord(i._id)}
-                                    onModalShow={() => setModalShow(true)}
+                            <ReadModuleBlock    key={i._id} 
+                                                i={i}  
+                                                onOpenRecord={() => onChangeRecord(i._id)}
+                                                onModalShow={() => setModalShow(true)}
                             /> 
                             )
                         })}
@@ -243,3 +244,6 @@ function ReadModuleBlock(props) {
 };
 
 
+
+
+/* old code */
