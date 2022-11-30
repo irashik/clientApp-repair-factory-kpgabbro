@@ -23,7 +23,7 @@ function InputPlanRepairForm(props) {
     const [repair, setRepair] = useState([]);
     const [sourceRepair, setSourceRepair] = useState([]);
     const [spendingJob, setSpendingJob] = useState(0);
-    const [statusState, setStatusState] = useState('DRAFT');
+    const [statusState, setStatusState] = useState('ACTIVE');
     const [priority, setPriority] = useState('');
     const [importance, setImportance] = useState('');
     const [comment, setComment] = useState('');
@@ -33,9 +33,6 @@ function InputPlanRepairForm(props) {
     const [author, setAuthor] = useState('');
     const [idAuthor, setIdAuthor] = useState('');
     const [tag, setTag] = useState('');
-
-    
-
     
     const debouncedSetFilter = useDebouncedCallback(
         filter => setFilter(filter),
@@ -74,7 +71,7 @@ function InputPlanRepairForm(props) {
                 setSearchString('');
                 setIdEquipment('');
                 setSpendingJob('');
-                setStatusState('DRAFT');
+                setStatusState('ACTIVE');
                 setPriority('');
                 setComment('');
                 setRepair([]);
@@ -129,10 +126,8 @@ function InputPlanRepairForm(props) {
                     setTag('');
     
                     //todo toast message add ?
-                   
                     props.onHide();
                     props.handleAddedPlan();
-    
                 }
                 catch(e) {
                     log.debug('error', e);
@@ -345,13 +340,13 @@ function InputPlanRepairForm(props) {
                                 
 
                         </Col>
-                        <Col md={6}>
+                        <Col md={8}>
                             <FormInputRepair    count={repairCount} onHandleRecordRepair={onRecordRepair} 
                                                 onLoadRepair={sourceRepair}/>
                         </Col>
-                        <Col md={2}>
+                        {/* <Col md={2}>
                             <InputGroupButtonSmall onHandleRepairCount={onHandleRepairCount} />
-                        </Col>
+                        </Col> */}
                     </Row>
                     <Row>
                         <label>Статус задачи</label>
@@ -427,9 +422,9 @@ export default InputPlanRepairForm;
 
 
 
-
+// todo исключил посклюку безсполезно. Сделай обратную совместимость, чтобы массив склеивался в одно поле.
 function InputGroupButtonSmall(props) {
-       
+     
     
     return (
         <Button variant="outline-dark" 
@@ -442,6 +437,7 @@ function InputGroupButtonSmall(props) {
                 >+</Button>
     );
 };
+
 
 function FormInputRepair(props) {
     const [count, setCount] = useState([]);

@@ -22,7 +22,7 @@ module.exports = {
 
         "globals": {
           "__DEV__": true,
-          "NODE_ENV": "test",
+          //"NODE_ENV": "testing",
           "ENDPOINT": "http://localhost:3500",
           "GOOGLE_API_KEY": "key",
           "FIREBASE_AUTH_DOMAIN": "url",

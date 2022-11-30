@@ -1,10 +1,9 @@
-
-
-
 import React from 'react';
 import { shallow, render } from 'enzyme';
 
 import ReadPlansListModule from './readPlansListModule';
+
+jest.mock('./inputPlanRepairForm');
 
 
 
@@ -16,4 +15,9 @@ describe('ReadPlanListModule', () => {
         expect(component).toMatchSnapshot();
 
     });
+
+    test.skip("", () => {
+
+    });
+
 });

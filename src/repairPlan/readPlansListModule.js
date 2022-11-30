@@ -5,15 +5,15 @@ import {format, parseISO } from 'date-fns';
 import * as log from 'loglevel';
 import { loadFromDb } from "../utils/loader";
 import InputPlanRepairForm from './inputPlanRepairForm';
-import Card from 'react-bootstrap/Card'
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table'
+
+import {hashArray} from 'react-hash-string';
 
 log.setLevel('debug');
 
+
 function ReadPlansListModule(props) {
-    const [queryFromDb, setQueryFromDb] = useState([]);
+    const [listRepairPlans, setListRepairPlans] = useState([]);
     const [modalShow, setModalShow] = useState(false);
     const [updatedPlan, setUpdatedPlan] = useState([]);
     const [idRecord, setIdRecord] = useState('');
@@ -39,47 +39,47 @@ function ReadPlansListModule(props) {
     if(props.onSelectPriority) {
         url.searchParams.set('priority', props.onSelectPriority);
     }
-   
 
-    function onChangeRecord(e) {
-        setIdRecord(e);
-    };
+    
     function onHandleAddedPlan() {
         setUpdatedPlan([...updatedPlan, 1]);
     };
 
     useEffect(() => {
+
             loadFromDb(url)
-                .then(queryFromDb => {
-                    
+                .then(dbresponse => {
                     setIsLoaded(true);    
-                    setQueryFromDb(queryFromDb);
+                    setListRepairPlans(dbresponse);
+
                 })
                 .catch(err => {
-                    setIsLoaded(false);
                     log.debug("response server is error = " + err);
                     alert('Error from server', err);
-                    //throw new Error(err);
+
                 })
-            return function cleanup() {
-                setIdRecord('');
-                setIsLoaded(false);
-            }
+             return function cleanup() {
+                 setIdRecord('');
+             }
 
-    }, [props.onAddedPlan, props.onSelectStatus, props.onSelectEquipment, 
-        updatedPlan, props.onSelectDescription, props.onSelectImportance, props.onSelectTag, props.onSelectPriority]);
-    
-        log.debug(isLoaded);
+    }, [    props.onAddedPlan, 
+            updatedPlan, 
 
-    if(!isLoaded || !queryFromDb) {
-        return (
-            <div>
-                <h2>Нет записей</h2>
-            </div>
-        )
+            props.onSelectStatus,
+            props.onSelectEquipment, 
+            props.onSelectDescription, 
+            props.onSelectImportance, 
+            props.onSelectTag, 
+            props.onSelectPriority
+        ]);
+ 
+
+    if(!isLoaded || !listRepairPlans) {
+        return <div><h2>Нет записей</h2></div>
     } else {
         
         return (
+
             <React.Fragment>
                 <InputPlanRepairForm    show={modalShow}
                                         onHide={() => setModalShow(false)}
@@ -89,19 +89,32 @@ function ReadPlansListModule(props) {
 
                 />
 
+                <Table id='tablePlanRepairs' responsive='mg' bordered hover>
+                    <thead>
+                        <tr>
+                            <th scope='col'>#</th>
+                            <th id='colPlan'>Плановые работы</th>
+                            <th>Оборудование</th>
+                            <th>Дата создания</th>
+                            <th>Тэг</th>
+                            <th>Приоритет</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {listRepairPlans.map((i) => {
 
-                <Container fluid id='CardListPlanRepairs' className="d-flex flex-row flex-wrap"
-                >
-                    {queryFromDb.map((i) => {
-                        return (
-                            <ReadModuleBlock    key={i._id} 
-                                                i={i}  
-                                                onOpenRecord={() => onChangeRecord(i._id)}
-                                                onModalShow={() => setModalShow(true)}
-                            /> 
-                            )
-                        })}
-                </Container>
+                            return (
+                                <ReadModuleBlock    key={i._id} i={i}  
+                                                    onOpenRecord={() => setIdRecord(i._id)}
+                                                    onModalShow={() => setModalShow(true)}
+                                /> 
+                                )
+                            })}
+                    </tbody>
+                </Table>
+
+
+                
             </React.Fragment>
         )
     }
@@ -110,25 +123,38 @@ export default ReadPlansListModule;
 
 
 
+
+
 function ReadModuleBlock(props) {
-    const idRecord = props.i._id;
-    const curImportance = props.i.importance;
+        
+    let {onOpenRecord, onModalShow, ...customProps} = props;
     
+    const idRecord = customProps.i._id;
+    const curImportance = customProps.i.importance;
+    const stringId = new String(idRecord);
+    const sliceStringId = stringId.slice(-5);
 
     function onRepairEdit() {
         props.onModalShow();
         props.onOpenRecord();
     };
-
-    const arrayPlanRepair = props.i.description.map((a, i) => {
-        return(
-            <li key={i}>{a} </li> 
-        )
-    });
+    function ListPlanRepairs(props) {
+        let list = null;
+        if(props.description) {
+            list = props.description.map((a, i) => {
+                return <li key={i}>{a}</li> //todo по документации ключ не нужен, но ошибку выдает в браузере
+            });
+            return ( 
+                <ul>{list}</ul>
+            )
+        } else { return <ul></ul> }
+    };
     function PriorityView(props) {
         if(props.priority) {
             return (
-                <p>Приоритет: <i>{props.priority}</i></p>
+                <React.Fragment>
+                    <i>{props.priority}</i>
+                </React.Fragment>
             )
         } else {
             return ( null )
@@ -137,9 +163,12 @@ function ReadModuleBlock(props) {
     function TagView(props) {
         if(props.tag) {
             return (
-                <p>Тэг: <i>{props.tag}</i></p>
+                <React.Fragment>
+                    <i>{props.tag}</i>
+                </React.Fragment>
+                
             )
-        } else {
+        } else { 
             return ( null )
         }
     };
@@ -159,91 +188,44 @@ function ReadModuleBlock(props) {
     ])
     const importanceTaskCard = new Map([
         ['A', 'danger'],
-        ['B', 'success'],
+        ['B', 'primary'],
         ['C', 'warning'],
         ["D", 'secondary'],
         ['', 'light']
     ])
     const textColor = () => {
-        const i = imporanceTaskList.get(curImportance);
-        if (i === 'light' || i === undefined) {
-            return 'dark'    
-        } else { return 'white'} 
+        const i = 'table-' + importanceTaskCard.get(curImportance);
+        return i;
+         
     };
+    const myKey = hashArray(customProps.i.description);
 
-
-
-     
     return (
-        <Card
-                bg={importanceTaskCard.get(curImportance)}
-                text={textColor()}
-                style={{ width: '18rem' }}
-                className="mb-2 cardItem"
-                id={idRecord}
-                >
-            <Card.Header>
-                <Container fluid>
-                    <Row>
-                    <Col className="text-start align-middle">
-                        <p id="EditPlanRepair" className="align-middle"> 
-                            <i>{props.i.equipment[0].position}, {props.i.equipment[0].group}</i>
-
-
-                        </p>
-                    </Col>
-                       <Col className="text-end">
-                        
-                        <Button size='sm'
-                        id="editPlanRepair-btn"
-                        variant="btn-secondary"
-                        data-toggle="tooltip" 
-                        data-placement="top" 
-                        title="Редактировать"
-
+        <tr id={idRecord} className={textColor()}>
+            <td>
+                <Button variant="outline-dark" data-toggle="tooltip" size="sm"
+                        data-placement="top" title={sliceStringId}
+                        id='editPlanRepair-btn'
                         onClick={onRepairEdit}>
-                        <TiPen />
-                        </Button>
-                    </Col>
-
-                    </Row>
-                    
-                </Container>
-                
-            
-            </Card.Header>
-            <Card.Body>
-                <Card.Title>
-                    <ul>
-                        {arrayPlanRepair}
-                    </ul>
-                </Card.Title>
-
-                <Card.Text>
-                    <Row>
-                        <Col>
-                            <p><i>{statusTaskList.get(props.i.status)}</i></p>
-                            <TagView tag={props.i.tag} />
-                        </Col>
-                        <Col>
-                            <p>от <i>{ format(parseISO(props.i.dateCreated), 'dd-MM-yyyy') }</i></p>    
-                            <PriorityView priority={props.i.priority} />
-                            
-                        </Col>
-                    </Row>
-                    
-
-                    
-                    
-                    
-                    
-                </Card.Text>
-            </Card.Body>
-        </Card>
+                            <TiPen />
+                </Button>
+                {sliceStringId}
+            </td>
+            <td>
+                <ListPlanRepairs key={myKey} description={customProps.i.description}/>
+            </td>
+            <td>
+                <i>{customProps.i.equipment[0].position}, {customProps.i.equipment[0].group}</i>
+            </td>
+            <td>
+                <i>{format(parseISO(customProps.i.dateCreated), 'dd-MM-yyyy') }</i>
+            </td>
+            <td>
+                <TagView tag={customProps.i.tag}/>
+            </td>
+            <td>
+                <PriorityView priority={customProps.i.priority}/>
+            </td>         
+        </tr>
     )
 };
-
-
-
-
-/* old code */

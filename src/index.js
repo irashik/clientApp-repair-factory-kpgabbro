@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './app';
 import { CookiesProvider, Cookies } from 'react-cookie';
 
-// Importing the Bootstrap CSS
-import '../bower_components/bootstrap/dist/css/bootstrap.min.css';
+// Importing the styles
+import './scss/custom.scss';
 
 
 

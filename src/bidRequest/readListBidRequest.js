@@ -19,29 +19,27 @@ function  ReadListBidRequest(props) {
     const [idRecord, setIdRecord] = useState('');
     const [addedRecord, setAddedRecord] = useState([]);
 
+    const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest");
+
+    url.searchParams.set("id", localStorage.getItem('userId'));
+        
+
+    if (props.statusBid) {
+        url.searchParams.set("statusBid", props.statusBid);
+    }
+    if (props.category) {
+        url.searchParams.set('category', props.category);
+    }
+    if (props.priority) {
+        url.searchParams.set('priority', props.priority);
+
+    }
+    if (props.onSearchDescription) {
+        url.searchParams.set('description', props.onSearchDescription)
+    }
 
     useEffect(() => {
-        const url = new URL (process.env.HTTP_API_HOST + ":" + process.env.HTTP_API_PORT + "/bidrequest");
-
-        url.searchParams.set("id", localStorage.getItem('userId'));
-            
-
-        if (props.statusBid) {
-            url.searchParams.set("statusBid", props.statusBid);
-        }
-        if (props.category) {
-            url.searchParams.set('category', props.category);
-        }
-        if (props.priority) {
-            url.searchParams.set('priority', props.priority);
-
-        }
-        if (props.onSearchDescription) {
-            url.searchParams.set('description', props.onSearchDescription)
-        }
-
-
-
+      
         loadFromDb(url)
             .then(queryFromDb => {
                     setListBidRequest(queryFromDb);
@@ -53,7 +51,13 @@ function  ReadListBidRequest(props) {
                 alert(err);
       });
 
-    }, [props.addedRecord, addedRecord, props.category, props.statusBid, props.priority, props.onSearchDescription]);
+    }, [
+        props.addedRecord, 
+        addedRecord, 
+        props.category, 
+        props.statusBid, 
+        props.priority, 
+        props.onSearchDescription]);
   
   
 
@@ -110,15 +114,14 @@ export default ReadListBidRequest;
 
 function ReadModuleBlock(props) {
 
+    let { onOpenRecord, onModalShow, ...customProps } = props;
+   
+    customProps = customProps.i;
+
     function onBidRequestEdit() {
         props.onModalShow();
         props.onOpenRecord();
     }
-
-    let { onOpenRecord, onModalShow, ...customProps } = props;
-    
-    customProps = customProps.i;
-    
     function DateStatusBidView(customProps) {
         if(customProps.dateStatusBid) {
             return (
@@ -147,9 +150,6 @@ function ReadModuleBlock(props) {
             return (<td></td>)
         }
     };
-
-    
-
     
     return (
         <tr key={customProps._id}>

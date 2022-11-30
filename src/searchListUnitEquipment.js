@@ -33,26 +33,36 @@ function SearchList(props) {
         setSelected(true);
     }
 
+    function onKeyPress(e, id, joinNameUnit) {
+        if(e.keyCode === 13) {
+            handleEventClick(id, joinNameUnit)
+        } else {
+            return e.keyCode;
+        }
+    }
+
     
     if(!props.filter) { return null };
 
     if (!filteredList.length && props) {
         return(
             <div className="list-group"> 
-                <li className="list-group-item list-group-item-warning ">Нет совпадений</li>
+                <li autofocus className="list-group-item list-group-item-warning ">Нет совпадений</li>
             </div>
         )
     } else {
 
-        const listItems = filteredList.map((item) => {
+        const listItems = filteredList.map((item, i) => {
             const id = item._id;
             const joinNameUnit = item.mergedData;
 
-           return  <a   
+           return  <a   autofocus
+                        tabindex={0}
                         className="list-group-item list-group-item-action"
                         key={id}
                         id="filteredListUnitEquipment"
                         onClick={() => handleEventClick(id, joinNameUnit)}
+                        onKeyDown={(e) => onKeyPress(e, id, joinNameUnit)}
                         >
                     { joinNameUnit }
                     </a>

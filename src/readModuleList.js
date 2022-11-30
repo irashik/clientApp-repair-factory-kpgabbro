@@ -84,7 +84,7 @@ function ReadModuleList(props) {
                                     handleAddedRepair={onHandleAddedRepair}
                                     />
 
-                <Table id='tableRepair' responsive='mg' bordered hover>
+                <Table id='tableRepair' responsive='md' bordered hover>
                     <thead>
                         <tr>
                             <th scope='col'>#</th>

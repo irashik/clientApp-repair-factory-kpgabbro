@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image'
 import Col from 'react-bootstrap/Col';
 import { Fancybox } from "@fancyapps/ui"
-
+ 
 
 function HomeComponent() {
     

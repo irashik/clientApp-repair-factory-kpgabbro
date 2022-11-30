@@ -4,7 +4,6 @@ import Row from 'react-bootstrap/Row';
 import {  Route, Routes, BrowserRouter  } from 'react-router-dom';
 
 
-import './scss/app.scss';
 
 import NavbarPage from './navbarpage.js';
 import HeaderComponent from './header.js';

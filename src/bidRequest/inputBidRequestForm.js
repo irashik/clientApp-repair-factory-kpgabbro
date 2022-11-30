@@ -85,7 +85,6 @@ function InputBidRequestForm(props) {
 
         unloadInDbPatch(url, data)
             .then(result => {
-                log.debug("record in database" + result)
                 try{
                     setIdRecord('');
                     setDescription('');
@@ -153,7 +152,7 @@ function InputBidRequestForm(props) {
             
         }
 
-    }, [props.onLoadRecord]);
+    }, [props.onLoadRecord, props.handleAddedRecord]);
 
 
     
@@ -206,8 +205,6 @@ function InputBidRequestForm(props) {
     };
 
 
-
-
     return(    
         <Modal {...modal} 
             backdrop="static"
@@ -216,7 +213,7 @@ function InputBidRequestForm(props) {
             fullscreen="xl-down"
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
-            key={idRecord}
+            id={idRecord}
         >
             <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
