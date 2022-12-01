@@ -17,13 +17,20 @@ import { loadFromDb, unloadInDb, unloadInDbPatch } from "../utils/loader";
 log.setLevel('debug');
 registerLocale('ru', ru);
 
+
+
 function InputRepairForm(props) {
+
+    let currentTime = startOfHour(new Date());
+
     const [searchString, setSearchString] = useState('');
     const [filter, setFilter] = useState('');
     const [idEquipment, setIdEquipment] = useState('');
-    const [equipment, setEquipment] = useState('')
-    const [dateStart, setDateStart] = useState('');
-    const [dateEnd, setDateEnd] = useState('');
+    const [equipment, setEquipment] = useState('');
+
+    const [dateStart, setDateStart] = useState(currentTime);
+    const [dateEnd, setDateEnd] = useState(addHours(currentTime, 1));
+
     const [repair, setRepair] = useState([]);
     const [repairCount, setRepairCount] = useState([1]);
     const [materialCount, setMaterialCount] = useState([1]);
@@ -33,8 +40,7 @@ function InputRepairForm(props) {
     const [sourceMaterial, setSourceMaterial] = useState([]);
     const [idAuthor, setIdAuthor] = useState('')
     const [author, setAuthor] = useState('');
-    const [sourceDateStart, setSourceDateStart] = useState('');
-    const [sourceDateEnd, setSourceDateEnd] = useState('');
+    
 
     
     const debouncedSetFilter = useDebouncedCallback(
@@ -96,12 +102,6 @@ function InputRepairForm(props) {
             });
 
     };
-    function onSelectOptedDateStart(selectedDate) {
-        setDateStart(selectedDate);
-    };
-    function onSelectOptedDateEnd(selectedDate) {
-        setDateEnd(selectedDate);
-    };
     function BtnView(props) {
         if(props.onLoadRecord) {
             return (
@@ -132,21 +132,21 @@ function InputRepairForm(props) {
         }
         cleanupState();
     };
-
     function cleanupState() {
         setIdRecord('');
         setIdEquipment('');
         setEquipment('');
-        setDateStart('');
-        setDateEnd('');
+
+        setDateStart(currentTime);
+        setDateEnd(addHours(currentTime, 1));
+
         setAuthor('');
         setIdAuthor('');
  
         setSourceRepair([]);
         setSourceMaterial([]);
  
-        setSourceDateEnd('');
-        setSourceDateStart('');
+        
  
         setRepairCount([1]);
         setMaterialCount([1]);
@@ -157,7 +157,6 @@ function InputRepairForm(props) {
         setSearchString('');
         setFilter('');
     };
-
     function AuthorView(modal) {
         if(modal.author) {
             return (
@@ -165,6 +164,21 @@ function InputRepairForm(props) {
             )
         } else { return null }
     };
+
+
+
+    function handleDateStartChange(date) {
+        setDateStart(date);
+        const newDateEnd = addHours(date, 1);
+        setDateEnd(newDateEnd);
+    };
+    function handleDateEndChange(date) {
+        setDateEnd(date);
+    }
+
+
+
+    
 
 
     useEffect(() => {
@@ -177,11 +191,9 @@ function InputRepairForm(props) {
                     setIdRecord(result._id);
                     setIdEquipment(result.equipment[0]._id);
                     setEquipment(result.equipment[0].position);
-
-                    setSourceDateStart(result.dateRepairStart);
-                    setSourceDateEnd(result.dateRepairEnd);
-                    setDateStart(result.dateRepairStart);
-                    setDateEnd(result.dateRepairEnd);
+                    
+                    setDateStart(parseISO(result.dateRepairStart));
+                    setDateEnd(parseISO(result.dateRepairEnd));
 
                     setSourceRepair(result.repair);
                     const newRepairCount = new Array(result.repair.length);
@@ -229,8 +241,8 @@ function InputRepairForm(props) {
         <Modal {...modal} 
             backdrop="static"
             dialogClassName='modal-90w'
-            size='md'
-            fullscreen="md-down"
+            size='lg'
+            fullscreen="lg-down"
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             id="modalRepairForm"
@@ -249,14 +261,17 @@ function InputRepairForm(props) {
                     <Row>
                         <Col>
                             <label className="setTimeLabel">Время начала</label>
-                            <DatePickerDiv type='dateStart' 
-                                           onSelectOptedData={onSelectOptedDateStart} setDate={sourceDateStart}/>
-                            
+                            <DatePickerDiv  type='dateStart' 
+                                            valueDate={dateStart}
+                                            onSelectOptedData={handleDateStartChange} 
+                                            />
                         </Col>
                         <Col>
                             <label className="setTimeLabel">Время окончания</label>
-                            <DatePickerDiv type='dateEnd' 
-                                            onSelectOptedData={onSelectOptedDateEnd} setDate={sourceDateEnd}/>
+                            <DatePickerDiv  type='dateEnd' 
+                                            valueDate={dateEnd}
+                                            onSelectOptedData={handleDateEndChange} 
+                                            />
                         </Col>
                     </Row>
                     <Row>
@@ -346,51 +361,20 @@ function InputGroupButtonSmall(props) {
     );
 };
 function DatePickerDiv(props) {
-    let currentTime = startOfHour(new Date());
     let idInput = 'inputDateStart';
-    const [valueDate, setValueDate] = useState(currentTime);
-
-  
-    function handlerOptedData(e) {
-        setValueDate(e);    
-        props.onSelectOptedData(e);
-    };
-
-
+    
     if(props.type === 'dateEnd') {
         idInput = 'inputDateEnd';
-       
     }
-
-
-        
-    
-
-    useEffect(() => {
-        if(props.setDate) {
-            let newDate = parseISO(props.setDate);
-            setValueDate(newDate);
-        } else {
-          
-                props.onSelectOptedData(valueDate);
-          
-            
-        }
-        return function cleanup() {
-            setValueDate('');
-        }
-    }, [props.setDate]);
-   
-        
-    
 
     return (
         <React.Fragment>
             <DatePicker 
+                            key={idInput}
                             className="form-control-sm"
                             locale="ru" 
-                            selected={valueDate}
-                            onChange={(date) => handlerOptedData(date)}
+                            selected={props.valueDate}
+                            onChange={(date) => props.onSelectOptedData(date)}
                             showTimeSelect
                             timeFormat="p"
                             timeIntervals={30}

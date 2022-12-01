@@ -89,15 +89,15 @@ function ReadPlansListModule(props) {
 
                 />
 
-                <Table id='tablePlanRepairs' responsive='mg' bordered hover>
+                <Table id='tablePlanRepairs' responsive='md' bordered hover>
                     <thead>
                         <tr>
                             <th scope='col'>#</th>
-                            <th id='colPlan'>Плановые работы</th>
+                            <th className="col-lg-2" id='colPlan'>Плановые работы</th>
                             <th>Оборудование</th>
                             <th>Дата создания</th>
-                            <th>Тэг</th>
-                            <th>Приоритет</th>
+                            <th className="col-2">Тэг</th>
+                            <th className="col-2">Приоритет</th>
                         </tr>
                     </thead>
                     <tbody>

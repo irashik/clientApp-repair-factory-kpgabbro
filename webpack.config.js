@@ -2,56 +2,56 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const DotenvWebpackPlugin = require('dotenv-webpack');
 const { EnvironmentPlugin } = require('webpack');
-
-
+const CopyPlugin = require("copy-webpack-plugin");
+const { fstat } = require('fs');
 
 
 module.exports = (env, argv) => {
 
-
-  console.log('mode: ', JSON.stringify(env));
-  
+  //console.log('mode: ', JSON.stringify(env));
   let variablePath;
-  
 
+  //console.log('argv == ' + argv.mode);
+  
   if (env.production) {
     variablePath = '.production.env';
-  
-  }
-  else if(env.testing) {
-    variablePath = '.testing.env';
-  
-  } else {
+  } else if(env.development) {
     variablePath = '.development.env'
      
+  } else {
+    variablePath = '.testing.env'
   }
-   
+
+
+
+  
 
   return {
-
+    mode: argv.mode,
     entry: './src/index.js',
 
     output: {
       path: path.resolve(__dirname, 'build'),
-      filename: 'bundle.js',
-      //filename: '[name].bundle.js',
-      //clean: true,
+      //filename: 'bundle.js',
 
+
+      filename: '[name].[contenthash].js',
+      clean: true,
     },
 
-    // optimization: {
-    //   runtimeChunk: 'single',
-    //   splitChunks: {
-    //     cacheGroups: {
-    //       vendor: {
-    //         test: /[\\/]node_modules[\\/]/,
-    //         name: 'vendors',
-    //         chunks: 'all'
-    //       }
-    //     }
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all'
+          }
+        }
         
-    //   }
-    // },
+      }
+    },
     devServer: {
         historyApiFallback: true,
         //host: 'http://localhost',
@@ -71,10 +71,12 @@ module.exports = (env, argv) => {
       rules: [
         { test: /\.(js|jsx)$/,
           exclude: /node_modules/,
+
           use: {
             loader: 'babel-loader',
           },
         },
+        
         { test: /\.css$/,
           use: [
             {
@@ -98,7 +100,7 @@ module.exports = (env, argv) => {
     plugins: [
       new HtmlWebPackPlugin({
         template: './public/index.html',
-        favicon: './src/image/favicon.ico',
+        favicon: './public/favicon.ico',
         //title: 'Caching'
 
       }),
@@ -108,6 +110,17 @@ module.exports = (env, argv) => {
       }),
       new EnvironmentPlugin({
         NODE_ENV: argv.mode
+      }),
+      new CopyPlugin({
+        patterns: [
+          { 
+            from: path.join(__dirname, 'public'),
+            globOptions: {
+              gitignore: true,
+              ignore: ["**/index.html"]
+            },
+            to: path.join(__dirname, "build")}
+        ]
       })
     ],
   }

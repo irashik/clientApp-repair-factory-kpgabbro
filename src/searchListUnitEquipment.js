@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from "react";
-import * as log from 'loglevel';
+import log from 'loglevel';
 import { loadFromDb } from './utils/loader';
 
 log.setLevel('debug');
