@@ -73,11 +73,11 @@ function  ReadListBidRequest(props) {
                                         handleAddedRecord={() => setAddedRecord([...addedRecord, 1])}
                 />
 
-                <Table id='tableBidRequest' responsive='mg' bordered hover>
+                <Table id='tableBidRequest' responsive='md' bordered hover>
                     <thead>
                         <tr>
                             <th scope='col'>#</th>
-                            <th className="col-2">Описание заявки</th>
+                            <th className="col-lg-2">Описание заявки</th>
                             <th>Статус заявки</th>
                             <th>Дата изм. статуса</th>
                             <th>Автор изменений</th>

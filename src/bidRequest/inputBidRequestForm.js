@@ -210,7 +210,7 @@ function InputBidRequestForm(props) {
             backdrop="static"
             dialogClassName='modal-90w'
             size='lg'
-            fullscreen="xl-down"
+            fullscreen="lg-down"
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             id={idRecord}

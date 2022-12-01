@@ -229,8 +229,8 @@ function InputRepairForm(props) {
         <Modal {...modal} 
             backdrop="static"
             dialogClassName='modal-90w'
-            size='md'
-            fullscreen="md-down"
+            size='lg'
+            fullscreen="lg-down"
             aria-labelledby="contained-modal-title-vcenter"
             animation={false}
             id="modalRepairForm"
