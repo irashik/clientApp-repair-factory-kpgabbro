@@ -52,8 +52,8 @@
 this App is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://ptz-cargo.com/support).
 
 ## Stay in touch
-- Author - [Irashin Dmitrii](http://ptz-cargo.com)
-- Website - [http://ptz-cargo.com](http://ptz-cargo.com/)
+- Author - [Irashin Dmitrii](http://irashin-ptz.ru)
+- Website - [http://irashin-ptz.ru](http://irashin-ptz.ru/)
 
 
 ## License
